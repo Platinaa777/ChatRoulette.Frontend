@@ -1,5 +1,4 @@
 import './App.css';
-import Video from 'twilio-video';
 import TwilioVideo from "./components/TwilioVideo";
 
 function App() {
