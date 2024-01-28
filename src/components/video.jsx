@@ -5,7 +5,10 @@ import * as signalR from "@microsoft/signalr";
 const Video = () => {
     const [hubConnection, setHubConnection] = useState(null);
     const [email, setEmail] = useState('');
+    const [chat, setChat] = useState([])
     const [connectionId, setConnectionId] = useState('')
+    const [room, setRoom] = useState('')
+    const [isHost, setIsHost] = useState(false)
 
     useEffect(() => {
 
@@ -13,11 +16,14 @@ const Video = () => {
             const connection = new signalR.HubConnectionBuilder()
                 .withUrl("http://localhost:8003/chat")
                 .build();
-
-            connection.on('Receive', (message) => { 
-                console.log(message);
+            
+            // receiving messages
+            connection.on('Receive', (message) => {
+                console.log(message)
+                setChat((prevChat) => [...prevChat, message]);
             });
-
+            
+            // get connection id
             connection.on("GettingConnId", (id) => {
                 setConnectionId(id)
                 console.log("id = " + id)
@@ -25,17 +31,46 @@ const Video = () => {
 
             await connection.start();
             setHubConnection(connection);
-            console.log("hubConn " + connection);
+            connection.invoke("GetConnectionId")
         };
 
         initializeHubConnection();
-        hubConnection.invoke("GetConnectionId")
+        
     }, []);
 
     const sendMessage = () => {
-        if (hubConnection) {
-            hubConnection.invoke("Send", email)
+        if (hubConnection && room) {
+            hubConnection.invoke("Send", email, room)
         }
+    }
+
+    const joinRoom = async () => {
+        const postData = {
+            email: email,
+            connectionId: connectionId
+        }
+
+        fetch('http://localhost:8003/chat/join-room', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postData)
+            }).then(response => {
+                if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            }).then(data => {
+                if (data.isHost) {
+                    setIsHost(true)
+                }
+                console.log('POST request successful:', data);
+
+                setRoom(data.roomId)
+            }).catch(error => {
+                console.error('Error during POST request:', error);
+            });
     }
 
     const handleInputChange = (e) => {
@@ -44,15 +79,24 @@ const Video = () => {
 
     return (
         <div className="container">
-        <label htmlFor="messageInput">Input email</label>
-        <input
-            type="text"
-            id="messageInput"
-            value={email}
-            onChange={handleInputChange}
-        />
-        <br />
-        <button onClick={sendMessage}>Send Message</button>
+            <div className="input-section">
+                <label htmlFor="messageInput">Input email</label>
+                <input
+                    type="text"
+                    id="messageInput"
+                    value={email}
+                    onChange={handleInputChange}
+                />
+                <button onClick={() => joinRoom()}>Join Free Room</button>
+                <button onClick={() => sendMessage()}>Send Message</button>
+            </div>
+            <div className="chat-section">
+                <ul className="message-list">
+                    {chat.map((message, index) => (
+                        <li key={index} className="message-item">{message}</li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 };

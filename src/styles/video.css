@@ -1,36 +1,66 @@
 .container {
-    width: 300px;
-    margin: 20px;
-    padding: 15px;
-    border: 1px solid #3498db; /* Синий цвет рамки */
+    display: flex;
+    background-color: #ecf0f1; /* Светло-голубой цвет фона контейнера */
+    border: 1px solid #3498db; /* Синий цвет рамки контейнера */
     border-radius: 5px;
-    background-color: #ecf0f1; /* Светло-голубой цвет фона */
-  }
-  
-  label {
+    margin: 20px;
+}
+
+.input-section {
+    width: 30%;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.chat-section {
+    flex: 1;
+    background-color: #fff; /* Белый цвет фона чата */
+    border: 1px solid #000; /* Черный цвет рамки чата */
+    border-radius: 5px;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.label, input, button {
+    margin-bottom: 10px;
+}
+
+label {
     display: block;
     margin-bottom: 8px;
     color: #3498db; /* Синий цвет текста метки */
-  }
-  
-  input {
+}
+
+input {
     width: 100%;
     padding: 8px;
-    margin-bottom: 10px;
     box-sizing: border-box;
-    border: 1px solid #3498db; /* Синий цвет рамки поля ввода */
+    border: 1px solid #3498db;
     border-radius: 3px;
-  }
-  
-  button {
+}
+
+button {
     padding: 10px;
-    background-color: #3498db; /* Синий цвет фона кнопки */
-    color: #fff; /* Белый цвет текста кнопки */
+    background-color: #3498db;
+    color: #fff;
     border: none;
     border-radius: 3px;
     cursor: pointer;
-  }
-  
-  button:hover {
+}
+
+button:hover {
     background-color: #2980b9; /* Темно-синий цвет фона кнопки при наведении */
-  }
+}
+
+.message-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.message-item {
+    background-color: #000; /* Черный цвет фона сообщений в чате */
+    color: #fff;
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 3px;
+}
