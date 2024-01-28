@@ -1,10 +1,10 @@
 import './App.css';
-import TwilioVideo from "./components/TwilioVideo";
+import Video from "./components/video";
 
 function App() {
     return (
     <div>
-        <TwilioVideo />
+        <Video />
     </div>
   );
 }

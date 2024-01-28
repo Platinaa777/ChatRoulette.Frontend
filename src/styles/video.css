@@ -1,0 +1,36 @@
+.container {
+    width: 300px;
+    margin: 20px;
+    padding: 15px;
+    border: 1px solid #3498db; /* Синий цвет рамки */
+    border-radius: 5px;
+    background-color: #ecf0f1; /* Светло-голубой цвет фона */
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: #3498db; /* Синий цвет текста метки */
+  }
+  
+  input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border: 1px solid #3498db; /* Синий цвет рамки поля ввода */
+    border-radius: 3px;
+  }
+  
+  button {
+    padding: 10px;
+    background-color: #3498db; /* Синий цвет фона кнопки */
+    color: #fff; /* Белый цвет текста кнопки */
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #2980b9; /* Темно-синий цвет фона кнопки при наведении */
+  }
