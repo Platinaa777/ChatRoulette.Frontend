@@ -1,10 +1,10 @@
 import './App.css';
-import Video from "./components/video";
+import Chat from "./components/Chat";
 
 function App() {
     return (
     <div>
-        <Video />
+        <Chat />
     </div>
   );
 }
