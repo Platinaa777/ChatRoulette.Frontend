@@ -1,66 +1,102 @@
 .container {
     display: flex;
-    background-color: #ecf0f1; /* Светло-голубой цвет фона контейнера */
-    border: 1px solid #3498db; /* Синий цвет рамки контейнера */
-    border-radius: 5px;
-    margin: 20px;
-}
-
-.input-section {
-    width: 30%;
-    padding: 15px;
-    box-sizing: border-box;
-}
-
-.chat-section {
-    flex: 1;
-    background-color: #fff; /* Белый цвет фона чата */
-    border: 1px solid #000; /* Черный цвет рамки чата */
-    border-radius: 5px;
-    padding: 15px;
-    box-sizing: border-box;
-}
-
-.label, input, button {
-    margin-bottom: 10px;
-}
-
-label {
-    display: block;
-    margin-bottom: 8px;
-    color: #3498db; /* Синий цвет текста метки */
-}
-
-input {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-    border: 1px solid #3498db;
-    border-radius: 3px;
-}
-
-button {
+    height: 100%;
+    background-color: #e3f2fd;
+  }
+  
+  .left-side {
+    width: 50%;
+    height: 100%;
+    background-color: #c8e6c9;
     padding: 10px;
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #2980b9; /* Темно-синий цвет фона кнопки при наведении */
-}
-
-.message-list {
-    list-style-type: none;
-    padding: 0;
-}
-
-.message-item {
-    background-color: #000; /* Черный цвет фона сообщений в чате */
-    color: #fff;
-    padding: 8px;
+  }
+  
+  .right-side {
+    width: 50%;
+    height: 100%;
+    background-color: #e3f2fd;
+    padding: 10px;
+  }
+  
+  .input-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100px;
+  }
+  
+  .input-section label {
+    color: black;
+    font-size: 16px;
     margin-bottom: 5px;
-    border-radius: 3px;
-}
+  }
+  
+  .input-section input {
+    width: 100%;
+    height: 30px;
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background-color: #e3f2fd;
+  }
+  
+  .input-section button {
+    width: 100px;
+    height: 35px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  
+  .chat-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    height: calc(100% - 100px);
+    padding: 10px;
+    overflow: auto;
+  }
+  
+  .message-list {
+    list-style: none;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+  }
+  
+  .message-item {
+    width: 100%;
+    height: 30px;
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    background-color: #e3f2fd;
+    color: black;
+    margin-bottom: 10px;
+  }
+  
+  .email-info {
+    font-size: 16px;
+    color: black;
+  }
+  
+  .conn-id-room-id {
+    font-size: 16px;
+    color: black;
+  }
+  
