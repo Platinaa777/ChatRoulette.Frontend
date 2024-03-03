@@ -8,7 +8,7 @@ export const useStateWithCallback = initialState => {
         cbRef.current = callback;
         
         setState(prev => typeof(newState) === 'function' ? newState(prev) : newState)
-    })
+    }, [])
 
     useEffect(() => {
         if (cbRef.current) {
