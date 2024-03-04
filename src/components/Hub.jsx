@@ -11,8 +11,9 @@ export const Hub = () => {
     const [listMessages, updateList] = useState([])
     const [message, setMessage] = useState('')
 
-    const meRTC = useRef(null) // my RTCPeerConnection
+    const peerConnection = useRef(null) // my RTCPeerConnection
     const localMediaStream = useRef(null) // my local media stream
+    const myIceCandidates = useRef([])
 
     const videoRef = useRef(null) // my video
     const remoteVideo = useRef(null) // peer video
@@ -26,62 +27,110 @@ export const Hub = () => {
         connection.invoke('GetId')    
     }, [])
 
-    useEffect(() => {
-        connection.on('onPeerJoinRoom', async (room, isReadyToCommunicate) => {
-            updateRoom(room)
-            console.log("is ready = " + isReadyToCommunicate)
+    const findRoom = async () => {
+        connection.on('PeerConnection', handleInfoFromPeer);
+        await connection.invoke('FindRoom', connectionId, email);
+    }
 
-            meRTC.current = new RTCPeerConnection(pc_config)
+    // type can be ['offer', 'answer', 'candidate', 'relay-ice', '']
+    const handleInfoFromPeer = async (roomId, message, type) => {
+        console.log('Type: ', type)
+        console.log("Room: ", roomId)
+        if (!room) {
+            updateRoom(roomId)
+        }
 
-            meRTC.current.ontrack = ({streams: [remoteStream]}) => {
-                console.log('REMOTE')
-                console.log(remoteStream)
-                remoteVideo.current = remoteStream;
-            };
+        if (type === 'offer') {
+            await createRTC(roomId)
+            await createOffer(roomId)
+        }
 
-            meRTC.current.onicecandidate = event => {
-                // console.log(event.candidate)
+        if (type === 'answer') {
+            await createRTC(roomId)
+            await createAnswer(message, roomId)
+        }
+
+        if (type === 'confirmAnswer') {
+            await addAnswer(message, roomId)
+        }
+
+        if (type === 'relay-ice') {
+            console.log('MyIces: ', myIceCandidates)
+            await connection.invoke('OnIceCandidate', roomId, JSON.stringify(myIceCandidates))
+        }
+
+        if (type === 'candidate') {
+            if (peerConnection.current) {
+                await addIceCandidate(message, roomId)
             }
+        }
+    }
 
-            localMediaStream.current.getTracks().forEach(track => {
-                console.log(track)
-                meRTC.current.addTrack(track, localMediaStream.current);
-            })
+    const createOffer = async (roomId) => {
+        const offer = await peerConnection.current.createOffer()
+        await peerConnection.current.setLocalDescription(offer)
+        await connection.invoke('OnPeerOffer', roomId, JSON.stringify(offer))
+        console.log('Offer: ', offer)
+    }
 
-            if (isReadyToCommunicate) {
-                const offer = await meRTC.current.createOffer()
-                await meRTC.current.setLocalDescription(offer)
-                
-                await connection.invoke('PeerOffer', room, JSON.stringify(offer))
-            }
-        })
+    const createAnswer = async (offerJson, roomId) => {
+        const offer = JSON.parse(offerJson)
+        await peerConnection.current.setRemoteDescription(new RTCSessionDescription(offer))
+        const answer = await peerConnection.current.createAnswer()
+        await peerConnection.current.setLocalDescription(answer)
+        await connection.invoke('OnPeerAnswer', roomId, JSON.stringify(answer))
+        console.log('Answer: ', answer)
+    }
 
-        connection.on('onCreateAnswer', async (offerJson, roomId) => {
-            const offer = JSON.parse(offerJson)
-
-            await meRTC.current.setRemoteDescription(new RTCSessionDescription(offer))
-            const answer = await meRTC.current.createAnswer()
-            await meRTC.current.setLocalDescription(answer)
-
-            await connection.invoke('AnswerFromPeer', JSON.stringify(answer), roomId)
-        })
-
-        connection.on('onConfirmAnswer', async (answerJson) => {
+    const addAnswer = async (answerJson, roomId) => {
+        if (!peerConnection.current.currentRemoteDescription) {
             const answer = JSON.parse(answerJson)
-            await meRTC.current.setRemoteDescription(new RTCSessionDescription(answer))
+            await peerConnection.current.setRemoteDescription(new RTCSessionDescription(answer))
+            await connection.invoke('OnStartRelayIce', roomId)
+            console.log('Confirm answer', answer)
+        }
+    }
+
+    const addIceCandidate = async (candidateJson, roomId) => {
+        const candidates = JSON.parse(candidateJson)
+        console.log('GetIceCandidates', candidates)
+
+        candidates.current.forEach((c) => {
+            if (c) {
+                console.log('NewIceCandidate', c)
+                peerConnection.current.addIceCandidate(c)
+            }
         })
-    }, [room])
-        
-    const startCapture = async() => {
+    }
+
+    const createRTC = async (roomId) => {
+        peerConnection.current = new RTCPeerConnection(pc_config)
+        remoteVideo.current = new MediaStream();
+
         localMediaStream.current = await navigator.mediaDevices.getUserMedia(
             {audio: true,video: true})
 
         videoRef.current.srcObject = localMediaStream.current
-    }
 
-    const findRoom = async () => {
-        await startCapture()
-        await connection.invoke('FindRoom', connectionId, email); // sends to onPeerJoinRoom
+        peerConnection.current.ontrack = (event) => {
+            event.streams[0].getTracks().forEach((track) => {
+                // console.log('New TRACK from remote peer:', track)
+                remoteVideo.current.addTrack(track)
+            })
+        }
+
+        peerConnection.current.onicecandidate = async (event) => {
+            console.log('IceCandidate', event.candidate, roomId)
+            if (event.candidate && roomId) {
+                const candidateJson = JSON.stringify(event.candidate)
+                myIceCandidates.current.push(candidateJson)
+            }
+        }
+
+        localMediaStream.current.getTracks().forEach(track => {
+            // console.log('Push my track to another peer:', track)
+            peerConnection.current.addTrack(track, localMediaStream.current);
+        })
     }
 
     const sendMessage = async () => {
@@ -90,13 +139,8 @@ export const Hub = () => {
         }
     }
 
-    const viewReceivers = () => {
-        console.log(meRTC.current.getReceivers())
-    }
-
     return (
         <div key={1}>
-            <button onClick={viewReceivers} style={{width:'100px'}}></button>
             <div>Hub page</div>
             <div>Connection id = {connectionId}</div>
             <div>
