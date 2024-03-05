@@ -5,10 +5,18 @@ import connection from '../sockets/ChatConnection'
 const servers = {
     iceServers:[
         {
-            urls:['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302']
+            urls:['stun:stun.1und1.de:3478', 'stun:stun.gmx.net:3478']
         },
     ],
     iceCandidatePoolSize: 10
+}
+
+const constraints = {
+    video:{
+        width:{min:640, ideal:1920, max:1920},
+        height:{min:480, ideal:1080, max:1080},
+    },
+    audio:true
 }
 
 export const Hub = () => {
@@ -23,7 +31,7 @@ export const Hub = () => {
     const myIceCandidates = useRef([])
 
     const localVideo = useRef(null) // my video
-    const remoteVideo = useRef(null) // peer video
+    const remoteVideo = useRef(new MediaStream()) // peer video
 
     useEffect(() => {
         connection.on('id', (responseId) => updateConnectionId(responseId))
@@ -42,10 +50,9 @@ export const Hub = () => {
 
     // type can be ['offer', 'answer', 'candidate', 'relay-ice', '']
     const handleInfoFromPeer = async (roomId, message, type) => {
-        // console.log('Type: ', type)
+        console.log('Type: ', type)
         // console.log("Room: ", roomId)
         if (!room) {
-            
             updateRoom(roomId)
         }
 
@@ -64,8 +71,9 @@ export const Hub = () => {
         }
 
         if (type === 'relay-ice') {
-            // console.log('MyIces: ', myIceCandidates)
+            // console.log('MyIceCandidates:', myIceCandidates)
             await connection.invoke('OnIceCandidate', roomId, JSON.stringify(myIceCandidates))
+            // console.log('OnIceCandidate was invoked:', myIceCandidates.current, roomId)
         }
 
         if (type === 'candidate') {
@@ -92,53 +100,43 @@ export const Hub = () => {
     }
 
     const addAnswer = async (answerJson, roomId) => {
-        if (!peerConnection.current.currentRemoteDescription) {
-            const answer = JSON.parse(answerJson)
-            await peerConnection.current.setRemoteDescription(new RTCSessionDescription(answer))
-            await connection.invoke('OnStartRelayIce', roomId)
-            // console.log('Confirm answer', answer)
-        }
+        const answer = JSON.parse(answerJson)
+        await peerConnection.current.setRemoteDescription(new RTCSessionDescription(answer))
+        await connection.invoke('OnStartRelayIce', roomId)
+        // console.log('Confirm answer', answer)
     }
 
-    const addIceCandidate = async (candidatesJson, roomId) => {
-        const candidates = JSON.parse(candidatesJson)
-        // console.log('GetIceCandidates', candidates)
-
-        candidates.current.forEach((iceCandidate) => {
-            if (iceCandidate) {
-                console.log('NewIceCandidate', iceCandidate)
-                peerConnection.current.addIceCandidate(new RTCIceCandidate(iceCandidate))
-                // console.log('NewIceCandidate was added')
-            }
+    const addIceCandidate = async (iceJson, roomId) => {
+        const ices = JSON.parse(iceJson)
+        // console.log('GetIceCandidates', ices.current.length)
+        ices.current.forEach(ice => {
+            peerConnection.current.addIceCandidate(new RTCIceCandidate(ice))
+            // console.log('Ice candidate was added', ice)
         })
     }
 
     const createRTC = async (roomId) => {
         peerConnection.current = new RTCPeerConnection(servers)
-        remoteVideo.current = new MediaStream();
 
-        localMediaStream.current = await navigator.mediaDevices.getUserMedia(
-            {audio: true,video: true})
+        localMediaStream.current = await navigator.mediaDevices.getUserMedia({video:true, audio:true})
 
         localVideo.current.srcObject = localMediaStream.current
 
         peerConnection.current.ontrack = (event) => {
-            event.streams[0].getTracks().forEach((track) => {
-                // console.log('New TRACK from remote peer:', track)
-                remoteVideo.current.addTrack(track)
-            })
+            if (event.streams && event.streams[0]) {
+                remoteVideo.current.srcObject = event.streams[0];
+            }
         }
 
         peerConnection.current.onicecandidate = async (event) => {
-            if (event.candidate && roomId) {
-                console.log('Generated ice', event.candidate)
-                // console.log('IceCandidate', event.candidate, roomId)
+            if (event.candidate) {
+                // console.log('Generated ice', event.candidate)
                 myIceCandidates.current.push(event.candidate)
             }
         }
 
         localMediaStream.current.getTracks().forEach(track => {
-            // console.log('Push my track to another peer:', track)
+            console.log('Push my track to another peer:', track)
             peerConnection.current.addTrack(track, localMediaStream.current);
         })
     }
@@ -150,8 +148,9 @@ export const Hub = () => {
     }
 
     const getInfo = async () => {
-        console.log(localVideo)
-        console.log(remoteVideo)
+        // console.log(peerConnection.current.currentRemoteDescription.sdp)
+        console.log(localVideo.current)
+        console.log(remoteVideo.current)
     }
 
     return (
@@ -193,9 +192,9 @@ export const Hub = () => {
 
             <div>
                 <p>Me</p>
-                <video ref={localVideo} autoPlay></video>
+                <video ref={localVideo} autoPlay playsInline></video>
                 <p>Peer</p>
-                <video ref={remoteVideo} autoPlay></video>
+                <video ref={remoteVideo} autoPlay playsInline></video>
             </div>
             <div>
                 <button onClick={findRoom} style={{width:'100px', height:'60px', backgroundColor:'green'}}>Find room</button>
