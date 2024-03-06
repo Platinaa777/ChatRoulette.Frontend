@@ -12,11 +12,8 @@ const servers = {
 }
 
 const constraints = {
-    video:{
-        width:{min:640, ideal:1920, max:1920},
-        height:{min:480, ideal:1080, max:1080},
-    },
-    audio:true
+    audio: true, // We want an audio track
+    video: true, // And we want a video track
 }
 
 export const Hub = () => {
@@ -40,7 +37,6 @@ export const Hub = () => {
         })
 
         connection.invoke('GetId')
-        
     }, [])
 
     const findRoom = async () => {
@@ -117,13 +113,14 @@ export const Hub = () => {
 
     const createRTC = async (roomId) => {
         peerConnection.current = new RTCPeerConnection(servers)
-
-        localMediaStream.current = await navigator.mediaDevices.getUserMedia({video:true, audio:true})
+        localMediaStream.current = await navigator.mediaDevices.getUserMedia(constraints)
 
         localVideo.current.srcObject = localMediaStream.current
 
         peerConnection.current.ontrack = (event) => {
-            if (event.streams && event.streams[0]) {
+            // console.log('OnTrack', event)     
+            if (event.streams && event.streams[0] && !remoteVideo.current.srcObject) {
+                // console.log('New stream was accepted', event.streams[0])
                 remoteVideo.current.srcObject = event.streams[0];
             }
         }
@@ -136,7 +133,7 @@ export const Hub = () => {
         }
 
         localMediaStream.current.getTracks().forEach(track => {
-            console.log('Push my track to another peer:', track)
+            // console.log('Push my track to another peer:', track)
             peerConnection.current.addTrack(track, localMediaStream.current);
         })
     }
@@ -155,10 +152,10 @@ export const Hub = () => {
 
     return (
         <div key={1}>
-            <button onClick={getInfo} style={{width:'100px', height:'60px', backgroundColor:'blue'}}>
+            {/* <button onClick={getInfo} style={{width:'100px', height:'60px', backgroundColor:'blue'}}>
                     get info about peerConnection 
-            </button>
-            <div>Hub page</div>
+            </button> */}
+            {/* <div>Hub page</div>
             <div>Connection id = {connectionId}</div>
             <div>
                 <p>Your email: {email}</p>
@@ -169,6 +166,19 @@ export const Hub = () => {
             <div>
                 <p>Input your email</p>
                 <input onChange={(event) => setEmail(event.target.value)} />
+            </div> */}
+
+            <div class="container">
+                <div class="header">Hub Page</div>
+                <div class="connection-id">Connection ID: {connectionId}</div>
+                <div class="info">
+                    <p>Your email: {email}</p>
+                    <p>Your room ID: {room}</p>
+                </div>
+                <div class="input-section">
+                    <p>Input your email</p>
+                    <input class="email-input" onChange={(event) => setEmail(event.target.value)} />
+                </div>
             </div>
             
 
@@ -190,15 +200,29 @@ export const Hub = () => {
             : 
             ""}
 
-            <div>
+
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <p>Me</p>
+                    <video id="localVideo" ref={localVideo} muted autoPlay></video>
+                </div>
+                <div class="video-wrapper">
+                    <p>Peer</p>
+                    <video id="remoteVideo"ref={remoteVideo} muted autoPlay></video>
+                </div>
+            </div>
+            <div class="button-container">
+                <button id="findRoomButton" onClick={findRoom}>Find room</button>
+            </div>
+            {/* <div>
                 <p>Me</p>
-                <video ref={localVideo} autoPlay playsInline></video>
+                <video ref={localVideo} muted autoPlay></video>
                 <p>Peer</p>
-                <video ref={remoteVideo} autoPlay playsInline></video>
+                <video ref={remoteVideo} muted autoPlay></video>
             </div>
             <div>
                 <button onClick={findRoom} style={{width:'100px', height:'60px', backgroundColor:'green'}}>Find room</button>
-            </div>
+            </div> */}
         </div>
     );
 }
