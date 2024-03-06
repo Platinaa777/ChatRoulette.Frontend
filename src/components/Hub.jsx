@@ -46,8 +46,6 @@ export const Hub = () => {
 
     // type can be ['offer', 'answer', 'candidate', 'relay-ice', '']
     const handleInfoFromPeer = async (roomId, message, type) => {
-        console.log('Type: ', type)
-        // console.log("Room: ", roomId)
         if (!room) {
             updateRoom(roomId)
         }
@@ -75,6 +73,13 @@ export const Hub = () => {
         if (type === 'candidate') {
             if (peerConnection.current) {
                 await addIceCandidate(message, roomId)
+            }
+        }
+
+        if (type === 'leave-room') {
+            console.log('Stop audio and video')
+            if (peerConnection.current) {
+                await stopAudioAndVideoTracks();
             }
         }
     }
@@ -111,6 +116,22 @@ export const Hub = () => {
         })
     }
 
+    const stopAudioAndVideoTracks = async () => {
+        console.log('StopLocalTracks', localMediaStream.current.getTracks())
+        // const tracks = localMediaStream.current.getTracks()
+        
+        // tracks.forEach((track) => {
+        //     track.stop()
+        // });
+
+        remoteVideo.current = new MediaStream()
+    }
+
+    const leaveRoom = async () => {
+        console.log('Leaving room')
+        await connection.invoke('OnLeaveRoom')
+    }
+
     const createRTC = async (roomId) => {
         peerConnection.current = new RTCPeerConnection(servers)
         localMediaStream.current = await navigator.mediaDevices.getUserMedia(constraints)
@@ -118,16 +139,13 @@ export const Hub = () => {
         localVideo.current.srcObject = localMediaStream.current
 
         peerConnection.current.ontrack = (event) => {
-            // console.log('OnTrack', event)     
             if (event.streams && event.streams[0] && !remoteVideo.current.srcObject) {
-                // console.log('New stream was accepted', event.streams[0])
                 remoteVideo.current.srcObject = event.streams[0];
             }
         }
 
         peerConnection.current.onicecandidate = async (event) => {
             if (event.candidate) {
-                // console.log('Generated ice', event.candidate)
                 myIceCandidates.current.push(event.candidate)
             }
         }
@@ -144,85 +162,68 @@ export const Hub = () => {
         }
     }
 
-    const getInfo = async () => {
-        // console.log(peerConnection.current.currentRemoteDescription.sdp)
-        console.log(localVideo.current)
-        console.log(remoteVideo.current)
+    const muteMe = async () => {
+        localVideo.current.muted = !localVideo.current.muted;
+    }
+
+    const mutePeer = async () => {
+        remoteVideo.current.muted = !remoteVideo.current.muted;
     }
 
     return (
         <div key={1}>
-            {/* <button onClick={getInfo} style={{width:'100px', height:'60px', backgroundColor:'blue'}}>
-                    get info about peerConnection 
-            </button> */}
-            {/* <div>Hub page</div>
-            <div>Connection id = {connectionId}</div>
-            <div>
-                <p>Your email: {email}</p>
-            </div>
-            <div>
-                <p>Your room id: {room}</p>
-            </div>
-            <div>
-                <p>Input your email</p>
-                <input onChange={(event) => setEmail(event.target.value)} />
-            </div> */}
-
-            <div class="container">
-                <div class="header">Hub Page</div>
-                <div class="connection-id">Connection ID: {connectionId}</div>
-                <div class="info">
+            <div className="container">
+                <div className="header">Hub Page</div>
+                <div className="connection-id">Connection ID: {connectionId}</div>
+                <div className="info">
                     <p>Your email: {email}</p>
                     <p>Your room ID: {room}</p>
                 </div>
-                <div class="input-section">
+                <div className="input-section">
                     <p>Input your email</p>
-                    <input class="email-input" onChange={(event) => setEmail(event.target.value)} />
+                    <input className="email-input" onChange={(event) => setEmail(event.target.value)} />
                 </div>
             </div>
             
 
             { room ?
                 <div>
-                    <div>
+                    <div className="input-container">
                         <p>Input your message</p>
-                        <input onChange={(e) => setMessage(e.target.value) } />
+                        <input className="custom-input" onChange={(e) => setMessage(e.target.value)} />
                     </div>
 
-                    <button onClick={sendMessage} style={{width:'100px', height:'60px', backgroundColor:'blue'}}>
-                    send message 
-                    </button>
-                    
-                    {
-                        listMessages.map((val, index) => <div key={index}>{val}</div> )
-                    }
+                    <div className="button-container">
+                        <button className='beatiful-button' onClick={sendMessage}>Push</button>
+                    </div>
+                    <div className="message-container">
+                        {
+                            listMessages.map((val, index) => 
+                            <div className="styled-message" key={index}>{val}</div>)
+                        }
+                    </div>  
                 </div>
             : 
             ""}
 
-
-            <div class="video-container">
-                <div class="video-wrapper">
+            <div className="video-container">
+                <div className="video-wrapper">
                     <p>Me</p>
                     <video id="localVideo" ref={localVideo} muted autoPlay></video>
+                    <button className='mute-button' onClick={muteMe}>Mute me</button>
                 </div>
-                <div class="video-wrapper">
+                <div className="video-wrapper">
                     <p>Peer</p>
                     <video id="remoteVideo"ref={remoteVideo} muted autoPlay></video>
+                    <button className='mute-button' onClick={mutePeer}>Mute peer</button>
                 </div>
             </div>
-            <div class="button-container">
-                <button id="findRoomButton" onClick={findRoom}>Find room</button>
+            <div className="button-container">
+                <button className='beatiful-button' onClick={findRoom}>Find room</button>
             </div>
-            {/* <div>
-                <p>Me</p>
-                <video ref={localVideo} muted autoPlay></video>
-                <p>Peer</p>
-                <video ref={remoteVideo} muted autoPlay></video>
-            </div>
-            <div>
-                <button onClick={findRoom} style={{width:'100px', height:'60px', backgroundColor:'green'}}>Find room</button>
-            </div> */}
+
+            <button className='stop-button' onClick={leaveRoom}>Finish</button>
+            <button className='next-button' onClick={leaveRoom}>Next</button>
         </div>
     );
 }

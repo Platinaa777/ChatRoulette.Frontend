@@ -73,3 +73,118 @@ p {
     border-radius: 4px;
     box-sizing: border-box;
 }
+
+.beatiful-button {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 35px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+.button-container {
+    text-align: center;
+}
+
+.input-container {
+    text-align: center;
+}
+
+p {
+    margin-bottom: 5px;
+}
+
+.custom-input {
+    width: 50%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.custom-input:focus {
+    border-color: #2980b9;
+}
+
+.message-container {
+    text-align: center;
+}
+
+.styled-message {
+    font-size: 20px;
+    width: 50%;
+    font-weight: bold;
+    margin: 5px 0;
+    padding: 10px;
+    background-color: #3498db;
+    color: #fff;
+    border-radius: 12px;
+    text-align: center;
+    align-content: center;
+}
+
+.mute-button {
+    text-align: center;
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    background-color: #dd1515;
+    color: #fff;
+    border: none;
+}
+
+.stop-button {
+    text-align: center;
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 35px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    background-color: #dd1515;
+    color: #fff;
+    border: none;
+    margin: 25px;
+}
+
+.next-button {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 35px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px;
+    margin: 25px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    background-color: #22dc35;
+    color: #fff;
+    border: none;
+}
