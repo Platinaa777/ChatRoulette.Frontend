@@ -1,6 +1,7 @@
 import '../styles/hub.css'
 import {React, useEffect, useRef, useState } from 'react'
 import connection from '../sockets/ChatConnection'
+import { useNavigate } from 'react-router-dom'
 
 const servers = {
     iceServers:[
@@ -17,6 +18,10 @@ const constraints = {
 }
 
 export const Hub = () => {
+    const navigate = useNavigate();
+    const isFirstEstablishment = useRef(false)
+    const isLeftPerson = useRef(false)
+    
     const [email, setEmail] = useState('')
     const [connectionId, updateConnectionId] = useState('')
     const [room, updateRoom] = useState('')
@@ -40,7 +45,10 @@ export const Hub = () => {
     }, [])
 
     const findRoom = async () => {
-        connection.on('PeerConnection', handleInfoFromPeer);
+        if (!isFirstEstablishment.current) {
+            connection.on('PeerConnection', handleInfoFromPeer);
+            isFirstEstablishment.current = true;
+        }
         await connection.invoke('FindRoom', connectionId, email);
     }
 
@@ -49,6 +57,7 @@ export const Hub = () => {
         if (!room) {
             updateRoom(roomId)
         }
+        // console.log('MyIceCandidates', myIceCandidates.current.length)
 
         if (type === 'offer') {
             await createRTC(roomId)
@@ -65,7 +74,7 @@ export const Hub = () => {
         }
 
         if (type === 'relay-ice') {
-            // console.log('MyIceCandidates:', myIceCandidates)
+            // console.log('MyIceCandidates:', myIceCandidates.current.length)
             await connection.invoke('OnIceCandidate', roomId, JSON.stringify(myIceCandidates))
             // console.log('OnIceCandidate was invoked:', myIceCandidates.current, roomId)
         }
@@ -77,11 +86,16 @@ export const Hub = () => {
         }
 
         if (type === 'leave-room') {
-            console.log('Stop audio and video')
-            if (peerConnection.current) {
-                await stopAudioAndVideoTracks();
+            console.log('Stop audio and video')                
+            await stopAudioAndVideoTracks();
+            if (!isLeftPerson.current) {
+                connection.invoke('FindRoom', connectionId, email)
             }
         }
+
+        // if (type === 'test') {
+        //     console.log('!!!TEST!!!')
+        // }
     }
 
     const createOffer = async (roomId) => {
@@ -117,19 +131,26 @@ export const Hub = () => {
     }
 
     const stopAudioAndVideoTracks = async () => {
-        console.log('StopLocalTracks', localMediaStream.current.getTracks())
-        // const tracks = localMediaStream.current.getTracks()
-        
-        // tracks.forEach((track) => {
-        //     track.stop()
-        // });
+        peerConnection.current = null;
+        myIceCandidates.current = [];
 
-        remoteVideo.current = new MediaStream()
+        if (remoteVideo.current.srcObject) {
+            const tracks = remoteVideo.current.srcObject.getTracks();
+
+            tracks.forEach(track => {
+                track.stop();
+            });
+
+            // Remove the stream from the video element
+            remoteVideo.current.srcObject = null;
+        }
     }
 
     const leaveRoom = async () => {
-        console.log('Leaving room')
+        // console.log('Leaving room')
+        isLeftPerson.current = true
         await connection.invoke('OnLeaveRoom')
+        navigate('/main')
     }
 
     const createRTC = async (roomId) => {
@@ -139,8 +160,10 @@ export const Hub = () => {
         localVideo.current.srcObject = localMediaStream.current
 
         peerConnection.current.ontrack = (event) => {
+            // console.log('Remote stream was accepted', event.streams)
             if (event.streams && event.streams[0] && !remoteVideo.current.srcObject) {
                 remoteVideo.current.srcObject = event.streams[0];
+                // console.log('Remote stream was established')
             }
         }
 
