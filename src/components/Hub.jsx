@@ -86,16 +86,20 @@ export const Hub = () => {
         }
 
         if (type === 'leave-room') {
-            console.log('Stop audio and video')                
+            updateList([])
             await stopAudioAndVideoTracks();
             if (!isLeftPerson.current) {
                 connection.invoke('FindRoom', connectionId, email)
             }
         }
 
-        // if (type === 'test') {
-        //     console.log('!!!TEST!!!')
-        // }
+        if (type === 'next-room') {
+            updateList([])
+            await stopAudioAndVideoTracks();
+            if (!isLeftPerson.current) {
+                connection.invoke('FindRoom', connectionId, email)
+            }
+        }
     }
 
     const createOffer = async (roomId) => {
@@ -146,11 +150,16 @@ export const Hub = () => {
         }
     }
 
-    const leaveRoom = async () => {
+    const leaveHub = async () => {
         // console.log('Leaving room')
         isLeftPerson.current = true
         await connection.invoke('OnLeaveRoom')
         navigate('/main')
+    }
+
+    const nextRoom = async () => {
+        console.log('NextRoom was invoked')
+        await connection.invoke('OnNextRoom')
     }
 
     const createRTC = async (roomId) => {
@@ -245,8 +254,8 @@ export const Hub = () => {
                 <button className='beatiful-button' onClick={findRoom}>Find room</button>
             </div>
 
-            <button className='stop-button' onClick={leaveRoom}>Finish</button>
-            <button className='next-button' onClick={leaveRoom}>Next</button>
+            <button className='stop-button' onClick={leaveHub}>Finish</button>
+            <button className='next-button' onClick={nextRoom}>Next</button>
         </div>
     );
 }
