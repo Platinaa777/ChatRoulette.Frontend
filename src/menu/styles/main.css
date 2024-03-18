@@ -1,0 +1,37 @@
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .button-container {
+    margin-bottom: 20px;
+  }
+  
+  .main-button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 18px;
+    background-color: #8a2be2; /* фиолетовый */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .main-button:hover {
+    background-color: #6a1b9a; /* темно-фиолетовый */
+  }
+  
+  .profile-tab {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    color: #333; /* цвет текста */
+    cursor: pointer;
+  }
+  
