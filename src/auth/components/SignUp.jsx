@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import '../styles/signup.css'
+import { Context } from '../..';
+import { observer } from 'mobx-react-lite';
+import { useNavigate } from 'react-router-dom'
 
-export const SignUp = () => {
+const SignUp = () => {
     const [formData, setFormData] = useState({
         userName: '',
         nickName: '',
@@ -10,6 +13,8 @@ export const SignUp = () => {
         password: '',
         preferences: []
     });
+    const navigate = useNavigate();
+    const {userSession} = useContext(Context)
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -33,12 +38,17 @@ export const SignUp = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const registerRequest = async (e) => {
+        e.preventDefault()
+        var response = await userSession.registrate(formData)
+
+        console.log(response)
+        navigate('/')
     };
 
     return (
-        <form className="form-container" onSubmit={handleSubmit}>
+        <form className="form-container">
+            <h1>Register form</h1>
             <div className="form-group">
                 <label htmlFor="userName">Username:</label>
                 <input type="text" name="userName" id="userName" value={formData.userName} onChange={handleChange} required />
@@ -67,17 +77,10 @@ export const SignUp = () => {
                     <option value="preference3">Biology</option>
                 </select>
             </div>
-            {
-                formData.age &&
-                formData.email &&
-                formData.nickName &&
-                formData.password &&
-                formData.userName 
-                ?
-                <button type="submit" className="submit-button">Send</button>
-                :
-                ""
-            }
+            <button type="submit" className="submit-button" onClick={registerRequest}>Send</button>
         </form>
+        
     );
 };
+
+export default observer(SignUp);

@@ -12,4 +12,22 @@ api.interceptors.request.use(cfg => {
     return cfg
 })
 
-export default api
+api.interceptors.response.use((config) => {
+    return config;
+}, async (error) => {
+    const originalRequest = error.config;
+    console.log('retry...')
+    if (error.response.status === 401 && error.config && !error.config._isRetry) {
+        originalRequest._isRetry = true;
+        try {
+            const response = await axios.post(`${URL}/auth/refresh-token`, {} , {withCredentials: true})
+            localStorage.setItem('access-token', response.data.accessToken);
+            return api.request(originalRequest);
+        } catch (e) {
+            console.log('НЕ АВТОРИЗОВАН')
+        }
+    }
+    throw error;
+})
+
+export default api;

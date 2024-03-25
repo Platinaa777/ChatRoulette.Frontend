@@ -1,7 +1,11 @@
 import '../styles/hub.css'
-import {React, useEffect, useRef, useState } from 'react'
-import connection from '../sockets/ChatConnection'
+import {React, useEffect, useRef, useState, useContext} from 'react'
+// import connection from '../sockets/ChatConnection'
 import { useNavigate } from 'react-router-dom'
+import {Context} from "../../index.js"
+import { observer } from 'mobx-react-lite'
+import * as signalR from "@microsoft/signalr";
+
 
 const servers = {
     iceServers:[
@@ -17,16 +21,19 @@ const constraints = {
     video: true, // And we want a video track
 }
 
-export const Hub = () => {
+const Hub = () => {
     const navigate = useNavigate();
     const isFirstEstablishment = useRef(false)
     const isLeftPerson = useRef(false)
+    const {userSession} = useContext(Context)
     
     const [email, setEmail] = useState('')
     const [connectionId, updateConnectionId] = useState('')
     const [room, updateRoom] = useState('')
     const [listMessages, updateList] = useState([])
     const [message, setMessage] = useState('')
+
+    const connection = useRef(null)
 
     const peerConnection = useRef(null) // my RTCPeerConnection
     const localMediaStream = useRef(null) // my local media stream
@@ -36,20 +43,31 @@ export const Hub = () => {
     const remoteVideo = useRef(new MediaStream()) // peer video
 
     useEffect(() => {
-        connection.on('id', (responseId) => updateConnectionId(responseId))
-        connection.on('onReceiveMessage', (message) => {
-            updateList(listMessages => [...listMessages, message])
-        })
+        connection.current = new signalR.HubConnectionBuilder()
+        .withUrl("http://localhost:8003/chat")
+        .withAutomaticReconnect()
+        .build();
 
-        connection.invoke('GetId')
+        const f = async () => {
+            await connection.current.start()
+
+            connection.current.on('id', (responseId) => updateConnectionId(responseId))
+            connection.current.on('onReceiveMessage', (message) => {
+                updateList(listMessages => [...listMessages, message])
+            })
+
+            connection.current.invoke('GetId')
+        }
+        
+        f()
     }, [])
 
     const findRoom = async () => {
         if (!isFirstEstablishment.current) {
-            connection.on('PeerConnection', handleInfoFromPeer);
+            connection.current.on('PeerConnection', handleInfoFromPeer);
             isFirstEstablishment.current = true;
         }
-        await connection.invoke('FindRoom', connectionId, email);
+        await connection.current.invoke('FindRoom', connectionId, email);
     }
 
     // type can be ['offer', 'answer', 'candidate', 'relay-ice', '']
@@ -75,7 +93,7 @@ export const Hub = () => {
 
         if (type === 'relay-ice') {
             // console.log('MyIceCandidates:', myIceCandidates.current.length)
-            await connection.invoke('OnIceCandidate', roomId, JSON.stringify(myIceCandidates))
+            await connection.current.invoke('OnIceCandidate', roomId, JSON.stringify(myIceCandidates))
             // console.log('OnIceCandidate was invoked:', myIceCandidates.current, roomId)
         }
 
@@ -89,7 +107,7 @@ export const Hub = () => {
             updateList([])
             await stopAudioAndVideoTracks();
             if (!isLeftPerson.current) {
-                connection.invoke('FindRoom', connectionId, email)
+                connection.current.invoke('FindRoom', connectionId, email)
             }
         }
 
@@ -97,7 +115,7 @@ export const Hub = () => {
             updateList([])
             await stopAudioAndVideoTracks();
             if (!isLeftPerson.current) {
-                connection.invoke('FindRoom', connectionId, email)
+                connection.current.invoke('FindRoom', connectionId, email)
             }
         }
     }
@@ -105,7 +123,7 @@ export const Hub = () => {
     const createOffer = async (roomId) => {
         const offer = await peerConnection.current.createOffer()
         await peerConnection.current.setLocalDescription(offer)
-        await connection.invoke('OnPeerOffer', roomId, JSON.stringify(offer))
+        await connection.current.invoke('OnPeerOffer', roomId, JSON.stringify(offer))
         // console.log('Offer: ', offer)
     }
 
@@ -114,14 +132,14 @@ export const Hub = () => {
         await peerConnection.current.setRemoteDescription(new RTCSessionDescription(offer))
         const answer = await peerConnection.current.createAnswer()
         await peerConnection.current.setLocalDescription(answer)
-        await connection.invoke('OnPeerAnswer', roomId, JSON.stringify(answer))
+        await connection.current.invoke('OnPeerAnswer', roomId, JSON.stringify(answer))
         // console.log('Answer: ', answer)
     }
 
     const addAnswer = async (answerJson, roomId) => {
         const answer = JSON.parse(answerJson)
         await peerConnection.current.setRemoteDescription(new RTCSessionDescription(answer))
-        await connection.invoke('OnStartRelayIce', roomId)
+        await connection.current.invoke('OnStartRelayIce', roomId)
         // console.log('Confirm answer', answer)
     }
 
@@ -153,13 +171,13 @@ export const Hub = () => {
     const leaveHub = async () => {
         // console.log('Leaving room')
         isLeftPerson.current = true
-        await connection.invoke('OnLeaveRoom')
+        await connection.current.invoke('OnLeaveRoom')
         navigate('/main')
     }
 
     const nextRoom = async () => {
         console.log('NextRoom was invoked')
-        await connection.invoke('OnNextRoom')
+        await connection.current.invoke('OnNextRoom')
     }
 
     const createRTC = async (roomId) => {
@@ -190,7 +208,7 @@ export const Hub = () => {
 
     const sendMessage = async () => {
         if (email) {
-            await connection.invoke('SendMessageInRoom', message, room, email);
+            await connection.current.invoke('SendMessageInRoom', message, room, email);
         }
     }
 
@@ -259,3 +277,5 @@ export const Hub = () => {
         </div>
     );
 }
+
+export default observer(Hub);
