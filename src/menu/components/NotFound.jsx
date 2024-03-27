@@ -1,12 +1,7 @@
-
-
-
 const NotFound = () => {
-    return (
-        <div style={{color:'red', fontSize:'140px'}}>
+    return (<div style={{color: 'red', fontSize: '140px'}}>
             NOT FOUND
-        </div>
-    );
+        </div>);
 }
 
 export default NotFound;

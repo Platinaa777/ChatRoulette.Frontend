@@ -1,7 +1,7 @@
-import { makeAutoObservable } from "mobx"
+import {makeAutoObservable} from "mobx"
 import {Auth} from './Auth'
 import axios from "axios"
-import { URL } from "../http/api"
+import {URL} from "../http/api"
 
 
 export default class UserSession {
@@ -22,7 +22,7 @@ export default class UserSession {
 
     async login(email, password) {
         try {
-            var response = await Auth.login(email, password)
+            let response = await Auth.login(email, password);
             localStorage.setItem('access-token', response.data.accessToken)
             this.setAuth(true)
             this.setUser(response.data)
@@ -31,9 +31,9 @@ export default class UserSession {
         }
     }
 
-    async registrate(data) {
+    async register(data) {
         try {
-            var response = await Auth.register(data)
+            let response = await Auth.register(data)
             console.log(response.data)
         } catch (e) {
             console.log(e)
@@ -71,7 +71,7 @@ export default class UserSession {
             this.setAuth(true)
             this.setUser(response.data)
         } catch (e) {
-            console.log(e.response)            
+            console.log(e.response)
         }
     }
 }

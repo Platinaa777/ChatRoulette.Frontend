@@ -1,0 +1,52 @@
+/* The dropdown container */
+.auth-dropdown {
+    float: left;
+    overflow: hidden;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+}
+
+.user-icon {
+    font-size: 1.5rem;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.auth-dropdown:hover .dropdown-content {
+    display: block;
+}

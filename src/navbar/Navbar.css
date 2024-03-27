@@ -1,0 +1,18 @@
+.navbar {
+    position: fixed;
+    background-color: #0c0b3b;
+    height: 60px;
+    width: calc(100% - 16px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.side-icon {
+    border-radius: 10px;
+    padding: 5px;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    font-size: 1.5em;
+    background: none;
+}
