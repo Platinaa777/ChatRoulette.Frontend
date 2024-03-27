@@ -1,7 +1,7 @@
 .navbar {
     position: fixed;
     background-color: #0c0b3b;
-    height: 80px;
+    height: 60px;
     width: calc(100% - 16px);
     display: flex;
     align-items: center;
