@@ -1,4 +1,4 @@
-body {
+/**body {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -188,3 +188,5 @@ p {
     color: #fff;
     border: none;
 }
+
+ */
