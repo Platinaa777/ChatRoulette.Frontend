@@ -1,6 +1,7 @@
 import React from 'react';
 import {BsPerson} from "react-icons/bs";
 import './AuthMenu.css'
+import { observer } from 'mobx-react-lite';
 
 function AuthMenu({userSession, navigate}) {
 
@@ -31,4 +32,4 @@ function AuthMenu({userSession, navigate}) {
     </div>);
 }
 
-export default AuthMenu;
+export default observer(AuthMenu);

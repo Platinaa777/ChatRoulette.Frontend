@@ -5,6 +5,7 @@ import {IconContext} from 'react-icons';
 import Sidebar from './sidebar/Sidebar';
 import './Navbar.css'
 import AuthMenu from "./authMenu/AuthMenu";
+import { observer } from 'mobx-react-lite';
 
 const Navbar = ({userSession, navigate}) => {
     const [sidebar, setSidebar] = useState(false)
@@ -22,4 +23,4 @@ const Navbar = ({userSession, navigate}) => {
     </IconContext.Provider>);
 }
 
-export default Navbar;
+export default observer(Navbar);

@@ -44,7 +44,7 @@ const Hub = () => {
 
     useEffect(() => {
         connection.current = new signalR.HubConnectionBuilder()
-        .withUrl("http://localhost:8003/chat")
+        .withUrl("http://localhost:8003/my-chat")
         .withAutomaticReconnect()
         .build();
 
@@ -60,6 +60,7 @@ const Hub = () => {
         }
         
         f()
+        setEmail(localStorage.getItem('email'))
     }, [])
 
     const findRoom = async () => {
@@ -229,10 +230,10 @@ const Hub = () => {
                     <p>Your email: {email}</p>
                     <p>Your room ID: {room}</p>
                 </div>
-                <div className="input-section">
+                {/* <div className="input-section">
                     <p>Input your email</p>
                     <input className="email-input" onChange={(event) => setEmail(event.target.value)} />
-                </div>
+                </div> */}
             </div>
             
 

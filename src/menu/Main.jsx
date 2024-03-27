@@ -11,7 +11,11 @@ const Main = () => {
 
     useEffect(() => {
         if (!localStorage.getItem('access-token')) {
-            userSession.checkAuth().then()
+            userSession.checkAuth()
+        } else {
+            console.log(localStorage.getItem('email'))
+            userSession.setAuth(true)
+            userSession.setUser({email: localStorage.getItem('email')})
         }
     }, [])
 
