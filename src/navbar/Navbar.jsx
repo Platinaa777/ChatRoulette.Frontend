@@ -5,6 +5,7 @@ import {IconContext} from 'react-icons';
 import Sidebar from './sidebar/Sidebar';
 import './Navbar.css'
 import AuthMenu from "./authmenu/AuthMenu";
+import { observer } from 'mobx-react-lite';
 
 const Navbar = () => {
     const [sidebar, setSidebar] = useState(false)
