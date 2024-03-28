@@ -1,19 +1,12 @@
-import React, {createContext, useContext} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
+import {BrowserRouter} from "react-router-dom";
+import {UserProvider} from "./context/UserContext";
 import App from './App';
-import UserSession from './auth/core/UserSession';
 
-const userSession = new UserSession();
-
-export const Context = createContext({
-    userSession
-})
-
-// React.StrictMode changed on div
-// todo
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<Context.Provider value={{userSession}}>
-    <div>
+root.render(<UserProvider>
+    <BrowserRouter>
         <App/>
-    </div>
-</Context.Provider>);
+    </BrowserRouter>
+</UserProvider>);

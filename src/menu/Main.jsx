@@ -1,15 +1,12 @@
-import React, {useContext, useEffect} from "react";
+import React from "react";
 import "./main.css";
-import {useNavigate} from 'react-router-dom'
-import {Context} from "../index";
 import {observer} from "mobx-react-lite";
-import Navbar from "../navbar/Navbar";
+import {useUser} from "../context/UserContext";
 
 const Main = () => {
-    const navigate = useNavigate();
-    const {userSession} = useContext(Context)
+    const {userSession} = useUser();
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (!localStorage.getItem('access-token')) {
             userSession.checkAuth()
         } else {
@@ -20,10 +17,7 @@ const Main = () => {
     }, [])
 
     return (<div className="menu-container">
-        <Navbar userSession={userSession} navigate={navigate}/>
-        <div className="main-container">
             <button className="main-button" onClick={() => userSession.test()}>test</button>
-        </div>
     </div>);
 };
 

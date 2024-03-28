@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import {Context} from "../../index.js"
 import { observer } from 'mobx-react-lite'
 import * as signalR from "@microsoft/signalr";
+import {useUser} from "../../context/UserContext";
 
 
 const servers = {
@@ -25,7 +26,7 @@ const Hub = () => {
     const navigate = useNavigate();
     const isFirstEstablishment = useRef(false)
     const isLeftPerson = useRef(false)
-    const {userSession} = useContext(Context)
+    const {userSession} = useUser()
     
     const [email, setEmail] = useState('')
     const [connectionId, updateConnectionId] = useState('')
