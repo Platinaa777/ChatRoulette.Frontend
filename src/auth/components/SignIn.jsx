@@ -1,17 +1,18 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom'
 import '../styles/signup.css'
-import {Context} from '../../index';
 import {observer} from 'mobx-react-lite';
+import {useUser} from "../../context/UserContext";
+import {mainPath} from "../../res/Paths";
 
-export const Login = () => {
+export const SignIn = () => {
     const [formData, setFormData] = useState({
         email: '', password: '',
     });
     const navigate = useNavigate();
 
 
-    const {userSession} = useContext(Context)
+    const {userSession} = useUser();
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -23,7 +24,7 @@ export const Login = () => {
     const loginRequest = async (e) => {
         e.preventDefault()
         let response = await userSession.login(formData.email, formData.password);
-        navigate('/')
+        navigate(mainPath)
     };
 
     return (<form className="form-container">
@@ -43,4 +44,4 @@ export const Login = () => {
     );
 };
 
-export default observer(Login);
+export default observer(SignIn);

@@ -3,13 +3,15 @@ import '../styles/signup.css'
 import {Context} from '../..';
 import {observer} from 'mobx-react-lite';
 import {useNavigate} from 'react-router-dom'
+import {useUser} from "../../context/UserContext";
+import {mainPath} from "../../res/Paths";
 
 const SignUp = () => {
     const [formData, setFormData] = useState({
         userName: '', nickName: '', age: '', email: '', password: '', preferences: []
     });
     const navigate = useNavigate();
-    const {userSession} = useContext(Context)
+    const {userSession} = useUser()
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -36,7 +38,7 @@ const SignUp = () => {
         let response = await userSession.register(formData);
 
         console.log(response)
-        navigate('/')
+        navigate(mainPath)
     };
 
     return (<form className="form-container">
