@@ -1,15 +1,10 @@
-.menu-container {
-    height: calc(100vh - 80px);
-    box-sizing: border-box;
+.main-container {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-}
-
-.button-container {
-    margin-bottom: 20px;
 }
 
 .main-button {
@@ -26,13 +21,4 @@
 
 .main-button:hover {
     background-color: #6a1b9a;
-}
-
-.profile-tab {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 20px;
-    color: #333;
-    cursor: pointer;
 }

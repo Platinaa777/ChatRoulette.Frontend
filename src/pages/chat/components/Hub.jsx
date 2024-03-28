@@ -1,11 +1,9 @@
 import '../styles/hub.css'
-import {React, useEffect, useRef, useState, useContext} from 'react'
+import {React, useEffect, useRef, useState} from 'react'
 // import connection from '../sockets/ChatConnection'
 import { useNavigate } from 'react-router-dom'
-import {Context} from "../../index.js"
 import { observer } from 'mobx-react-lite'
 import * as signalR from "@microsoft/signalr";
-import {useUser} from "../../context/UserContext";
 
 
 const servers = {
@@ -26,7 +24,6 @@ const Hub = () => {
     const navigate = useNavigate();
     const isFirstEstablishment = useRef(false)
     const isLeftPerson = useRef(false)
-    const {userSession} = useUser()
     
     const [email, setEmail] = useState('')
     const [connectionId, updateConnectionId] = useState('')
@@ -224,7 +221,7 @@ const Hub = () => {
 
     return (
         <div key={1}>
-            <div className="container">
+            <div className="hub-container">
                 <div className="header">Hub Page</div>
                 <div className="connection-id">Connection ID: {connectionId}</div>
                 <div className="info">

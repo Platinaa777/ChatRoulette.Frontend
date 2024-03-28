@@ -1,10 +1,9 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import '../styles/signup.css'
-import {Context} from '../..';
 import {observer} from 'mobx-react-lite';
 import {useNavigate} from 'react-router-dom'
-import {useUser} from "../../context/UserContext";
-import {mainPath} from "../../res/Paths";
+import {useUser} from "../../../context/UserContext";
+import {mainPath} from "../../../res/Paths";
 
 const SignUp = () => {
     const [formData, setFormData] = useState({

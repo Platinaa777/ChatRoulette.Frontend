@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom'
 import '../styles/signup.css'
 import {observer} from 'mobx-react-lite';
-import {useUser} from "../../context/UserContext";
-import {mainPath} from "../../res/Paths";
+import {useUser} from "../../../context/UserContext";
+import {mainPath} from "../../../res/Paths";
 
 export const SignIn = () => {
     const [formData, setFormData] = useState({
@@ -23,7 +23,7 @@ export const SignIn = () => {
 
     const loginRequest = async (e) => {
         e.preventDefault()
-        let response = await userSession.login(formData.email, formData.password);
+        await userSession.login(formData.email, formData.password);
         navigate(mainPath)
     };
 

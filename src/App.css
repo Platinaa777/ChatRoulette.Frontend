@@ -1,3 +1,10 @@
+.container {
+    position: relative;
+    top: 68px;
+    margin: 1rem 0;
+    width: 100%;
+}
+
 video {
     width: 40vw;
     height: 30vw;

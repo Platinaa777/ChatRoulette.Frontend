@@ -44,7 +44,7 @@ export default class UserSession {
 
     async logout() {
         try {
-            const response = await Auth.logout()
+            await Auth.logout()
             localStorage.removeItem('access-token');
             localStorage.removeItem('email');
             this.setAuth(false)
