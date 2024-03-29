@@ -10,7 +10,6 @@ import Navbar from "./navbar/Navbar";
 import * as Paths from "./res/Paths";
 import Profile from "./pages/profile/Profile";
 
-
 export default function App() {
     return (<>
         <Navbar/>

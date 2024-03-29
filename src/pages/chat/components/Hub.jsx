@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import * as signalR from "@microsoft/signalr";
 
-
 const servers = {
     iceServers:[
         {
@@ -24,6 +23,7 @@ const Hub = () => {
     const navigate = useNavigate();
     const isFirstEstablishment = useRef(false)
     const isLeftPerson = useRef(false)
+    const {userSession} = useUser()
     
     const [email, setEmail] = useState('')
     const [connectionId, updateConnectionId] = useState('')

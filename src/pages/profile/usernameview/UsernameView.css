@@ -1,0 +1,15 @@
+.username {
+    display: none;
+}
+
+.username.active {
+    display: block;
+}
+
+.username-editor {
+    display: none;
+}
+
+.username-editor.active {
+    display: block;
+}

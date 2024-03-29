@@ -26,8 +26,6 @@ export const SignIn = () => {
         await userSession.login(formData.email, formData.password);
         navigate(mainPath)
     };
-
-    return (<form className="form-container">
             <h1>Login form</h1>
             <div className="form-group">
                 <label htmlFor="email">Email:</label>
