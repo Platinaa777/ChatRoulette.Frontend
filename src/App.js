@@ -1,7 +1,7 @@
 import './App.css';
 import {Route, Routes} from 'react-router-dom'
 import Main from './pages/menu/Main.jsx'
-import Hub from './pages/chat/components/Hub.jsx'
+import Hub from './pages/chat/Hub.jsx'
 import SignUp from './pages/auth/components/SignUp.jsx'
 import SignIn from './pages/auth/components/SignIn.jsx'
 import WaitingRoom from './pages/menu/components/WaitingRoom.jsx';

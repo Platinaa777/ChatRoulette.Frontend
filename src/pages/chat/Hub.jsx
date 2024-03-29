@@ -1,18 +1,15 @@
-import '../styles/hub.css'
+import './styles/hub.css'
 import {React, useEffect, useRef, useState} from 'react'
 // import connection from '../sockets/ChatConnection'
-import { useNavigate } from 'react-router-dom'
-import { observer } from 'mobx-react-lite'
+import {useNavigate} from 'react-router-dom'
+import {observer} from 'mobx-react-lite'
 import * as signalR from "@microsoft/signalr";
 
 
 const servers = {
-    iceServers:[
-        {
-            urls:['stun:stun.1und1.de:3478', 'stun:stun.gmx.net:3478']
-        },
-    ],
-    iceCandidatePoolSize: 10
+    iceServers: [{
+        urls: ['stun:stun.1und1.de:3478', 'stun:stun.gmx.net:3478']
+    },], iceCandidatePoolSize: 10
 }
 
 const constraints = {
@@ -24,7 +21,7 @@ const Hub = () => {
     const navigate = useNavigate();
     const isFirstEstablishment = useRef(false)
     const isLeftPerson = useRef(false)
-    
+
     const [email, setEmail] = useState('')
     const [connectionId, updateConnectionId] = useState('')
     const [room, updateRoom] = useState('')
@@ -42,9 +39,9 @@ const Hub = () => {
 
     useEffect(() => {
         connection.current = new signalR.HubConnectionBuilder()
-        .withUrl("http://localhost:8003/my-chat")
-        .withAutomaticReconnect()
-        .build();
+            .withUrl("http://localhost:8003/my-chat")
+            .withAutomaticReconnect()
+            .build();
 
         const f = async () => {
             await connection.current.start()
@@ -56,7 +53,7 @@ const Hub = () => {
 
             connection.current.invoke('GetId')
         }
-        
+
         f()
         setEmail(localStorage.getItem('email'))
     }, [])
@@ -219,62 +216,54 @@ const Hub = () => {
         remoteVideo.current.muted = !remoteVideo.current.muted;
     }
 
-    return (
-        <div key={1}>
-            <div className="hub-container">
-                <div className="header">Hub Page</div>
-                <div className="connection-id">Connection ID: {connectionId}</div>
-                <div className="info">
-                    <p>Your email: {email}</p>
-                    <p>Your room ID: {room}</p>
-                </div>
-                {/* <div className="input-section">
-                    <p>Input your email</p>
-                    <input className="email-input" onChange={(event) => setEmail(event.target.value)} />
-                </div> */}
+    return (<div className="hub-container">
+        <div>
+            <h1>Hub Page</h1>
+            <div className="info">
+                <p>Connection ID: {connectionId}</p>
+                <p>Your email: {email}</p>
+                <p>Your room ID: {room}</p>
+                {/**<div className="input-section">
+                 <p>Input your email</p>
+                 <input className="email-input" onChange={(event) => setEmail(event.target.value)} />
+                 </div> */}
             </div>
-            
-
-            { room ?
-                <div>
-                    <div className="input-container">
-                        <p>Input your message</p>
-                        <input className="custom-input" onChange={(e) => setMessage(e.target.value)} />
+        </div>
+        <div className="media-container">
+            <div className={room ? "video-container" : "video-container full"}>
+                <div id="remote-video" className="video-wrapper">
+                    <div id="local-video" className="video-wrapper">
+                        <p>Me</p>
+                        <video ref={localVideo} muted autoPlay></video>
+                        <button className='mute-button' onClick={muteMe}>Mute me</button>
                     </div>
-
-                    <div className="button-container">
-                        <button className='beatiful-button' onClick={sendMessage}>Push</button>
-                    </div>
-                    <div className="message-container">
-                        {
-                            listMessages.map((val, index) => 
-                            <div className="styled-message" key={index}>{val}</div>)
-                        }
-                    </div>  
-                </div>
-            : 
-            ""}
-
-            <div className="video-container">
-                <div className="video-wrapper">
-                    <p>Me</p>
-                    <video id="localVideo" ref={localVideo} muted autoPlay></video>
-                    <button className='mute-button' onClick={muteMe}>Mute me</button>
-                </div>
-                <div className="video-wrapper">
                     <p>Peer</p>
-                    <video id="remoteVideo"ref={remoteVideo} muted autoPlay></video>
+                    <video ref={remoteVideo} muted autoPlay></video>
                     <button className='mute-button' onClick={mutePeer}>Mute peer</button>
                 </div>
             </div>
-            <div className="button-container">
-                <button className='beatiful-button' onClick={findRoom}>Find room</button>
-            </div>
-
-            <button className='stop-button' onClick={leaveHub}>Finish</button>
-            <button className='next-button' onClick={nextRoom}>Next</button>
+            {room && <div className="chat-container">
+                <div className="message-container">
+                    {listMessages.length === 0 ? "Empty yet..." : listMessages.map((val, index) => <div
+                        className="styled-message" key={index}>{val}</div>)}
+                </div>
+                <div className="input-container">
+                    <hr/>
+                    <p>Input your message</p>
+                    <input className="custom-input" onChange={(e) => setMessage(e.target.value)}/>
+                    <button className='beatiful-button' onClick={sendMessage}>Push</button>
+                </div>
+            </div>}
         </div>
-    );
+        <div className="button-container">
+            {!room && <button className='beatiful-button' onClick={findRoom}>Find room</button>}
+            {room &&
+                <>
+                    <button className='next-button' onClick={nextRoom}>Next</button>
+                    <button className='stop-button' onClick={leaveHub}>Finish</button>
+                </>}
+        </div>
+    </div>);
 }
 
 export default observer(Hub);
