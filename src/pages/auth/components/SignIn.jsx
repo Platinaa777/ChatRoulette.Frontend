@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom'
 import '../styles/signup.css'
 import {observer} from 'mobx-react-lite';
-import {useUser} from "../../context/UserContext";
-import {mainPath} from "../../res/Paths";
+import {useUser} from "../../../context/UserContext";
+import {mainPath} from "../../../res/Paths";
 
 export const SignIn = () => {
     const [formData, setFormData] = useState({
@@ -27,7 +27,7 @@ export const SignIn = () => {
         navigate(mainPath)
     };
 
-    return (<form className="form-container">
+    return (<form className="form-container" onSubmit={loginRequest}>
             <h1>Login form</h1>
             <div className="form-group">
                 <label htmlFor="email">Email:</label>
@@ -38,7 +38,7 @@ export const SignIn = () => {
                 <input type="password" name="password" id="password" value={formData.password} onChange={handleChange}
                        required/>
             </div>
-            <button type="submit" className="submit-button" onClick={loginRequest}>Send</button>
+            <button type="submit" className="submit-button">Send</button>
         </form>
 
     );

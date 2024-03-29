@@ -2,10 +2,10 @@ import '../styles/hub.css'
 import {React, useEffect, useRef, useState, useContext} from 'react'
 // import connection from '../sockets/ChatConnection'
 import { useNavigate } from 'react-router-dom'
-import {Context} from "../../index.js"
+import {Context} from "../../../index.js"
 import { observer } from 'mobx-react-lite'
 import * as signalR from "@microsoft/signalr";
-import {useUser} from "../../context/UserContext";
+import {useUser} from "../../../context/UserContext";
 
 
 const servers = {

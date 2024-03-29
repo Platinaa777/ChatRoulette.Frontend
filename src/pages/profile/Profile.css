@@ -1,0 +1,17 @@
+.profile-container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+}
+
+.profile-data-container {
+    width: 40%;
+}
+
+.rating-container {
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
