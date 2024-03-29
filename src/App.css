@@ -1,7 +1,7 @@
 .container {
     position: relative;
-    top: 68px;
-    margin: 1rem 0;
+    top: 76px;
+    height: calc(100% - 76px);
     width: 100%;
 }
 

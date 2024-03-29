@@ -9,6 +9,7 @@ import NotFound from './pages/menu/components/NotFound.jsx';
 import Navbar from "./navbar/Navbar";
 import * as Paths from "./res/Paths";
 import Profile from "./pages/profile/Profile";
+import Friends from "./pages/friends/Friends";
 
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
                 <Route exec path={Paths.signUpPath} element={<SignUp/>}/>
                 <Route exec path={Paths.signInPath} element={<SignIn/>}/>
                 <Route exec path={Paths.profilePath} element={<Profile/>}/>
+                <Route exec path={Paths.friendsPath} element={<Friends/>}/>
                 <Route exec path={Paths.hubPath} element={<Hub/>}/>
                 <Route exec path={Paths.waitingRoomPath} element={<WaitingRoom/>}/>
                 <Route path={Paths.notFoundPath} element={<NotFound/>}/>

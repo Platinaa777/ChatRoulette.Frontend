@@ -12,3 +12,11 @@
     object-fit: cover;
     border: 4px solid #2c3e50;
 }
+
+.redact-img {
+    display: none;
+}
+
+.redact-img.active {
+    display: block;
+}
