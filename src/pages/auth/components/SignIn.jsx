@@ -23,11 +23,9 @@ export const SignIn = () => {
 
     const loginRequest = async (e) => {
         e.preventDefault()
-        let response = await userSession.login(formData.email, formData.password);
+        await userSession.login(formData.email, formData.password);
         navigate(mainPath)
     };
-
-    return (<form className="form-container" onSubmit={loginRequest}>
             <h1>Login form</h1>
             <div className="form-group">
                 <label htmlFor="email">Email:</label>
@@ -38,7 +36,7 @@ export const SignIn = () => {
                 <input type="password" name="password" id="password" value={formData.password} onChange={handleChange}
                        required/>
             </div>
-            <button type="submit" className="submit-button">Send</button>
+            <button type="submit" className="submit-button" onClick={loginRequest}>Send</button>
         </form>
 
     );

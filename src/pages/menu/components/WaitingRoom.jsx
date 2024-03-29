@@ -1,5 +1,5 @@
 import React from "react";
-import "../Main.css";
+import "../main.css";
 import {useNavigate} from 'react-router-dom'
 import {observer} from "mobx-react-lite";
 import {useUser} from "../../../context/UserContext";

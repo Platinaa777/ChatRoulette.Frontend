@@ -1,10 +1,10 @@
-import * as signalR from "@microsoft/signalr";
+// import * as signalR from "@microsoft/signalr";
 
-const connection = new signalR.HubConnectionBuilder()
-        .withUrl("http://localhost:8003/chat")
-        .withAutomaticReconnect()
-        .build();
+// const connection = new signalR.HubConnectionBuilder()
+//         .withUrl("http://localhost:8003/chat")
+//         .withAutomaticReconnect()
+//         .build();
 
-await connection.start()
+// await connection.start()
 
-export default connection;
+// export default connection;

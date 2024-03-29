@@ -1,5 +1,5 @@
 import React from "react";
-import "./Main.css";
+import "./main.css";
 import {observer} from "mobx-react-lite";
 import {useUser} from "../../context/UserContext";
 

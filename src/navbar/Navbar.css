@@ -7,13 +7,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    z-index: 1;
 }
 
 .side-icon {
     border-radius: 10px;
-    padding: 5px;
-    margin-left: 2rem;
-    margin-right: 2rem;
+    padding: 10px;
+    margin: 1rem;
     font-size: 1.5em;
     background: none;
 }

@@ -1,12 +1,9 @@
 import '../styles/hub.css'
-import {React, useEffect, useRef, useState, useContext} from 'react'
+import {React, useEffect, useRef, useState} from 'react'
 // import connection from '../sockets/ChatConnection'
 import { useNavigate } from 'react-router-dom'
-import {Context} from "../../../index.js"
 import { observer } from 'mobx-react-lite'
 import * as signalR from "@microsoft/signalr";
-import {useUser} from "../../../context/UserContext";
-
 
 const servers = {
     iceServers:[
@@ -45,7 +42,7 @@ const Hub = () => {
 
     useEffect(() => {
         connection.current = new signalR.HubConnectionBuilder()
-        .withUrl("http://localhost:8003/chat")
+        .withUrl("http://localhost:8003/my-chat")
         .withAutomaticReconnect()
         .build();
 
@@ -61,6 +58,7 @@ const Hub = () => {
         }
         
         f()
+        setEmail(localStorage.getItem('email'))
     }, [])
 
     const findRoom = async () => {
@@ -223,17 +221,17 @@ const Hub = () => {
 
     return (
         <div key={1}>
-            <div className="container">
+            <div className="hub-container">
                 <div className="header">Hub Page</div>
                 <div className="connection-id">Connection ID: {connectionId}</div>
                 <div className="info">
                     <p>Your email: {email}</p>
                     <p>Your room ID: {room}</p>
                 </div>
-                <div className="input-section">
+                {/* <div className="input-section">
                     <p>Input your email</p>
                     <input className="email-input" onChange={(event) => setEmail(event.target.value)} />
-                </div>
+                </div> */}
             </div>
             
 

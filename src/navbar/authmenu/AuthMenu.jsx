@@ -10,11 +10,11 @@ function AuthMenu() {
     const {userSession} = useUser();
 
     return (<div className="auth-dropdown">
-        <button className="user-menu">
+        <span className="auth-menu">
             <BsPerson className="user-icon"/>
-            <span className="username">{userSession.IsAuth ? userSession.user.email : 'Guest'}</span>
-        </button>
-        <div className="dropdown-content">
+            {userSession.IsAuth ? userSession.user.email : 'Guest'}
+        </span>
+        <div className="auth-dropdown-content">
             {userSession.IsAuth ?
                 <Link to={mainPath} onClick={async () => await userSession.logout()}>Sign out</Link> : <>
                     <Link to={signInPath}>Sign in</Link>

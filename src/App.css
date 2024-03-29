@@ -1,9 +1,10 @@
 .container {
     position: relative;
-    top: 76px;
+    top: 68px;
+    margin: 1rem 0;
     width: 100%;
-    height: calc(100% - 76px);
 }
+
 video {
     width: 40vw;
     height: 30vw;

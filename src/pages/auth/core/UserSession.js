@@ -24,6 +24,8 @@ export default class UserSession {
         try {
             let response = await Auth.login(email, password);
             localStorage.setItem('access-token', response.data.accessToken)
+            localStorage.setItem('email', response.data.email)
+            console.log(response.data)
             this.setAuth(true)
             this.setUser(response.data)
         } catch (e) {
@@ -42,14 +44,16 @@ export default class UserSession {
 
     async logout() {
         try {
-            const response = await Auth.logout()
+            await Auth.logout()
             localStorage.removeItem('access-token');
+            localStorage.removeItem('email');
             this.setAuth(false)
             this.setUser({})
         } catch (e) {
             console.log(e.response)
         } finally {
             localStorage.removeItem('access-token');
+            localStorage.removeItem('email');
             this.setAuth(false)
             this.setUser({})
         }
@@ -68,6 +72,8 @@ export default class UserSession {
         try {
             const response = await axios.post(URL + "/auth/refresh-token", {}, {withCredentials: true})
             localStorage.setItem('access-token', response.data.accessToken)
+            localStorage.setItem('email', response.data.email)
+            console.log(response.data)
             this.setAuth(true)
             this.setUser(response.data)
         } catch (e) {
