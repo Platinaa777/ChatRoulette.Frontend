@@ -1,0 +1,15 @@
+.hub-container {
+    height: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.hub-info-container {
+    height: 10%;
+    padding: 0 10px;
+}
+
+.hub-chat-container {
+    height: 90%;
+    width: 100%;
+}

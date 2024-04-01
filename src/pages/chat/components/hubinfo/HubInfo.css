@@ -1,0 +1,8 @@
+.info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.info p {
+    width: 33%;
+}

@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import '../styles/signup.css'
 import {observer} from 'mobx-react-lite';
 import {useNavigate} from 'react-router-dom'
-import {useUser} from "../../../context/UserContext";
-import {mainPath} from "../../../res/Paths";
+import {useUser} from "../context/UserContext";
+import {mainPath} from "../../../static/Paths";
 
 const SignUp = () => {
     const [formData, setFormData] = useState({

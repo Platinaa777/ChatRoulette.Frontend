@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {BiArrowBack} from "react-icons/bi";
-import {SidebarPages} from '../../res/SidebarPages';
+import {SidebarPages} from '../../static/SidebarPages';
 import './Sidebar.css'
 
 const Sidebar = ({active, hide}) => {

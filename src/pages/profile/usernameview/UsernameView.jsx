@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {useUser} from "../../../context/UserContext";
+import {useUser} from "../../auth/context/UserContext";
 import "./UsernameView.css"
 
 const UsernameView = () => {

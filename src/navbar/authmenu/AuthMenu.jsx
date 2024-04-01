@@ -1,9 +1,9 @@
 import React from 'react';
 import {BsPerson} from "react-icons/bs";
 import './AuthMenu.css'
-import {useUser} from "../../context/UserContext";
+import {useUser} from "../../pages/auth/context/UserContext";
 import {Link} from "react-router-dom";
-import {mainPath, signInPath, signUpPath} from "../../res/Paths";
+import {mainPath, signInPath, signUpPath} from "../../static/Paths";
 
 function AuthMenu() {
 

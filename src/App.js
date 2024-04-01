@@ -7,7 +7,7 @@ import SignIn from './pages/auth/components/SignIn.jsx'
 import WaitingRoom from './pages/menu/components/WaitingRoom.jsx';
 import NotFound from './pages/menu/components/NotFound.jsx';
 import Navbar from "./navbar/Navbar";
-import * as Paths from "./res/Paths";
+import * as Paths from "./static/Paths";
 import Profile from "./pages/profile/Profile";
 import Friends from "./pages/friends/Friends";
 

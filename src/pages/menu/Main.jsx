@@ -1,7 +1,7 @@
 import React from "react";
 import "./main.css";
 import {observer} from "mobx-react-lite";
-import {useUser} from "../../context/UserContext";
+import {useUser} from "../auth/context/UserContext";
 
 const Main = () => {
     const {userSession} = useUser();

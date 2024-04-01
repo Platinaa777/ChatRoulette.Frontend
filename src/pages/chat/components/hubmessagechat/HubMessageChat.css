@@ -1,0 +1,13 @@
+.input-container {
+    padding: 5px;
+    margin-top: auto;
+    border: #2c3e50 3px solid;
+    border-radius: 5px;
+}
+
+.message-container {
+    padding: 5px;
+    height: 95%;
+    border: #2c3e50 3px solid;
+    border-radius: 5px;
+}
