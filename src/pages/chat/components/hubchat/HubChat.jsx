@@ -54,16 +54,16 @@ const HubChat = () => {
             await connection.current.invoke('GetId')
         }
 
-        f().then()
+        f()
         setEmail(localStorage.getItem('email'))
-    });
+    }, []);
 
     // type can be ['offer', 'answer', 'candidate', 'relay-ice', '']
     const handleInfoFromPeer = async (roomId, message, type) => {
         if (!room) {
             setRoom(roomId)
         }
-        // console.log('MyIceCandidates', myIceCandidates.current.length)
+        console.log('Type: ', type)
 
         if (type === 'offer') {
             await createRTC(roomId, peerConnection, localMediaStream, localVideo, remoteVideo, myIceCandidates, constraints)
@@ -80,8 +80,10 @@ const HubChat = () => {
         }
 
         if (type === 'relay-ice') {
-            // console.log('MyIceCandidates:', myIceCandidates.current.length)
-            await connection.current.invoke('OnIceCandidate', roomId, JSON.stringify(myIceCandidates))
+            console.log('MyIceCandidates:', myIceCandidates.current.length)
+            await connection.current.invoke('OnIceCandidate',
+            roomId,
+            JSON.stringify(myIceCandidates))
             // console.log('OnIceCandidate was invoked:', myIceCandidates.current, roomId)
         }
 
@@ -138,6 +140,12 @@ const HubChat = () => {
 
     return (<>
         <div className="media-container">
+            <input 
+                type="email" 
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)} 
+                placeholder="Enter your email"
+            />
             <div className={room ? "hub-video-container" : "hub-video-container full"}>
                 <HubVideo localVideo={localVideo} remoteVideo={remoteVideo}/>
             </div>

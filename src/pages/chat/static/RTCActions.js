@@ -38,8 +38,8 @@ export const createAnswer = async (offerJson, roomId, peerConnection, connection
     await peerConnection.current.setRemoteDescription(new RTCSessionDescription(offer))
     const answer = await peerConnection.current.createAnswer()
     await peerConnection.current.setLocalDescription(answer)
+    console.log('Answer: ', answer)
     await connection.current.invoke('OnPeerAnswer', roomId, JSON.stringify(answer))
-    // console.log('Answer: ', answer)
 };
 
 export const addAnswer = async (answerJson, roomId, peerConnection, connection) => {
