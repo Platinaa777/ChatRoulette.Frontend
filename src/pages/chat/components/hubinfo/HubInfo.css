@@ -1,8 +1,14 @@
 .info {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .info p {
     width: 33%;
+}
+
+.info input {
+    border-radius: 10px;
+    padding: 2px;
 }

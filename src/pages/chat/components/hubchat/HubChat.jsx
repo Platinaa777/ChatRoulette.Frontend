@@ -82,8 +82,8 @@ const HubChat = () => {
         if (type === 'relay-ice') {
             console.log('MyIceCandidates:', myIceCandidates.current.length)
             await connection.current.invoke('OnIceCandidate',
-            roomId,
-            JSON.stringify(myIceCandidates))
+                roomId,
+                JSON.stringify(myIceCandidates))
             // console.log('OnIceCandidate was invoked:', myIceCandidates.current, roomId)
         }
 
@@ -138,27 +138,25 @@ const HubChat = () => {
         await connection.current.invoke('OnNextRoom')
     }
 
+    setRoom(true);
+
     return (<>
         <div className="media-container">
-            <input 
-                type="email" 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
-                placeholder="Enter your email"
-            />
             <div className={room ? "hub-video-container" : "hub-video-container full"}>
                 <HubVideo localVideo={localVideo} remoteVideo={remoteVideo}/>
+                {!room ? <div className="button-container">
+                    <button onClick={findRoom}>Find room</button>
+                </div> : <div className="button-container">
+                    <button onClick={nextRoom}>Next</button>
+                    <button onClick={leaveHub}>Finish</button>
+                </div>}
             </div>
             {room && <div className="chat-container">
                 <HubMessageChat ref={messageChatRef}/>
+                <div className="button-container">
+                    <button>Fight</button>
+                </div>
             </div>}
-        </div>
-        <div className="button-container">
-            {!room && <button onClick={findRoom}>Find room</button>}
-            {room && <>
-                <button onClick={nextRoom}>Next</button>
-                <button onClick={leaveHub}>Finish</button>
-            </>}
         </div>
     </>);
 };

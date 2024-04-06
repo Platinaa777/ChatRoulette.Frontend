@@ -1,18 +1,23 @@
 .media-container {
-    height: 90%;
-    padding: 10px 0;
+    height: 100%;
+    padding-top: 10px;
     box-sizing: border-box;
     display: flex;
+    justify-content: space-between;
 }
 
 .button-container {
     height: 10%;
     display: flex;
     justify-content: space-evenly;
+    width: 100%;
+    align-items: center;
 }
 
 .button-container button {
     min-width: 100px;
+    min-height: 30px;
+    border-radius: 15px;
 }
 
 .hub-video-container {
@@ -21,7 +26,8 @@
     position: relative;
     display: flex;
     justify-content: center;
-    padding: 0 5px 0 0;
+    flex-direction: column;
+    align-items: center;
 }
 
 .hub-video-container.full {
@@ -29,7 +35,7 @@
 }
 
 .chat-container {
-    width: 30%;
+    width: calc(30% - 10px);
     height: 100%;
     display: flex;
     flex-direction: column;

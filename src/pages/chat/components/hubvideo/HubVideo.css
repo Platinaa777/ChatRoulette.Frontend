@@ -1,11 +1,11 @@
-.video-container {
+.video-container{
     position: relative;
     text-align: center;
     width: fit-content;
     height: 100%;
 }
 
-.video-screen, #local-video {
+.video-container, #local-video {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -26,53 +26,39 @@
 
 #local-video {
     position: absolute;
-    top: 20px;
-    left: 10px;
-}
-
-#local-video video {
+    top: 1em;
+    left: 1em;
     background-color: cadetblue;
     height: 150px;
     width: 150px;
     border-radius: 75px;
 }
 
-/**.video-wrapper {
+#local-video video {
+    width: 150px;
+    height: 150px;
+    left: -75px;
+}
+
+#sound-buttons-container {
     position: absolute;
-    left: 0;
-    top: 0;
-    text-align: center;
+    bottom: 10px;
+    padding: 5px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: space-between;
+    width: 7.5rem;
 }
 
-#remote-video {
-    height: 100%;
-    width: 100%;
+.mute-button {
+    background-color: whitesmoke;
+    border-radius: 50%;
+    padding: 0.35em;
+    border: 1px solid;
+    font-size: 1.75em;
+    z-index: 1;
 }
 
-#local-video {
+.mute-button:hover {
+    cursor: pointer;
+    background-color: white;
 }
-
-#remote-video p, video, button {
-    display: block;
-}
-
-#local-video p, video, button {
-    display: block;
-}
-
-#remote-video video {
-    background-color: gray;
-    width: auto;
-    height: 90%;
-    border-radius: 20px;
-}
-
-#local-video video {
-    background-color: cadetblue;
-    width: 150px;
-    height: 150px;
-    border-radius: 75px;
-}*/
