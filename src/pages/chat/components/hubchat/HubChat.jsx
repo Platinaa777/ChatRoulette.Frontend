@@ -38,8 +38,9 @@ const HubChat = () => {
     const messageChatRef = useRef(null);
 
     useEffect(() => {
+        console.log(connection.current)
         connection.current = new signalR.HubConnectionBuilder()
-            .withUrl("http://localhost:8003/my-chat")
+            .withUrl("http://92.63.107.124:8081/api/chat")
             .withAutomaticReconnect()
             .build();
 
@@ -54,7 +55,7 @@ const HubChat = () => {
             await connection.current.invoke('GetId')
         }
 
-        f().then()
+        f()
         setEmail(localStorage.getItem('email'))
     }, []);
 
@@ -137,8 +138,6 @@ const HubChat = () => {
         console.log('NextRoom was invoked')
         await connection.current.invoke('OnNextRoom')
     }
-
-    setRoom(true);
 
     return (<>
         <div className="media-container">
