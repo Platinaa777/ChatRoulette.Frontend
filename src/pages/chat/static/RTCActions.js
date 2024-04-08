@@ -7,10 +7,10 @@ export const createRTC = async (roomId, peerConnection, localMediaStream, localV
     localVideo.current.srcObject = localMediaStream.current
 
     peerConnection.current.ontrack = (event) => {
-        console.log('Remote stream was accepted', event.streams)
+        // console.log('Remote stream was accepted', event.streams)
         if (event.streams && event.streams[0] && !remoteVideo.current.srcObject) {
             remoteVideo.current.srcObject = event.streams[0];
-            console.log('Remote stream was established')
+            // console.log('Remote stream was established')
         }
     }
 
@@ -21,7 +21,7 @@ export const createRTC = async (roomId, peerConnection, localMediaStream, localV
     }
 
     localMediaStream.current.getTracks().forEach(track => {
-        console.log('Push my track to another peer:', track)
+        // console.log('Push my track to another peer:', track)
         peerConnection.current.addTrack(track, localMediaStream.current);
     })
 };
@@ -38,7 +38,7 @@ export const createAnswer = async (offerJson, roomId, peerConnection, connection
     await peerConnection.current.setRemoteDescription(new RTCSessionDescription(offer))
     const answer = await peerConnection.current.createAnswer()
     await peerConnection.current.setLocalDescription(answer)
-    console.log('Answer: ', answer)
+    // console.log('Answer: ', answer)
     await connection.current.invoke('OnPeerAnswer', roomId, JSON.stringify(answer))
 };
 
@@ -51,9 +51,9 @@ export const addAnswer = async (answerJson, roomId, peerConnection, connection) 
 
 export const addIceCandidate = async (iceJson, peerConnection) => {
     const ices = JSON.parse(iceJson)
-    console.log('GetIceCandidates', ices.current.length)
+    // console.log('GetIceCandidates', ices.current.length)
     ices.current.forEach(ice => {
         peerConnection.current.addIceCandidate(new RTCIceCandidate(ice))
-        console.log('Ice candidate was added', ice)
+        // console.log('Ice candidate was added', ice)
     })
 };

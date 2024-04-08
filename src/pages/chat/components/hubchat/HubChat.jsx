@@ -10,6 +10,7 @@ import {useEmail} from "../../context/EmailContext";
 import {useNavigate} from "react-router-dom";
 import {mainPath} from "../../../../static/Paths";
 import {addAnswer, addIceCandidate, createAnswer, createOffer, createRTC} from "../../static/RTCActions";
+import {MdMic, MdMicOff, MdOutlineHeadset, MdOutlineHeadsetOff} from "react-icons/md";
 
 const constraints = {
     audio: true, // We want an audio track
@@ -40,7 +41,7 @@ const HubChat = () => {
     useEffect(() => {
         console.log(connection.current)
         connection.current = new signalR.HubConnectionBuilder()
-            .withUrl("http://92.63.107.124:8081/api/chat")
+            .withUrl("http://localhost:8009/api/chat")
             .withAutomaticReconnect()
             .build();
 
@@ -81,7 +82,7 @@ const HubChat = () => {
         }
 
         if (type === 'relay-ice') {
-            console.log('MyIceCandidates:', myIceCandidates.current.length)
+            // console.log('MyIceCandidates:', myIceCandidates.current.length)
             await connection.current.invoke('OnIceCandidate',
                 roomId,
                 JSON.stringify(myIceCandidates))
