@@ -3,6 +3,10 @@ import {useEmail} from "../../context/EmailContext";
 import {useConnection} from "../../context/ConnectionContext";
 import {useRoom} from "../../context/RoomContext";
 import "./HubMessageChat.css"
+import {BiSend} from "react-icons/bi";
+import {FiSend} from "react-icons/fi";
+import {BsSend} from "react-icons/bs";
+import {IoSend} from "react-icons/io5";
 
 const HubMessageChat = forwardRef((props, ref) => {
 
@@ -37,9 +41,8 @@ const HubMessageChat = forwardRef((props, ref) => {
                 className="styled-message" key={index}>{val}</div>)}
         </div>
         <div className="input-container">
-            <p>Input your message</p>
-            <input className="custom-input" onChange={(e) => setMessage(e.target.value)}/>
-            <button className='beatiful-button' onClick={sendMessage}>Push</button>
+            <input placeholder="Your message..." onChange={(e) => setMessage(e.target.value)}/>
+            <button onClick={sendMessage}><IoSend/></button>
         </div>
     </>);
 });

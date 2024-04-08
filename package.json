@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "-": "^0.0.1",
+    "@headlessui/react": "^1.7.18",
     "@microsoft/signalr": "^8.0.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",

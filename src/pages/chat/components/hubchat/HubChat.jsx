@@ -54,7 +54,7 @@ const HubChat = () => {
             await connection.current.invoke('GetId')
         }
 
-        f()
+        f().then()
         setEmail(localStorage.getItem('email'))
     }, []);
 
