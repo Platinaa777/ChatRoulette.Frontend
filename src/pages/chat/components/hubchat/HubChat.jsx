@@ -11,6 +11,7 @@ import {useNavigate} from "react-router-dom";
 import {mainPath} from "../../../../static/Paths";
 import {addAnswer, addIceCandidate, createAnswer, createOffer, createRTC} from "../../static/RTCActions";
 import {MdMic, MdMicOff, MdOutlineHeadset, MdOutlineHeadsetOff} from "react-icons/md";
+import {CONNECTION_URL} from "../../../../static/Urls";
 
 const constraints = {
     audio: true, // We want an audio track
@@ -41,7 +42,7 @@ const HubChat = () => {
     useEffect(() => {
         console.log(connection.current)
         connection.current = new signalR.HubConnectionBuilder()
-            .withUrl("http://localhost:8009/api/chat")
+            .withUrl(CONNECTION_URL)
             .withAutomaticReconnect()
             .build();
 
@@ -56,7 +57,7 @@ const HubChat = () => {
             await connection.current.invoke('GetId')
         }
 
-        f()
+        f().then()
         setEmail(localStorage.getItem('email'))
     }, []);
 

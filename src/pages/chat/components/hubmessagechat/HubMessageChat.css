@@ -2,7 +2,7 @@
     padding: 5px;
     margin-top: auto;
     border: #2c3e50 3px solid;
-    border-radius: 5px;
+    border-radius: 0 0 5px 5px;
     width: auto;
     display: flex;
     align-items: center;
@@ -30,7 +30,47 @@
 
 .message-container {
     padding: 5px;
-    height: 95%;
+    height: calc(95% - 3px);
     border: #2c3e50 3px solid;
-    border-radius: 5px;
+    border-radius: 5px 5px 0 0;
+    word-break: break-all;
+    border-bottom: none;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.message-box {
+    height: fit-content;
+    width: 100%;
+    padding: 2px 0;
+}
+
+.message {
+    width: fit-content;
+    max-width: 70%;
+    font-size: 14px;
+    padding: 5px 12px;
+}
+
+.message.mine{
+    background: dodgerblue none repeat scroll 0 0;
+    border-radius: 10px;
+    color: #efefef;
+    float: right;
+}
+
+.message.other {
+    background: whitesmoke none repeat scroll 0 0;
+    border-radius: 10px;
+    border: #2c3e50 1px solid;
+    float: left;
+}
+
+.message.mine .message-sender {
+    color: whitesmoke;
+}
+
+.message .message-sender {
+    font-size: 16px;
 }

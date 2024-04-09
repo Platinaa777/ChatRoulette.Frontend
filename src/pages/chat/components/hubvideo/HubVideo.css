@@ -32,10 +32,10 @@
     height: 150px;
     width: 150px;
     border-radius: 75px;
+    overflow: hidden;
 }
 
 #local-video video {
-    width: 150px;
     height: 150px;
     left: -75px;
 }

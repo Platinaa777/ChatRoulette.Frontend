@@ -1,9 +1,8 @@
 import axios from "axios";
-
-export const URL = "http://localhost:8009"
+import {BASE_URL, REFRESH_TOKEN_URL} from "../static/Urls";
 
 const api = axios.create({
-    withCredentials: true, baseURL: URL
+    withCredentials: true, baseURL: BASE_URL
 })
 
 api.interceptors.request.use(cfg => {
@@ -19,11 +18,11 @@ api.interceptors.response.use((config) => {
     if (error.response.status === 401 && error.config && !error.config._isRetry) {
         originalRequest._isRetry = true;
         try {
-            const response = await axios.post(`${URL}/auth/refresh-token`, {}, {withCredentials: true})
+            const response = await axios.post(REFRESH_TOKEN_URL, {}, {withCredentials: true})
             localStorage.setItem('access-token', response.data.accessToken);
             return api.request(originalRequest);
         } catch (e) {
-            console.log('НЕ АВТОРИЗОВАН')
+            console.log('not authorised')
         }
     }
     throw error;

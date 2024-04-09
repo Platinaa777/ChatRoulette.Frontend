@@ -1,7 +1,7 @@
 import {makeAutoObservable} from "mobx"
 import {Auth} from './Auth'
 import axios from "axios"
-import {URL} from "../http/api"
+import {REFRESH_TOKEN_URL} from "../../../static/Urls";
 
 
 export default class UserSession {
@@ -66,7 +66,7 @@ export default class UserSession {
 
     async checkAuth() {
         try {
-            const response = await axios.post(URL + "/auth/refresh-token", {}, {withCredentials: true})
+            const response = await axios.post(REFRESH_TOKEN_URL, {}, {withCredentials: true})
             localStorage.setItem('access-token', response.data.accessToken)
             localStorage.setItem('email', response.data.email)
             console.log(response.data)
