@@ -103,12 +103,11 @@ const HubChat = () => {
                 await connection.current.invoke('FindRoom', connectionId, email)
             }
         }
+
+        localVideo.current.muted = true;
     }
 
     const stopAudioAndVideoTracks = async () => {
-        peerConnection.current = null;
-        myIceCandidates.current = [];
-
         if (remoteVideo.current.srcObject) {
             const tracks = remoteVideo.current.srcObject.getTracks();
 
@@ -119,6 +118,8 @@ const HubChat = () => {
             // Remove the stream from the video element
             remoteVideo.current.srcObject = null;
         }
+        peerConnection.current = null;
+        myIceCandidates.current = [];
     }
 
     const findRoom = async () => {
@@ -141,10 +142,23 @@ const HubChat = () => {
         await connection.current.invoke('OnNextRoom')
     }
 
+    const muteSelf = async () => {
+        localVideo.current.srcObject.getTracks()[0].enabled = false;
+    }
+
+    const unmuteSelf = async () => {
+        localVideo.current.srcObject.getTracks()[0].enabled = true;
+    }
+
     return (<>
         <div className="media-container">
             <div className={room ? "hub-video-container" : "hub-video-container full"}>
-                <HubVideo localVideo={localVideo} remoteVideo={remoteVideo}/>
+                <HubVideo
+                    localVideo={localVideo}
+                    remoteVideo={remoteVideo}
+                    muteSelf={muteSelf}
+                    unmuteSelf={unmuteSelf}
+                />
                 {!room ? <div className="button-container">
                     <button onClick={findRoom}>Find room</button>
                 </div> : <div className="button-container">

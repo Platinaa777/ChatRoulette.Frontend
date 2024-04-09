@@ -14,8 +14,8 @@ const HubMessageChat = forwardRef((props, ref) => {
     const [messageList, setMessageList] = useState([]);
 
     const connection = useConnection();
-    const {email, setEmail} = useEmail();
-    const {room, setRoom} = useRoom();
+    const {email,} = useEmail();
+    const {room,} = useRoom();
 
 
     useImperativeHandle(ref, () => {
