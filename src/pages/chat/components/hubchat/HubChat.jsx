@@ -97,6 +97,9 @@ const HubChat = () => {
         }
 
         if (type === 'leave-room' || type === 'next-room') {
+            if (type === 'leave-room') {
+                await stopMyAudioAndVideoTracks();
+            }
             messageChatRef.current.clearMessageList();
             await stopAudioAndVideoTracks();
             if (!isLeftPerson.current) {
@@ -105,6 +108,19 @@ const HubChat = () => {
         }
 
         localVideo.current.muted = true;
+    }
+
+    const stopMyAudioAndVideoTracks = async () => {
+        if (localVideo.current.srcObject) {
+            const tracks = localVideo.current.srcObject.getTracks();
+
+            tracks.forEach(track => {
+                track.stop();
+            });
+
+            // Remove the stream from the video element
+            localVideo.current.srcObject = null;
+        }
     }
 
     const stopAudioAndVideoTracks = async () => {
