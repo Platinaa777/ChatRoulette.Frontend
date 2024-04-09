@@ -24,6 +24,7 @@ const ProfilePic = () => {
         if (croppedImg !== "")
             setSrc(croppedImg);
         onClose();
+        // send to server
     }
 
     return (<>
