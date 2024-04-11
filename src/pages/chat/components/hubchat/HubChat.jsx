@@ -10,7 +10,6 @@ import {useEmail} from "../../context/EmailContext";
 import {useNavigate} from "react-router-dom";
 import {mainPath} from "../../../../static/Paths";
 import {addAnswer, addIceCandidate, createAnswer, createOffer, createRTC} from "../../static/RTCActions";
-import {MdMic, MdMicOff, MdOutlineHeadset, MdOutlineHeadsetOff} from "react-icons/md";
 import {CONNECTION_URL} from "../../../../static/Urls";
 
 const constraints = {

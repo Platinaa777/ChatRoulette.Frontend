@@ -3,9 +3,6 @@ import {useEmail} from "../../context/EmailContext";
 import {useConnection} from "../../context/ConnectionContext";
 import {useRoom} from "../../context/RoomContext";
 import "./HubMessageChat.css"
-import {BiSend} from "react-icons/bi";
-import {FiSend} from "react-icons/fi";
-import {BsSend} from "react-icons/bs";
 import {IoSend} from "react-icons/io5";
 
 const HubMessageChat = forwardRef((props, ref) => {

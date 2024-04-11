@@ -5,7 +5,7 @@ import {useRoom} from "../../context/RoomContext";
 import "./HubInfo.css";
 
 const HubInfo = () => {
-    const [connectionId, setConnectionId] = useConnectionId();
+    const [connectionId,] = useConnectionId();
     const {email, setEmail} = useEmail();
     const {room} = useRoom();
     return (
