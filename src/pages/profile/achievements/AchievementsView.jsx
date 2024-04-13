@@ -1,5 +1,4 @@
 import React, { useRef } from "react";
-import { motion, useTransform, useScroll } from "framer-motion";
 import { achievements } from "../../../static/Achievements";
 
 const AchievementsView = () => {
