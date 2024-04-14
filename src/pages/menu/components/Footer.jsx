@@ -46,7 +46,7 @@ const Footer = () => {
                     <div className="flex">
                         {creators.map((creator) => {
                             return <a key={creator.nick} href={creator.git} className="flex flex-1 flex-col items-center mx-3">
-                                <img src={creator.img} height={100} width={100} className="overflow-hidden rounded-[50px]" />
+                                <img alt="avatar" src={creator.img} height={100} width={100} className="overflow-hidden rounded-[50px]" />
                                 <p>{creator.name}</p>
                                 <p>@{creator.nick}</p>
                             </a>

@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import "./main.css";
+import React, { useEffect} from "react";
 import { observer } from "mobx-react-lite";
 import { useUser } from "../auth/context/UserContext";
 import { Link } from "react-router-dom";
