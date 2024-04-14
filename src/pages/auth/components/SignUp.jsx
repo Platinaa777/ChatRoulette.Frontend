@@ -1,34 +1,22 @@
-import React, {useState} from 'react';
-import '../styles/signup.css'
-import {observer} from 'mobx-react-lite';
-import {useNavigate} from 'react-router-dom'
-import {useUser} from "../context/UserContext";
-import {mainPath} from "../../../static/Paths";
+import React, { useState } from 'react';
+import { observer } from 'mobx-react-lite';
+import { useNavigate } from 'react-router-dom';
+import { useUser } from "../context/UserContext";
+import { mainPath } from "../../../static/Paths";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const SignUp = () => {
     const [formData, setFormData] = useState({
-        userName: '', nickName: '', age: '', email: '', password: '', preferences: []
+        userName: '', email: '', password: '', birthdate: String(new Date())
     });
     const navigate = useNavigate();
-    const {userSession} = useUser()
+    const { userSession } = useUser()
 
     const handleChange = (e) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
         setFormData(prevData => ({
             ...prevData, [name]: value
-        }));
-    };
-
-    const handlePreferencesChange = (e) => {
-        const {options} = e.target;
-        const preferences = [];
-        for (let i = 0; i < options.length; i++) {
-            if (options[i].selected) {
-                preferences.push(options[i].value);
-            }
-        }
-        setFormData(prevData => ({
-            ...prevData, preferences
         }));
     };
 
@@ -40,43 +28,22 @@ const SignUp = () => {
         navigate(mainPath)
     };
 
-    return (<form className="form-container">
-            <h1>Register form</h1>
-            <div className="form-group">
-                <label htmlFor="userName">Username:</label>
-                <input type="text" name="userName" id="userName" value={formData.userName} onChange={handleChange}
-                       required/>
-            </div>
-            <div className="form-group">
-                <label htmlFor="nickName">Nickname:</label>
-                <input type="text" name="nickName" id="nickName" value={formData.nickName} onChange={handleChange}
-                       required/>
-            </div>
-            <div className="form-group">
-                <label htmlFor="age">Age:</label>
-                <input type="number" name="age" id="age" value={formData.age} onChange={handleChange} required/>
-            </div>
-            <div className="form-group">
-                <label htmlFor="email">Email:</label>
-                <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} required/>
-            </div>
-            <div className="form-group">
-                <label htmlFor="password">Password:</label>
-                <input type="password" name="password" id="password" value={formData.password} onChange={handleChange}
-                       required/>
-            </div>
-            <div className="form-group">
-                <label htmlFor="preferences">Preferences:</label>
-                <select multiple name="preferences" id="preferences" value={formData.preferences}
-                        onChange={handlePreferencesChange} required>
-                    <option value="preference1">Sport</option>
-                    <option value="preference2">Computer Science</option>
-                    <option value="preference3">Biology</option>
-                </select>
-            </div>
-            <button type="submit" className="submit-button" onClick={registerRequest}>Send</button>
-        </form>
-
+    return (
+        <div className='flex justify-center items-center h-full w-full'>
+            <form className="flex flex-col border-2 border-indigo-600 bg-sky-50 rounded-md p-4 w-96 items-center">
+                <h1 className="text-center text-2xl text-violet-950 mb-2">Sign up</h1>
+                <input className="mt-2 w-full border-none bg-indigo-100 p-2 rounded" type="text" name="userName" placeholder='User name' value={formData.userName} onChange={handleChange} required />
+                <input className="mt-2 w-full border-none bg-indigo-100 p-2 rounded" type="email" name="email" placeholder='E-mail' value={formData.email} onChange={handleChange} required />
+                <input className="mt-2 w-full border-none bg-indigo-100 p-2 rounded" type="password" name="password" placeholder='Password' value={formData.password} onChange={handleChange} required />
+                <div className='mt-2 w-full flex justify-between items-center'>
+                    <p className='text-md text-violet-950'>Date of birth:</p>
+                    <DatePicker name='birthdate' className="w-full border-none bg-indigo-100 p-2 rounded" selected={formData.birthdate} onSelect={(date) => setFormData(prevData => ({
+                        ...prevData, ['birthdate']: date
+                    }))} />
+                </div>
+                <button className="mt-4 text-center text-white px-6 py-2 border-none rounded-md bg-violet-600 hover:bg-violet-500" type="submit" onClick={registerRequest}>Submit</button>
+            </form>
+        </div>
     );
 };
 
