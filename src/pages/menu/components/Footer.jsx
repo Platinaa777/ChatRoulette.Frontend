@@ -40,7 +40,7 @@ const Footer = () => {
     }, []);
 
   return (
-    <section className="bg-gradient-to-br from-indigo-600 to-violet-500 flex absolute bottom-0 w-full text-white p-3">
+    <section className="h-[35%] bg-gradient-to-br from-indigo-600 to-violet-500 flex absolute bottom-0 w-full text-white p-3">
                 <div className="text-center w-[50%] border-r-2">
                     <h1 className="text-2xl mb-3">Creators</h1>
                     <div className="flex">

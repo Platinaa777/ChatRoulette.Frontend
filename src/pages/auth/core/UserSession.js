@@ -23,22 +23,28 @@ export default class UserSession {
     async login(email, password) {
         try {
             let response = await Auth.login(email, password);
-            localStorage.setItem('access-token', response.data.accessToken)
-            localStorage.setItem('email', response.data.email)
+            localStorage.setItem('access-token', response.data.value.accessToken)
+            localStorage.setItem('email', response.data.value.email)
             console.log(response.data)
             this.setAuth(true)
             this.setUser(response.data)
+            return response.statusText
         } catch (e) {
             console.log(e)
+            return e.response.data
         }
     }
 
     async register(data) {
         try {
             let response = await Auth.register(data)
+            localStorage.setItem('access-token', response.data.value.accessToken)
+            localStorage.setItem('email', response.data.value.email)
             console.log(response.data)
+            return response.statusText
         } catch (e) {
             console.log(e)
+            return e.response.data
         }
     }
 

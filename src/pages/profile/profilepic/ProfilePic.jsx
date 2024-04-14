@@ -21,8 +21,9 @@ const ProfilePic = () => {
     }
 
     function onSubmitPicture() {
-        if (croppedImg !== "")
+        if (croppedImg !== "") {
             setSrc(croppedImg);
+        }
         onClose();
         // send to server
     }

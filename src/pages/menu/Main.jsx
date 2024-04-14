@@ -18,8 +18,8 @@ const Main = () => {
     });
 
     return (
-        <div className="w-full h-[fit-content()]">
-            <section className="w-full flex flex-col items-center p-[1.25rem]">
+        <div className="w-full">
+            <section className="w-full flex flex-col items-center p-[1.25rem] overflow-auto absolute h-[65%]">
                 <h1 className="text-2xl text-center mb-4 tracking-widest text-indigo-800">
                     Develop your English communication skills<br />with LangSkillUp!
                 </h1>
