@@ -36,7 +36,7 @@
     overflow: hidden;
 }
 
-#local-video video {
+#local-video img {
     height: 150px;
     left: -75px;
 }
@@ -47,17 +47,17 @@
     padding: 5px;
     display: flex;
     justify-content: space-between;
-    width: 7.5rem;
+    width: 8rem;
 }
 
-.mute-button {
+/*.mute-button {
     background-color: whitesmoke;
     border-radius: 50%;
     padding: 0.35em;
     border: 1px solid;
-    font-size: 1.75em;
+    font-size: 3rem;
     z-index: 1;
-}
+}*/
 
 .mute-button:hover {
     cursor: pointer;

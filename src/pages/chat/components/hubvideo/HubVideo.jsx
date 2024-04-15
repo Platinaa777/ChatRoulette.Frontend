@@ -1,8 +1,10 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import './HubVideo.css';
-import {MdMic, MdMicOff, MdOutlineHeadset, MdOutlineHeadsetOff} from "react-icons/md";
+import { MdMic, MdMicOff, MdOutlineHeadset, MdOutlineHeadsetOff } from "react-icons/md";
+import woman from "./image.png";
+import man from "./man.jpg";
 
-const HubVideo = ({localVideo, remoteVideo, muteSelf, unmuteSelf}) => {
+const HubVideo = ({ localVideo, remoteVideo, muteSelf, unmuteSelf }) => {
 
     const [meMuted, setMeMuted] = useState(false);
     const [peerMuted, setPeerMuted] = useState(false);
@@ -30,19 +32,19 @@ const HubVideo = ({localVideo, remoteVideo, muteSelf, unmuteSelf}) => {
     }
 
     return (<div className="video-container">
-            <video id="remote-video" ref={remoteVideo} autoPlay/>
-            <div id="local-video">
-                <video ref={localVideo} autoPlay/>
-            </div>
-            <div id="sound-buttons-container">
-                {!meMuted ?
-                    <MdMic className='mute-button' onClick={muteMe}/> :
-                    <MdMicOff className='mute-button' onClick={unmuteMe}/>}
-                {!peerMuted ?
-                    <MdOutlineHeadset className='mute-button' onClick={mutePeer}/> :
-                    <MdOutlineHeadsetOff className='mute-button' onClick={unmutePeer}/>}
-            </div>
-        </div>);
+        <video id="remote-video" ref={remoteVideo} autoPlay/>
+        <div id="local-video">
+            <video ref={localVideo} autoPlay/>
+        </div>
+        <div id="sound-buttons-container">
+            {!meMuted ?
+                <button className='text-2xl bg-indigo-600 text-white p-3 rounded-[50%]' onClick={muteMe}><MdMic /></button> :
+                <button className='text-2xl bg-indigo-600 text-white p-3 rounded-[50%]' onClick={unmuteMe}><MdMicOff /></button>}
+            {!peerMuted ?
+                <button className='text-2xl bg-indigo-600 text-white p-3 rounded-[50%]' onClick={mutePeer}><MdOutlineHeadset /></button> :
+                <button className='text-2xl bg-indigo-600 text-white p-3 rounded-[50%]' onClick={unmutePeer}><MdOutlineHeadsetOff /></button>}
+        </div>
+    </div>);
 };
 
 export default HubVideo;
