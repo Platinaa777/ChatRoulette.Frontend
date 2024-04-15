@@ -7,9 +7,11 @@ import { observer } from 'mobx-react-lite';
 import { useUser } from '../pages/auth/context/UserContext';
 import { BsPerson } from "react-icons/bs";
 import { mainPath, signInPath, signUpPath } from "../static/Paths";
+import { useProfile } from '../pages/profile/context/ProfileContext';
 
 const Navbar = () => {
     const { userSession } = useUser();
+    const { userProfile } = useProfile();
 
     const [authMenu, setAuthMenu] = useState(false);
     const authMenuRef = useRef();
@@ -25,6 +27,17 @@ const Navbar = () => {
         }
         window.addEventListener('click', handler)
         return () => window.removeEventListener('click', handler)
+    }, []);
+
+    useEffect(() => {
+        if (userSession.IsAuth) {
+            let email = localStorage.getItem("email");
+            console.log(email);
+            let response = userProfile.getProfile(email);
+            console.log(response);
+        } else {
+            console.log("user is not auth");
+        }
     }, []);
 
     const [sidebar, setSidebar] = useState(false);

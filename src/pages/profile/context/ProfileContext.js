@@ -6,10 +6,10 @@ const userProfile = new UserProfile();
 const ProfileContext = React.createContext({userProfile});
 
 export function useProfile() {
-    return useContext(UserContext);
+    return useContext(ProfileContext);
 }
 
-export function Provider({children}) {
+export function ProfileProvider({children}) {
     return <ProfileContext.Provider value = {{userProfile}}>
         {children}
     </ProfileContext.Provider>

@@ -28,10 +28,10 @@ export default class UserSession {
             console.log(response.data)
             this.setAuth(true)
             this.setUser(response.data)
-            return response.statusText
+            return response.data
         } catch (e) {
-            console.log(e)
-            return e.response.data
+            console.log(e.response)
+            return e.response
         }
     }
 

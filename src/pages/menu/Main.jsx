@@ -14,6 +14,7 @@ const Main = () => {
             console.log(localStorage.getItem('email'))
             userSession.setAuth(true)
             userSession.setUser({ email: localStorage.getItem('email') })
+            // here request and set username and profile pic, or mb in navbar
         }
     });
 
@@ -21,7 +22,7 @@ const Main = () => {
         <div className="w-full">
             <section className="w-full flex flex-col items-center p-[1.25rem] overflow-auto absolute h-[65%]">
                 <h1 className="text-2xl text-center mb-4 tracking-widest text-indigo-800">
-                    Develop your English communication skills<br />with LangSkillUp!
+                    Develop your English communication skills<br/>with LangSkillUp!
                 </h1>
                 <div className="flex gap-4 mb-4 text-justify text-indigo-950">
                     <div className="flex-[3_3_0%] border-solid border-2 border-indigo-600 p-3 rounded-md bg-indigo-100">

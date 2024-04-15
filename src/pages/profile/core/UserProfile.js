@@ -1,5 +1,4 @@
 import {makeAutoObservable} from "mobx";
-import axios from 'axios';
 import api from "../../../http/api";
 
 export default class UserProfile {
