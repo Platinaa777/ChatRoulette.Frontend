@@ -8,7 +8,7 @@ import "./HubChat.css";
 import {useConnectionId} from "../../context/ConnectionIdContext";
 import {useEmail} from "../../context/EmailContext";
 import {useNavigate} from "react-router-dom";
-import {mainPath} from "../../../../static/Paths";
+import {paths} from "../../../../static/Paths";
 import {addAnswer, addIceCandidate, createAnswer, createOffer, createRTC} from "../../static/RTCActions";
 import {CONNECTION_URL} from "../../../../static/Urls";
 
@@ -149,7 +149,7 @@ const HubChat = () => {
         // console.log('Leaving room')
         isLeftPerson.current = true
         await connection.current.invoke('OnLeaveRoom')
-        navigate(mainPath)
+        navigate(paths.mainPath)
     }
 
     const nextRoom = async () => {

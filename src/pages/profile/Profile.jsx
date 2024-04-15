@@ -35,13 +35,13 @@ const Profile = () => {
                 <Tab.Panels className="w-full">
                     <Tab.Panel
                         key={"Leaderboard"}
-                        className='rounded-xl bg-white px-3 focus:outline-none'
+                        className='rounded-xl bg-white px-2 focus:outline-none'
                     >
                         <RatingView />
                     </Tab.Panel>
                     <Tab.Panel
                         key={"Achievements"}
-                        className='rounded-xl bg-white px-3 focus:outline-none'
+                        className='rounded-xl bg-white px-2 focus:outline-none'
                     >
                         <AchievementsView />
                     </Tab.Panel>

@@ -1,10 +1,13 @@
-export const mainPath = "/";
-export const signUpPath = "/sign-up";
-export const signInPath = "/sign-in";
-export const profilePath = "/profile";
-export const friendsPath = "/friends";
-export const reportPath = "/report";
-export const statsPath = "/stats";
-export const hubPath = "/hub";
-export const waitingRoomPath = "/waiting-room";
-export const notFoundPath = "*";
+export const paths = {
+    mainPath: "/",
+    signUpPath: "/sign-up",
+    signInPath: "/sign-in",
+    profilePath: "/profile",
+    friendsPath: "/friends",
+    reportPath: "/report",
+    statsPath: "/stats",
+    moderationPath: "/mod",
+    hubPath: "/hub",
+    waitingRoomPath: "/waiting-room",
+    notFoundPath: "*"
+}

@@ -19,7 +19,7 @@ export default class UserProfile {
 
     async getProfile(email) {
         try {
-            let response = await api.post("/api/profile/get-user-info", {email});
+            let response = await api.post("/profile/get-user-info", email);
             console.log(response);
         } catch (e) {
             console.log(e)

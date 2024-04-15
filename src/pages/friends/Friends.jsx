@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Tab } from '@headlessui/react';
-import "./Friends.css"
 import profile from "./../../assets/profile.png"
 
 const Friends = () => {
@@ -22,25 +21,24 @@ const Friends = () => {
         id: 2, nickName: 'User2', img: profile
     },])
 
-    return (<div className="friends-container">
+    return (<div className="mx-4 p-4">
         <Tab.Group>
-            <Tab.List className="tab-list">
+            <Tab.List className="flex bg-indigo-200 w-full mb-2 rounded-xl">
                 <Tab
                     key="Friends"
-                    className={({ selected }) => classNames('w-full rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-gray-500 hover:bg-white/[0.12] hover:text-white')}>
+                    className={({ selected }) => classNames('w-full rounded-lg py-2.5 text-sm font-medium leading-5 ring-blue-800 focus:outline-none text-blue-700', selected ? 'ring-2 bg-white shadow' : 'hover:bg-white/[0.12] hover:text-white')}>
                     Friends
                 </Tab>
                 <Tab
                     key="Recents"
-                    className={({ selected }) => classNames('w-full rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-gray-500 hover:bg-white/[0.12] hover:text-white')}>
+                    className={({ selected }) => classNames('w-full rounded-lg py-2.5 text-sm font-medium leading-5 ring-blue-800 focus:outline-none text-blue-700', selected ? 'ring-2 bg-white shadow' : 'hover:bg-white/[0.12] hover:text-white')}>
                     Recents
                 </Tab>
             </Tab.List>
-            <Tab.Panels className="tab-panels">
+            <Tab.Panels className="w-full">
                 {[friends, recents].map((people, idx) => <Tab.Panel
                     key={idx}
-                    className={classNames('rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2')}
-                >
+                    className='rounded-xl bg-white px-2 focus:outline-none'>
                     <ul>
                         {people.map((person) => (<li
                             key={person.id}

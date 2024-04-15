@@ -7,7 +7,7 @@ import SignIn from './pages/auth/components/SignIn.jsx'
 import WaitingRoom from './pages/menu/components/WaitingRoom.jsx';
 import NotFound from './pages/menu/components/NotFound.jsx';
 import Navbar from "./navbar/Navbar";
-import * as Paths from "./static/Paths";
+import { paths } from "./static/Paths";
 import Profile from "./pages/profile/Profile";
 import Friends from "./pages/friends/Friends";
 
@@ -17,14 +17,14 @@ export default function App() {
         <Navbar/>
         <div className="container">
             <Routes>
-                <Route exec path={Paths.mainPath} element={<Main/>}/>
-                <Route exec path={Paths.signUpPath} element={<SignUp/>}/>
-                <Route exec path={Paths.signInPath} element={<SignIn/>}/>
-                <Route exec path={Paths.profilePath} element={<Profile/>}/>
-                <Route exec path={Paths.friendsPath} element={<Friends/>}/>
-                <Route exec path={Paths.hubPath} element={<Hub/>}/>
-                <Route exec path={Paths.waitingRoomPath} element={<WaitingRoom/>}/>
-                <Route path={Paths.notFoundPath} element={<NotFound/>}/>
+                <Route exec path={paths.mainPath} element={<Main/>}/>
+                <Route exec path={paths.signUpPath} element={<SignUp/>}/>
+                <Route exec path={paths.signInPath} element={<SignIn/>}/>
+                <Route exec path={paths.profilePath} element={<Profile/>}/>
+                <Route exec path={paths.friendsPath} element={<Friends/>}/>
+                <Route exec path={paths.hubPath} element={<Hub/>}/>
+                <Route exec path={paths.waitingRoomPath} element={<WaitingRoom/>}/>
+                <Route path={paths.notFoundPath} element={<NotFound/>}/>
             </Routes>
         </div>
     </>);

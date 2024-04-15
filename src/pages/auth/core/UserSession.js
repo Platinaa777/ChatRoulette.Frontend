@@ -38,13 +38,13 @@ export default class UserSession {
     async register(data) {
         try {
             let response = await Auth.register(data)
-            localStorage.setItem('access-token', response.data.value.accessToken)
-            localStorage.setItem('email', response.data.value.email)
-            console.log(response.data)
-            return response.statusText
+            console.log(response)
+            //localStorage.setItem('access-token', response.data.value.accessToken)
+            //localStorage.setItem('email', response.data.value.email)
+            return response
         } catch (e) {
             console.log(e)
-            return e.response.data
+            return e.response
         }
     }
 
