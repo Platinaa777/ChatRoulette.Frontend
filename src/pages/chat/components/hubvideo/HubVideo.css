@@ -49,17 +49,3 @@
     justify-content: space-between;
     width: 8rem;
 }
-
-/*.mute-button {
-    background-color: whitesmoke;
-    border-radius: 50%;
-    padding: 0.35em;
-    border: 1px solid;
-    font-size: 3rem;
-    z-index: 1;
-}*/
-
-.mute-button:hover {
-    cursor: pointer;
-    background-color: white;
-}

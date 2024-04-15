@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import './HubVideo.css';
 import { MdMic, MdMicOff, MdOutlineHeadset, MdOutlineHeadsetOff } from "react-icons/md";
-import woman from "./image.png";
-import man from "./man.jpg";
 
 const HubVideo = ({ localVideo, remoteVideo, muteSelf, unmuteSelf }) => {
 
