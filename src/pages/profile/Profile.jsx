@@ -1,14 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ProfilePic from "./components/ProfilePic";
 import UserdataView from "./components/UserdataView";
 import RatingView from "./components/RatingView";
 import AchievementsView from "./components/AchievementsView";
 import { Tab } from '@headlessui/react';
+import { useUser } from '../auth/context/UserContext';
+import { useProfile } from './context/ProfileContext';
 
 const Profile = () => {
+    const { userSession } = useUser();
+    const { userProfile } = useProfile();
+
     function classNames(...classes) {
         return classes.filter(Boolean).join(' ')
     }
+
+    useEffect(() => {
+        if (userSession.IsAuth) {
+            let email = localStorage.getItem("email");
+            let response = userProfile.getProfile(email);
+            console.log(response);
+        } else {
+            console.log("user is not auth");
+        }
+    }, []);
 
     return (<div className='flex flex-col sm:flex-row px-8 py-4 sm:h-full text-indigo-950'>
         <div className='w-full sm:w-[35%]'>

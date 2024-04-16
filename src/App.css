@@ -1,5 +1,6 @@
 .container {
     position: relative;
+    overflow: auto;
     top: 76px;
     height: calc(100% - 76px);
     width: 100%;

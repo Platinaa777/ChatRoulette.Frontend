@@ -6,7 +6,7 @@ import { paths } from "../../../static/Paths";
 import BirthdatePicker from '../../../components/BirthdatePicker';
 
 const SignUp = () => {
-    const dateToFormat = (date) => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${date.getDate()}`;
+    const dateToFormat = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${date.getDate()}`;
 
     const [formData, setFormData] = useState({
         userName: '', email: '', password: '', birthdate: dateToFormat(new Date())
@@ -41,7 +41,6 @@ const SignUp = () => {
     const registerRequest = async (e) => {
         e.preventDefault()
         let response = await userSession.register(formData);
-        console.log(response);
         if (response.status === 200) {
             switch (response.data.error.message) {
                 case "User is older than 100 years old":
@@ -89,12 +88,9 @@ const SignUp = () => {
                     }))}
                     value={formData.password} onChange={handleChange} required />
 
-                <div className='mt-2 w-full flex justify-between items-center'>
-                    <p className='text-md text-violet-950' onFocus={() => setWasFocused(prevState => ({
-                        ...prevState, birthday: true
-                    }))} >Date of birth:</p>
+                <div className='w-full mt-2'>
                     <BirthdatePicker
-                        className={"w-full bg-indigo-100 p-2 rounded focus:outline-none " + (wasFocused.email ? "[&:not(:focus)]:invalid:border [&:not(:focus)]:invalid:border-red-500 [&:not(:focus)]:invalid:text-red-600" : "")}
+                        className={"mt-2 w-full bg-indigo-100 rounded border-none focus:outline-none " + (wasFocused.email ? "[&:not(:focus)]:invalid:border [&:not(:focus)]:invalid:border-red-500 [&:not(:focus)]:invalid:text-red-600" : "")}
                         onFocus={() => setWasFocused(prevState => ({
                             ...prevState, birthday: true
                         }))}
@@ -102,6 +98,7 @@ const SignUp = () => {
                             ...prevData, birthdate: value
                         }))} />
                 </div>
+
                 <p className='text-sm text-red-500'>{error}</p>
                 <button className="mt-4 text-center text-white px-6 py-2 border-none rounded-md bg-violet-600 hover:bg-violet-500" type="submit" onClick={registerRequest}>Submit</button>
             </form>

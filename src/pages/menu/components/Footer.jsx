@@ -40,10 +40,10 @@ const Footer = () => {
     }, []);
 
   return (
-    <section className="h-[35%] bg-gradient-to-br from-indigo-600 to-violet-500 flex absolute bottom-0 w-full text-white p-3">
-                <div className="text-center w-[50%] border-r-2">
+    <section className="bg-gradient-to-br from-indigo-600 to-violet-500 flex flex-col sm:flex-row absolute bottom-0 w-full text-white p-3">
+                <div className="text-center sm:w-[50%] sm:border-r-2">
                     <h1 className="text-2xl mb-3">Creators</h1>
-                    <div className="flex">
+                    <div className="flex flex-col sm:flex-row">
                         {creators.map((creator) => {
                             return <a key={creator.nick} href={creator.git} className="flex flex-1 flex-col items-center mx-3">
                                 <img alt="avatar" src={creator.img} height={100} width={100} className="overflow-hidden rounded-[50px]" />

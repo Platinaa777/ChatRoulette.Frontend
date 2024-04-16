@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import ModalDialog from './ModalDialog';
+import dayjs from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 
 const BirthdatePicker = ({ className, birthdate, setBirthdate }) => {
-  const [dateSelect, setDateSelect] = useState(false);
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(dayjs('2022-04-17'));
 
   const minDate = new Date();
   minDate.setFullYear(minDate.getFullYear - 16);
@@ -15,20 +18,15 @@ const BirthdatePicker = ({ className, birthdate, setBirthdate }) => {
     return Math.abs(ageDate.getUTCFullYear() - 1970);
   }
 
-  const onSubmit = () => {
-    setBirthdate(date);
-  }
-
-  const onClose = () => {
-    setDateSelect(false);
-  }
-
   return (<>
-    <p className={className} onClick={() => setDateSelect(true)}>{birthdate}</p>
-    <ModalDialog open={dateSelect} setOpen={setDateSelect} onSubmit={onSubmit} onClose={onClose} title="Select your date of birth">
-      {/*<DayPicker />*/}
-    </ModalDialog>
-  </>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DatePicker className={className}
+          label="Date of birth"
+          value={date}
+          onChange={(newDate) => setDate(newDate)}
+        />
+      </LocalizationProvider>
+      </>
   )
 }
 
