@@ -7,8 +7,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 
 const BirthdatePicker = ({ className, birthdate, setBirthdate }) => {
-  const [date, setDate] = useState(dayjs('2022-04-17'));
-
   const minDate = new Date();
   minDate.setFullYear(minDate.getFullYear - 16);
 
@@ -19,14 +17,16 @@ const BirthdatePicker = ({ className, birthdate, setBirthdate }) => {
   }
 
   return (<>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker className={className}
-          label="Date of birth"
-          value={date}
-          onChange={(newDate) => setDate(newDate)}
-        />
-      </LocalizationProvider>
-      </>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DatePicker className={className}
+        label="Date of birth"
+        value={dayjs(birthdate)}
+        onChange={(newDate) =>
+          setBirthdate(dayjs(newDate).format('YYYY-MM-DD'))
+        }
+      />
+    </LocalizationProvider>
+  </>
   )
 }
 

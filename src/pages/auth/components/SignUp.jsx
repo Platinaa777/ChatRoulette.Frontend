@@ -3,13 +3,13 @@ import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from "../context/UserContext";
 import { paths } from "../../../static/Paths";
+import dayjs from 'dayjs';
 import BirthdatePicker from '../../../components/BirthdatePicker';
 
 const SignUp = () => {
-    const dateToFormat = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${date.getDate()}`;
 
     const [formData, setFormData] = useState({
-        userName: '', email: '', password: '', birthdate: dateToFormat(new Date())
+        userName: '', email: '', password: '', birthdateutc: dayjs(String(new Date())).format('YYYY-MM-DD')
     });
 
     const [wasFocused, setWasFocused] = useState({
@@ -40,16 +40,22 @@ const SignUp = () => {
 
     const registerRequest = async (e) => {
         e.preventDefault()
+        console.log(formData.birthdateutc)
         let response = await userSession.register(formData);
         if (response.status === 200) {
+            if (response.data.isSuccess) {
+                navigate(paths.mainPath);
+                return;
+            }
             switch (response.data.error.message) {
+                case "User already exist":
+                    setError("User already exists");
+                    return;
                 case "User is older than 100 years old":
-                case "":
+                case "User is not older than 16 years old":
                     setError("User must be older than 16");
                     return;
             }
-            navigate(paths.mainPath);
-            return;
         }
         Object.keys(response.data.errors).reverse().forEach((key) => {
             const error = response.data.errors[key];
@@ -88,14 +94,11 @@ const SignUp = () => {
                     }))}
                     value={formData.password} onChange={handleChange} required />
 
-                <div className='w-full mt-2'>
+                <div className='w-full mt-2 bg-indigo-100'>
                     <BirthdatePicker
-                        className={"mt-2 w-full bg-indigo-100 rounded border-none focus:outline-none " + (wasFocused.email ? "[&:not(:focus)]:invalid:border [&:not(:focus)]:invalid:border-red-500 [&:not(:focus)]:invalid:text-red-600" : "")}
-                        onFocus={() => setWasFocused(prevState => ({
-                            ...prevState, birthday: true
-                        }))}
-                        birthdate={formData.birthdate} setBirthdate={(value) => setFormData(prevData => ({
-                            ...prevData, birthdate: value
+                        className="mt-2 w-full rounded border-none focus:outline-none"
+                        birthdate={formData.birthdateutc} setBirthdate={(value) => setFormData(prevData => ({
+                            ...prevData, birthdateutc: value
                         }))} />
                 </div>
 

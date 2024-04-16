@@ -1,7 +1,7 @@
 import masks from "./../assets/achievements/masks.png";
 import friends from "./../assets/achievements/friends.png";
 import vigilant from "./../assets/achievements/vigilant.jpg";
-import eyes from "./../assets/achievements/eyes.png";
+import trophy from "./../assets/achievements/trophy.png";
 
 export const achievements = [
     {
@@ -17,7 +17,7 @@ export const achievements = [
         id: 2,
     },
     {
-        url: eyes,
+        url: trophy,
         title: "Better go touch grass",
         desc: "Spend 250 minutes on the app",
         id: 3,
