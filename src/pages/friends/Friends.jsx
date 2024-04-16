@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Tab } from '@headlessui/react';
 import { useUser } from '../../http/context/UserContext';
+import ReportUser from '../../components/ReportUser';
 
 const Friends = () => {
 
@@ -14,6 +15,8 @@ const Friends = () => {
     console.log(friends);
     const [recents, setRecents] = useState([]);
     const [requests, setRequests] = useState([]);
+
+    const [report, setReport] = useState({ open: false, username: null })
 
 
     return (<div className="mx-4 p-4 w-full flex flex-col items-center">
@@ -74,6 +77,10 @@ const Friends = () => {
                 </Tab.Panels>
             </Tab.Group>
         </div>
+        <ReportUser
+            open={report.open}
+            setOpen={() => setReport((prevState) => ({ ...prevState, open: false }))}
+            userName={report.username} />
     </div>)
 };
 
