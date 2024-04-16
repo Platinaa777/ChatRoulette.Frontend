@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { Tab } from '@headlessui/react';
-import { useProfile } from '../profile/context/ProfileContext'
+import { useUser } from '../../http/context/UserContext';
 
 const Friends = () => {
 
-    const { userProfile } = useProfile();
+    const { userSession } = useUser();
 
     function classNames(...classes) {
         return classes.filter(Boolean).join(' ')
     }
 
-    const [friends, setFriends] = useState([...userProfile.user.friends]);
+    const [friends, setFriends] = useState([]);
+    console.log(friends);
     const [recents, setRecents] = useState([]);
     const [requests, setRequests] = useState([]);
 

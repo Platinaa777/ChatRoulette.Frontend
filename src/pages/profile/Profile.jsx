@@ -4,12 +4,10 @@ import UserdataView from "./components/UserdataView";
 import RatingView from "./components/RatingView";
 import AchievementsView from "./components/AchievementsView";
 import { Tab } from '@headlessui/react';
-import { useUser } from '../auth/context/UserContext';
-import { useProfile } from './context/ProfileContext';
+import { useUser } from '../../http/context/UserContext';
 
 const Profile = () => {
     const { userSession } = useUser();
-    const { userProfile } = useProfile();
 
     function classNames(...classes) {
         return classes.filter(Boolean).join(' ')
@@ -18,7 +16,7 @@ const Profile = () => {
     useEffect(() => {
         if (userSession.IsAuth) {
             let email = localStorage.getItem("email");
-            let response = userProfile.getProfile(email);
+            let response = userSession.getProfile(email);
             console.log(response);
         } else {
             console.log("user is not auth");

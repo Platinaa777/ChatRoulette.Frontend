@@ -1,6 +1,6 @@
 import React, { useEffect} from "react";
 import { observer } from "mobx-react-lite";
-import { useUser } from "../auth/context/UserContext";
+import { useUser } from "../../http/context/UserContext";
 import { Link } from "react-router-dom";
 import Footer from './components/Footer';
 
@@ -38,8 +38,8 @@ const Main = () => {
                         <h1 className="text-xl text-center tracking-wide">Note</h1><p>We highly advice to have good-quality camera and mic, and to follow the rules stated in user's agreement</p>
                     </div>
                 </div>
-                <Link to='/hub' className='text-center text-white px-[20px] py-[10px] mx-4 border-none rounded-md bg-[#8a2be2] hover:bg-[#6a1b9a]'>
-                    Start!
+                <Link to='/hub' className='text-center text-white px-[20px] py-[10px] mx-4 border-none rounded-md bg-violet-700 hover:bg-violet-600'>
+                    Start
                 </Link>
             </section>
             <Footer/>

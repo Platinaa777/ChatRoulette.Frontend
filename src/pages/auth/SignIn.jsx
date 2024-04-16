@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { useUser } from "../context/UserContext";
-import { paths } from "../../../static/Paths";
+import { useUser } from "../../http/context/UserContext";
+import { paths } from "../../static/Paths";
 
 export const SignIn = () => {
     const [formData, setFormData] = useState({

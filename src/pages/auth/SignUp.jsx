@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from "../context/UserContext";
-import { paths } from "../../../static/Paths";
+import { useUser } from "../../http/context/UserContext";
+import { paths } from "../../static/Paths";
 import dayjs from 'dayjs';
-import BirthdatePicker from '../../../components/BirthdatePicker';
+import BirthdatePicker from '../../components/BirthdatePicker';
 
 const SignUp = () => {
 
