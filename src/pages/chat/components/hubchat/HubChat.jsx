@@ -175,7 +175,7 @@ const HubChat = () => {
                     unmuteSelf={unmuteSelf}
                 />
                 {!room ? <div className="button-container">
-                    <button onClick={findRoom}>Find room</button>
+                    <button onClick={findRoom} className='bg-indigo-600 text-white p-6 rounded-xl'>Find room</button>
                 </div> : <div className="button-container">
                     <button onClick={nextRoom}>Next</button>
                     <button onClick={leaveHub}>Finish</button>

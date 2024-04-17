@@ -7,7 +7,7 @@
 }
 
 .button-container {
-    height: 10%;
+    margin-top: 1rem;
     display: flex;
     justify-content: space-evenly;
     width: 100%;

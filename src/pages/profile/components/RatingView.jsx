@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useUser } from '../../../http/context/UserContext';
+import React from 'react';
 import profile from '../../../assets/profile.png'
-import UserdataView from './UserdataView';
 
 const RatingView = ({ rating }) => {
     return (

@@ -18,7 +18,7 @@
 }
 
 #remote-video {
-    background-color: gray;
+    background-color: black;
     border-radius: 10px;
     height: 100%;
     width: auto;
@@ -29,7 +29,7 @@
     position: absolute;
     top: 1em;
     left: 1em;
-    background-color: cadetblue;
+    background-color: black;
     height: 150px;
     width: 150px;
     border-radius: 75px;
