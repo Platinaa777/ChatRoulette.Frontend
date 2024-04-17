@@ -13,17 +13,19 @@ import Friends from "./pages/friends/Friends";
 import ReportProblem from './pages/report/ReportProblem.jsx';
 import Moderation from './pages/admin_pages/Moderation.jsx';
 import SiteStats from './pages/admin_pages/SiteStats.jsx';
-import { useUser } from './http/context/UserContext.js';
+import { useSession } from './http/context/UserContext.js';
+import { observer } from 'mobx-react-lite';
 
 
-export default function App() {
+export const App = observer(() => {
+
+    const userSession = useSession();
 
     const ProtectedRoute = ({ children, requireAdmin = false }) => {
-        const { userSession } = useUser();
 
-        //if (!userSession.IsAuth || requireAdmin && !(userSession.IsAdmin)) {
-        //    return <Navigate to={paths.mainPath} replace />;
-        //}
+        if (!userSession.IsAuth || requireAdmin && !(userSession.IsAdmin)) {
+            return <Navigate to={paths.mainPath} replace />;
+        }
 
         return children;
     };
@@ -74,4 +76,4 @@ export default function App() {
             </Routes>
         </div>
     </>);
-}
+});

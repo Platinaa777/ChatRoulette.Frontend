@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { IoSend } from 'react-icons/io5';
-import { useUser } from '../../http/context/UserContext';
+import { useSession } from '../../http/context/UserContext';
 import { AdminService } from '../../http/core/Admin';
 
 const ReportProblem = () => {
 
-  const { userSession } = useUser();
+  const { userSession } = useSession();
 
   const [error, setError] = useState('');
 

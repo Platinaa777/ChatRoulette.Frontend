@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Tab } from '@headlessui/react';
-import { useUser } from '../../http/context/UserContext';
+import { useSession } from '../../http/context/UserContext';
 import ReportUser from '../../components/ReportUser';
 
 const Friends = () => {
 
-    const { userSession } = useUser();
+    const { userSession } = useSession();
 
     function classNames(...classes) {
         return classes.filter(Boolean).join(' ')

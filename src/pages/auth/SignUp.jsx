@@ -1,27 +1,25 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from "../../http/context/UserContext";
+import { useSession } from "../../http/context/UserContext";
 import { paths } from "../../static/Paths";
 import dayjs from 'dayjs';
 import BirthdatePicker from '../../components/BirthdatePicker';
 
-const SignUp = () => {
+const SignUp = observer(() => {
+    const userSession = useSession();
+
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         userName: '', email: '', password: '', birthdateutc: dayjs(String(new Date())).format('YYYY-MM-DD')
     });
-
     const [wasFocused, setWasFocused] = useState({
         email: false,
         password: false,
         nickName: false,
         birthday: false
     });
-
-    const navigate = useNavigate();
-    const { userSession } = useUser();
-
     const [error, setError] = useState(null);
 
     const handleChange = (e) => {
@@ -34,28 +32,37 @@ const SignUp = () => {
 
     const registerRequest = async (e) => {
         e.preventDefault()
-        console.log(formData.birthdateutc)
-        let response = await userSession.register(formData);
-        if (response.status === 200 && response.data.isSuccess) {
+        let result = await userSession.register(formData);
+        if (result.isSuccess) {
             navigate(paths.mainPath);
             return;
         }
-        switch (response.data.error.message) {
+        switch (result.data.error.message) {
+            case "Validation error was thrown":
+                switch (result.data.errors[0].code) {
+                    case "Email":
+                        setError(formData.email === "" ? "Email must not be empty" : "Invalid email address");
+                        return;
+                    case "Password":
+                        setError("Password must not be empty");
+                        return;
+                    case "UserName":
+                        setError("Username must not be empty");
+                }
+                break;
+            case "Invalid email":
+                setError("Invalid email address");
+                return;
             case "User already exist":
                 setError("User already exists");
                 return;
             case "User is older than 100 years old":
+                setError("User must not be older than 100")
+                return;
             case "User is not older than 16 years old":
                 setError("User must be older than 16");
                 return;
         }
-        Object.keys(response.data.errors).reverse().forEach((key) => {
-            const error = response.data.errors[key];
-            if (error !== "") {
-                setError(error);
-            }
-            return;
-        })
     };
 
     return (
@@ -99,6 +106,6 @@ const SignUp = () => {
             </form>
         </div>
     );
-};
+});
 
-export default observer(SignUp);
+export default SignUp;

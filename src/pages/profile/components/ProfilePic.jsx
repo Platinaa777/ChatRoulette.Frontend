@@ -1,10 +1,16 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import Avatar from 'react-avatar-edit';
 import ModalDialog from '../../../components/ModalDialog';
+import profile from '../../../assets/profile.png'
+import { observer } from 'mobx-react-lite';
+import { useSession } from '../../../http/context/UserContext';
 
 
 
-const ProfilePic = ({src, setSrc, updatePic}) => {
+const ProfilePic = observer(() => {
+    const userSession = useSession();
+
+    const [src, setSrc] = useState(profile)
     const [preview, setPreview] = useState("");
     const [croppedImg, setCroppedImg] = useState("");
     const [crop, setCrop] = useState(false);
@@ -16,6 +22,10 @@ const ProfilePic = ({src, setSrc, updatePic}) => {
     const onClose = () => {
         setCrop(false);
         setCroppedImg("");
+    }
+
+    const updatePic = async (img) => {
+        await userSession.changeAvatar(img)
     }
 
     function onSubmitPicture() {
@@ -42,6 +52,6 @@ const ProfilePic = ({src, setSrc, updatePic}) => {
             />
         </ModalDialog>
     </>);
-};
+});
 
 export default ProfilePic;

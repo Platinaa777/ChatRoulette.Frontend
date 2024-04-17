@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { useUser } from "../../http/context/UserContext";
+import { useSession } from "../../http/context/UserContext";
 import { paths } from "../../static/Paths";
 
-export const SignIn = () => {
+export const SignIn = observer(() => {
+    const navigate = useNavigate();
+
+    const userSession = useSession();
+
     const [formData, setFormData] = useState({
         email: '', password: '',
     });
-    const navigate = useNavigate();
     const [wasFocused, setWasFocused] = useState({ email: false, password: false });
-
     const [error, setError] = useState(null);
-
-
-    const { userSession } = useUser();
 
     const handleChange = (e) => {
         setError(null);
@@ -26,29 +25,31 @@ export const SignIn = () => {
 
     const loginRequest = async (e) => {
         e.preventDefault();
-        let response = await userSession.login(formData.email, formData.password);
-        if (response.isSuccess) {
+        let result = await userSession.login(formData.email, formData.password);
+        if (result.isSuccess) {
             navigate(paths.mainPath);
             return;
         }
-        if (response.data.error.code === "ValidationError") {
-            switch (response.data.errors[0].code) {
-                case "Email":
-                    setError(formData.email === "" ? "Email must not be empty" : "Invalid email address");
-                    break;
-                case "Password":
-                    setError("Password must not be empty");
-                    break;
-            }
-            return;
-        }
-        switch (response.data.error.message) {
+        switch (result.data.error.message) {
+            case "Validation error was thrown":
+                switch (result.data.errors.reverse()[0].code) {
+                    case "Email":
+                        setError(formData.email === "" ? "Email must not be empty" : "Invalid email address");
+                        return;
+                    case "Password":
+                        setError("Password must not be empty");
+                        return;
+                }
+                break;
+            case "Invalid email":
+                setError("Invalid email address")
+                return
             case "Unactivated user":
-                setError("No such user");
-                return;
+                setError("No such confirmed user")
+                return
             case "Wrong password":
-                setError("Wrong password");
-                return;
+                setError("Wrong password")
+                return
         }
     };
 
@@ -74,6 +75,6 @@ export const SignIn = () => {
         </form>
     </div>
     );
-};
+});
 
-export default observer(SignIn);
+export default SignIn;

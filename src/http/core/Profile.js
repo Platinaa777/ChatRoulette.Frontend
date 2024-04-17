@@ -3,7 +3,7 @@ import api from "../api";
 export class ProfileService {
 
     static async getProfile() {
-        // return api.get("/profile/get-user-info", {}, {withCredentials: true});
+        return api.get("/profile/get-user-info", {}, {withCredentials: true});
     }
 
     static async changeUsername(UserName) {

@@ -1,10 +1,10 @@
 import React from "react";
 import {useNavigate} from 'react-router-dom'
 import {observer} from "mobx-react-lite";
-import {useUser} from "../../../http/context/UserContext";
+import {useSession} from "../../../http/context/UserContext";
 
 const WaitingRoom = () => {
-    const {userSession} = useUser()
+    const {userSession} = useSession()
     const navigate = useNavigate();
 
     const redirectToMainWithLogout = () => userSession.logout().then(() => navigate("/"))

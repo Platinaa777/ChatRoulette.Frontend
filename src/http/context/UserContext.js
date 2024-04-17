@@ -1,15 +1,18 @@
-import React, {useContext} from "react";
-import UserSession from "../../http/core/UserSession";
+import React, { createContext, useContext } from "react";
+import { UserSession } from "../core/UserSession";
+import { observer, useLocalObservable } from "mobx-react-lite";
 
-const userSession = new UserSession();
-const UserContext = React.createContext({userSession});
+const Context = createContext(null);
 
-export function useUser() {
-    return useContext(UserContext);
-}
-
-export function UserProvider({children}) {
-    return <UserContext.Provider value = {{userSession}}>
+export const UserProvider = observer(({ children }) => {
+    const store = useLocalObservable(() => new UserSession());
+    return <Context.Provider value={store}>
         {children}
-    </UserContext.Provider>
+    </Context.Provider>
+});
+
+export const useSession = () => {
+    const store = useContext(Context);
+    if (!store) throw new Error('Use user store within provider!')
+    return store
 }

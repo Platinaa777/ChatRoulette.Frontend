@@ -1,18 +1,19 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import {Link, NavLink} from 'react-router-dom';
 import {BiArrowBack} from "react-icons/bi";
 import {SidebarPages} from '../static/SidebarPages';
-import { useUser } from '../http/context/UserContext';
+import { useSession } from '../http/context/UserContext';
+import { observer } from 'mobx-react-lite';
 
-const Sidebar = ({active, hide}) => {
+const Sidebar = observer(({active, hide}) => {
 
-    const {userSession} = useUser();
+    const userSession = useSession();
 
     const checkDisplay = (requireAuth, requireAdmin) => {
 
         if (requireAuth) {
             if (requireAdmin) {
-                return userSession.IsAdmin;
+                return userSession.IsAuth && userSession.IsAdmin;
             }
             return userSession.IsAuth;
         }
@@ -36,6 +37,6 @@ const Sidebar = ({active, hide}) => {
             })}
         </ul>
     </nav>);
-}
+});
 
 export default Sidebar;

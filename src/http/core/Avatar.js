@@ -10,9 +10,6 @@ export class AvatarService {
 
         console.log(formFile.file)
 
-        return await api.post("avatar/change-avatar", {File: formFile}, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            }});
+        return await api.post("avatar/change-avatar", {File: formFile}, {withCredentials: true});
     }
 }

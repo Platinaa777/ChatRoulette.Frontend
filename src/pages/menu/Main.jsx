@@ -1,11 +1,11 @@
 import React, { useEffect} from "react";
 import { observer } from "mobx-react-lite";
-import { useUser } from "../../http/context/UserContext";
+import { useSession } from "../../http/context/UserContext";
 import { Link } from "react-router-dom";
 import Footer from './components/Footer';
 
 const Main = () => {
-    const { userSession } = useUser();
+    const userSession = useSession();
 
     useEffect(() => {
         if (!localStorage.getItem('access-token')) {
@@ -13,7 +13,6 @@ const Main = () => {
         } else {
             userSession.setAuth(true)
             userSession.setUser({ email: localStorage.getItem('email') })
-            // here request and set username and profile pic, or mb in navbar
         }
     });
 

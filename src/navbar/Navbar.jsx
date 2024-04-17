@@ -4,12 +4,12 @@ import { FaBars } from 'react-icons/fa';
 import { IconContext } from 'react-icons';
 import Sidebar from './Sidebar';
 import { observer } from 'mobx-react-lite';
-import { useUser } from './../http/context/UserContext';
+import { useSession } from './../http/context/UserContext';
 import { BsPerson } from "react-icons/bs";
 import { paths } from '../static/Paths';
 
-const Navbar = () => {
-    const { userSession } = useUser();
+const Navbar = observer(() => {
+    const userSession = useSession();
 
     const [authMenu, setAuthMenu] = useState(false);
     const authMenuRef = useRef();
@@ -28,8 +28,11 @@ const Navbar = () => {
     }, []);
 
     useEffect(() => {
-        let response = userSession.getProfile();
-        console.log(userSession.profile.userName)
+        async function loadProfile() {
+            await userSession.getProfile();
+        }
+
+        loadProfile();
     }, []);
 
     const [sidebar, setSidebar] = useState(false);
@@ -58,9 +61,9 @@ const Navbar = () => {
             {!userSession.IsAuth &&
                 <Link className='py-3 px-4 min-w-40 hover:bg-indigo-100' to={paths.signInPath}>Sign in</Link>}
             {!userSession.IsAuth &&
-                <Link className='py-3 px-4 min-w-40 hover:bg-indigo-100' to={paths.signUpPath}>Sign up</Link>}
+            <Link className='py-3 px-4 min-w-40 hover:bg-indigo-100' to={paths.signUpPath}>Sign up</Link>}
         </div>
     </IconContext.Provider >);
-}
+});
 
-export default observer(Navbar);
+export default Navbar;

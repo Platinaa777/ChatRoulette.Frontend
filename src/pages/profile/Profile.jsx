@@ -1,57 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import ProfilePic from "./components/ProfilePic";
 import UserdataView from "./components/UserdataView";
 import RatingView from "./components/RatingView";
 import AchievementsView from "./components/AchievementsView";
 import { Tab } from '@headlessui/react';
-import { useUser } from '../../http/context/UserContext';
-import profile from '../../assets/profile.png';
+import { useSession } from '../../http/context/UserContext';
 
 const Profile = () => {
-    const { userSession } = useUser();
-
-    const [rating, setRating] = useState({ top: [], me: {} });
-    const [username, setUsername] = useState(userSession.IsAuth ? userSession.profile.userName : "Username");
-    const [src, setSrc] = useState(profile);
-
-    const changeUsername = async (e) => {
-        e.preventDefault()
-        await userSession.changeUsername(username)
-        getTopUsers()
-    }
-
-    const changeAvatar = async (img) => {
-        userSession.changeAvatar(img).then( async response => {
-            // console.log(response)
-            await userSession.getProfile()
-            setRating(prevState => ({
-                ...prevState,
-                me: {
-                    ...prevState.me,
-                    avatar: userSession.profile.avatar
-                }
-            }))
-        }).then().catch(err => console.log(err))
-    }
-
-    const getTopUsers = async () => {
-        userSession.getTopUsers().then(result => setRating(prevState => ({
-            top: [...result],
-            me: {
-                ...prevState.me,
-                userName: username
-            }
-        })));
-    }
+    const userSession = useSession();
 
     useEffect(() => {
-        if (userSession.IsAuth) {
-            let response = userSession.getProfile();
-            console.log(response)
-            getTopUsers();
-        } else {
-            console.log("user is not auth");
+        async function loadProfile() {
+            await userSession.getProfile()
         }
+
+        loadProfile()
     }, []);
 
     function classNames(...classes) {
@@ -62,8 +25,8 @@ const Profile = () => {
         <div className='w-full sm:w-[35%]'>
             <div className='flex flex-col px-4 rounded-md'>
                 <h1 className='text-3xl mb-4 text-center p-1 text-blue-800'>Profile</h1>
-                <ProfilePic src={src} setSrc={setSrc} updatePic={changeAvatar}/>
-                <UserdataView username={username} setUsername={setUsername} changeUsername={changeUsername} />
+                <ProfilePic/>
+                <UserdataView/>
             </div>
         </div>
         <div className='mx-2 sm:ml-4 w-full sm:w-[65%] flex flex-col items-center'>
@@ -85,7 +48,7 @@ const Profile = () => {
                         key={"Leaderboard"}
                         className='rounded-xl bg-white px-2 focus:outline-none'
                     >
-                        <RatingView rating={rating} username={username} />
+                        <RatingView/>
                     </Tab.Panel>
                     <Tab.Panel
                         key={"Achievements"}
