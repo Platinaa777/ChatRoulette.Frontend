@@ -12,7 +12,7 @@ const Sidebar = ({active, hide}) => {
 
         if (requireAuth) {
             if (requireAdmin) {
-                return userSession.getInfo() === 'Admin';
+                return userSession.IsAdmin;
             }
             return userSession.IsAuth;
         }

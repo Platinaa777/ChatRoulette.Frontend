@@ -6,8 +6,11 @@ import { ProfileService } from "./Profile";
 
 export default class UserSession {
     user = {}
+    profile = {}
     IsAuth = false
+    IsAdmin = false
     profileImg = null
+    recentUsers = []
 
     constructor() {
         makeAutoObservable(this)
@@ -17,8 +20,20 @@ export default class UserSession {
         this.IsAuth = state
     }
 
+    setAdmin(state) {
+        this.IsAdmin = state
+    }
+
     setUser(state) {
         this.user = state
+    }
+
+    setProfile(state) {
+        this.profile = state
+    }
+
+    setRecentUsers(state) {
+        this.recentUsers = state
     }
 
     async login(email, password) {
@@ -26,9 +41,9 @@ export default class UserSession {
             let response = await Auth.login(email, password);
             localStorage.setItem('access-token', response.data.value.accessToken)
             localStorage.setItem('email', response.data.value.email)
-            console.log(response.data)
             this.setAuth(true)
             this.setUser(response.data)
+            this.getProfile();
             return response.data
         } catch (e) {
             console.log(e.response)
@@ -58,8 +73,11 @@ export default class UserSession {
             localStorage.removeItem('access-token');
             localStorage.removeItem('email');
             this.setAuth(false)
+            this.setAdmin(false)
             this.setUser({})
+            this.setProfile({})
             this.setProfileImg(null)
+            this.setRecentUsers([])
         }
     }
 
@@ -86,26 +104,17 @@ export default class UserSession {
     }
 
     async getInfo() {
-        try {
-            const response = await Auth.getInfo()
-            console.log(response.data)
-        } catch (e) {
-            console.error(e)
-        }
+        Auth.getInfo().then(response => this.setAdmin(response.data === 'Admin')).catch(err => console.log(err))
     }
 
     setProfileImg(state) {
         this.profileImg = state;
     }
 
-    async getProfile(email) {
-        try {
-            let response = await ProfileService.getProfile(email);
-            console.log(response)
-            this.setUser(response.data.value)
-        } catch (e) {
-            console.error(e)
-        }
+    async getProfile() {
+        ProfileService.getProfile().then(response => {
+            this.setProfile(response.data.value)
+        }).catch(err => console.log(err))
     }
 
     async changeUsername(newUsername) {
@@ -114,7 +123,7 @@ export default class UserSession {
             console.log(response)
             this.getProfile(this.user.email)
         } catch (e) {
-            console.error(e)
+            console.log(e)
         }
     }
 
@@ -124,7 +133,13 @@ export default class UserSession {
             console.log(response);
             return response.data.value;
         } catch (e) {
-            console.error(e)
+            console.log(e)
         }
+    }
+
+    async getRecentUsers() {
+        return ProfileService.getRecentPeers().then(response => 
+            this.setRecentUsers(response)
+        ).catch(err => console.log(err))
     }
 }

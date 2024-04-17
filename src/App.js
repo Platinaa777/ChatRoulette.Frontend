@@ -21,7 +21,7 @@ export default function App() {
     const ProtectedRoute = ({ children, requireAdmin = false }) => {
         const { userSession } = useUser();
 
-        if (!userSession.IsAuth || requireAdmin && userSession.getInfo() !== 'Admin') {
+        if (!userSession.IsAuth || requireAdmin && !(userSession.IsAdmin)) {
             return <Navigate to={paths.mainPath} replace />;
         }
 

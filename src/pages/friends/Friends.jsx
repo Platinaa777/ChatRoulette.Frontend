@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tab } from '@headlessui/react';
 import { useUser } from '../../http/context/UserContext';
 import ReportUser from '../../components/ReportUser';
@@ -12,9 +12,16 @@ const Friends = () => {
     }
 
     const [friends, setFriends] = useState([]);
-    console.log(friends);
     const [recents, setRecents] = useState([]);
     const [requests, setRequests] = useState([]);
+
+    useEffect(() => {
+        userSession.getRecentUsers()
+
+        setFriends([...userSession.profile.friends])
+        setRecents([...userSession.recentUsers])
+        setRequests([])
+    }, [])
 
     const [report, setReport] = useState({ open: false, username: null })
 

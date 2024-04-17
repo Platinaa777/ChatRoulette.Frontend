@@ -22,12 +22,6 @@ const SignUp = () => {
     const navigate = useNavigate();
     const { userSession } = useUser();
 
-    function calculateAge(birthday) {
-        var ageDifMs = Date.now() - birthday;
-        var ageDate = new Date(ageDifMs);
-        return Math.abs(ageDate.getUTCFullYear() - 1970);
-    }
-
     const [error, setError] = useState(null);
 
     const handleChange = (e) => {
@@ -42,20 +36,18 @@ const SignUp = () => {
         e.preventDefault()
         console.log(formData.birthdateutc)
         let response = await userSession.register(formData);
-        if (response.status === 200) {
-            if (response.data.isSuccess) {
-                navigate(paths.mainPath);
+        if (response.status === 200 && response.data.isSuccess) {
+            navigate(paths.mainPath);
+            return;
+        }
+        switch (response.data.error.message) {
+            case "User already exist":
+                setError("User already exists");
                 return;
-            }
-            switch (response.data.error.message) {
-                case "User already exist":
-                    setError("User already exists");
-                    return;
-                case "User is older than 100 years old":
-                case "User is not older than 16 years old":
-                    setError("User must be older than 16");
-                    return;
-            }
+            case "User is older than 100 years old":
+            case "User is not older than 16 years old":
+                setError("User must be older than 16");
+                return;
         }
         Object.keys(response.data.errors).reverse().forEach((key) => {
             const error = response.data.errors[key];

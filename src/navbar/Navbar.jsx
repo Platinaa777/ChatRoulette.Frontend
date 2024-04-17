@@ -28,13 +28,9 @@ const Navbar = () => {
     }, []);
 
     useEffect(() => {
-        if (userSession.IsAuth) {
-            let email = localStorage.getItem("email");
-            let response = userSession.getProfile(email);
-        } else {
-            console.log("user is not auth");
-        }
-    }, [userSession.IsAuth]);
+        let response = userSession.getProfile();
+        console.log(userSession.profile.userName)
+    }, []);
 
     const [sidebar, setSidebar] = useState(false);
     const showSidebar = () => setSidebar(true);
@@ -52,7 +48,7 @@ const Navbar = () => {
             </div>
             <button ref={authMenuRef} className="user-nick flex justify-start items-center min-w-40 px-4 text-xl text-white" onClick={() => setAuthMenu(!authMenu)}>
                 <BsPerson />
-                <p className='mx-4'>{userSession.IsAuth ? userSession.user.userName : 'Guest'}</p>
+                <p className='mx-4'>{userSession.IsAuth ? userSession.profile.userName : 'Guest'}</p>
             </button>
         </div>
         <Sidebar active={sidebar} hide={hideSidebar} />
