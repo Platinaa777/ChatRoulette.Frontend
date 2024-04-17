@@ -9,9 +9,10 @@ const Sidebar = ({active, hide}) => {
     const {userSession} = useUser();
 
     const checkDisplay = (requireAuth, requireAdmin) => {
+
         if (requireAuth) {
             if (requireAdmin) {
-                return /**/ false;
+                return userSession.getInfo() === 'Admin';
             }
             return userSession.IsAuth;
         }
