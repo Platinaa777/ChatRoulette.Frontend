@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tab } from '@headlessui/react';
+import { AdminService } from '../../http/core/Admin';
 
-const Moderation = () => {/*
+const Moderation = () => {
 
   const [feedback, setFeedback] = useState([{}]);
   const [complaints, setComplaints] = useState([{}]);
@@ -9,6 +10,11 @@ const Moderation = () => {/*
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
   }
+
+  useEffect(() => {
+    AdminService.getFeedback(20).then(response => setComplaints([...response.data.value])).catch(err => console.log(err))
+
+  }, [])
 
   return (
     <div className="mx-4 p-4 w-full flex flex-col items-center">
@@ -36,12 +42,12 @@ const Moderation = () => {/*
               <ul className='flex flex-col'>
                 {data.map((entry) => (<li
                   key={entry.id}
-                  className="w-full h-40 justify-between flex-row relative rounded-md p-3 border-2 mb-1 bg-violet-50 hover:bg-gray-100"
+                  className="w-full m-h-40 justify-between flex-row relative rounded-md p-3 border-2 mb-1 bg-violet-50 hover:bg-gray-100"
                 >
-                  <h1 className='text-blue-800 text-2xl'>{idx === 0 ? "Complaint on " : "Feedback from "}{entry.violatorEmail}</h1>
-                  <h3 className='text-indigo-950 text-xl'>Type: {entry.complaintType}</h3>
-                  <h3 className='text-indigo-950 text-xl'>From: {entry.senderEmail}</h3>
-                  <p>{entry.context}</p>
+                  <h1 className='text-blue-800 text-2xl'>{idx === 0 ? "Complaint on " : "Feedback from "}{entry.email}</h1>
+                  {(idx === 0) && <h3 className='text-indigo-950 text-xl'>Type: {entry.complaintType}</h3>}
+                  {(idx === 0) && <h3 className='text-indigo-950 text-xl'>From: {entry.senderEmail}</h3>}
+                  <p>{entry.content}</p>
                 </li>))}
               </ul>
             </Tab.Panel>)}
@@ -49,7 +55,7 @@ const Moderation = () => {/*
         </Tab.Group>
       </div>
     </div>
-  )*/
+  )
   return (<div></div>)
 }
 

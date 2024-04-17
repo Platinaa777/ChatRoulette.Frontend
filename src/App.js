@@ -21,9 +21,9 @@ export default function App() {
     const ProtectedRoute = ({ children, requireAdmin = false }) => {
         const { userSession } = useUser();
 
-        if (!userSession.IsAuth || requireAdmin && !(userSession.IsAdmin)) {
-            return <Navigate to={paths.mainPath} replace />;
-        }
+        //if (!userSession.IsAuth || requireAdmin && !(userSession.IsAdmin)) {
+        //    return <Navigate to={paths.mainPath} replace />;
+        //}
 
         return children;
     };
@@ -52,7 +52,7 @@ export default function App() {
 
                 <Route exec path={paths.moderationPath} element={
                     <ProtectedRoute requireAdmin={true}>
-                        <Profile />
+                        <Moderation />
                     </ProtectedRoute>} />
 
                 <Route exec path={paths.statsPath} element={

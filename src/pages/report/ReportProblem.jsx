@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { IoSend } from 'react-icons/io5';
 import { useUser } from '../../http/context/UserContext';
-import { ReportService } from '../../http/core/Report';
+import { AdminService } from '../../http/core/Admin';
 
 const ReportProblem = () => {
 
@@ -13,7 +13,7 @@ const ReportProblem = () => {
     e.preventDefault();
     const content = Object.fromEntries(new FormData(e.target).entries()).content;
     try {
-      const response = await ReportService.addReport(userSession.user.email, content);
+      const response = await AdminService.addFeedback(userSession.user.email, content);
       console.log(response)
     } catch (err) {
       console.log(err)
