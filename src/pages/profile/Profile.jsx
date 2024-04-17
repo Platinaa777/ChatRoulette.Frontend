@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProfilePic from "./components/ProfilePic";
 import UserdataView from "./components/UserdataView";
 import RatingView from "./components/RatingView";
@@ -13,11 +13,30 @@ const Profile = () => {
         return classes.filter(Boolean).join(' ')
     }
 
+    const [rating, setRating] = useState({ top: [], me: {} });
+
+    const getTopUsers = async () => {
+        userSession.getTopUsers().then(result => setRating(prevState => ({
+            top: [...result],
+            me: {
+                ...prevState.me,
+                userName: username
+            }
+        })));
+    }
+
+    const [username, setUsername] = useState(userSession.IsAuth ? userSession.profile.userName : "Username");
+
+    const changeUsername = async (e) => {
+        e.preventDefault()
+        await userSession.changeUsername(username)
+        getTopUsers()
+    }
+
     useEffect(() => {
         if (userSession.IsAuth) {
-            let email = localStorage.getItem("email");
-            let response = userSession.getProfile(email);
-            console.log(response);
+            let response = userSession.getProfile();
+            getTopUsers();
         } else {
             console.log("user is not auth");
         }
@@ -28,7 +47,7 @@ const Profile = () => {
             <div className='flex flex-col px-4 rounded-md'>
                 <h1 className='text-3xl mb-4 text-center p-1 text-blue-800'>Profile</h1>
                 <ProfilePic />
-                <UserdataView />
+                <UserdataView username={username} setUsername={setUsername} changeUsername={changeUsername} />
             </div>
         </div>
         <div className='mx-2 sm:ml-4 w-full sm:w-[65%] flex flex-col items-center'>
@@ -50,7 +69,7 @@ const Profile = () => {
                         key={"Leaderboard"}
                         className='rounded-xl bg-white px-2 focus:outline-none'
                     >
-                        <RatingView />
+                        <RatingView rating={rating} username={username} />
                     </Tab.Panel>
                     <Tab.Panel
                         key={"Achievements"}

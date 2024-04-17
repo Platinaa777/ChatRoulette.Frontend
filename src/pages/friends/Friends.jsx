@@ -15,11 +15,14 @@ const Friends = () => {
     const [recents, setRecents] = useState([]);
     const [requests, setRequests] = useState([]);
 
-    useEffect(() => {
-        userSession.getRecentUsers()
+    const getRecentUsers = async () => {
+        const result = await  userSession.getRecentUsers();
+        setRecents([...result]);
+    }
 
+    useEffect(() => {
         setFriends([...userSession.profile.friends])
-        setRecents([...userSession.recentUsers])
+        getRecentUsers()
         setRequests([])
     }, [])
 

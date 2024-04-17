@@ -10,7 +10,6 @@ export default class UserSession {
     IsAuth = false
     IsAdmin = false
     profileImg = null
-    recentUsers = []
 
     constructor() {
         makeAutoObservable(this)
@@ -30,10 +29,6 @@ export default class UserSession {
 
     setProfile(state) {
         this.profile = state
-    }
-
-    setRecentUsers(state) {
-        this.recentUsers = state
     }
 
     async login(email, password) {
@@ -77,7 +72,6 @@ export default class UserSession {
             this.setUser({})
             this.setProfile({})
             this.setProfileImg(null)
-            this.setRecentUsers([])
         }
     }
 
@@ -121,7 +115,7 @@ export default class UserSession {
         try {
             let response = await ProfileService.changeUsername(newUsername)
             console.log(response)
-            this.getProfile(this.user.email)
+            await this.getProfile()
         } catch (e) {
             console.log(e)
         }
@@ -138,8 +132,12 @@ export default class UserSession {
     }
 
     async getRecentUsers() {
-        return ProfileService.getRecentPeers().then(response => 
-            this.setRecentUsers(response)
-        ).catch(err => console.log(err))
+        try {
+            let response = await ProfileService.getRecentPeers(5);
+            console.log(response.data.value);
+            return response.data.value;
+        } catch (err) {
+            console.log(err)
+        }
     }
 }

@@ -6,8 +6,8 @@ export class ProfileService {
         return api.get("/profile/get-user-info", {}, {withCredentials: true});
     }
 
-    static async changeUsername(newUsername) {
-        return api.put("/profile/change-username", { newUsername }, {withCredentials: true})
+    static async changeUsername(UserName) {
+        return api.put("/profile/change-username", {userName: UserName}, {withCredentials: true})
     }
 
     static async getTopUsers(number) {
