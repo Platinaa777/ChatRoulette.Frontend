@@ -1,12 +1,10 @@
 import React, { Fragment, useState } from 'react';
 import Avatar from 'react-avatar-edit';
-import profile from '../../../assets/profile.png';
 import ModalDialog from '../../../components/ModalDialog';
 
 
 
-const ProfilePic = () => {
-    const [src, setSrc] = useState(profile);
+const ProfilePic = ({src, setSrc, updatePic}) => {
     const [preview, setPreview] = useState("");
     const [croppedImg, setCroppedImg] = useState("");
     const [crop, setCrop] = useState(false);
@@ -25,7 +23,8 @@ const ProfilePic = () => {
             setSrc(croppedImg);
         }
         onClose();
-        // send to server
+        console.log(src)
+        updatePic();
     }
 
     return (<>

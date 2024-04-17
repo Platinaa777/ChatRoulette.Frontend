@@ -5,15 +5,34 @@ import RatingView from "./components/RatingView";
 import AchievementsView from "./components/AchievementsView";
 import { Tab } from '@headlessui/react';
 import { useUser } from '../../http/context/UserContext';
+import profile from '../../assets/profile.png';
 
 const Profile = () => {
     const { userSession } = useUser();
 
-    function classNames(...classes) {
-        return classes.filter(Boolean).join(' ')
+    const [rating, setRating] = useState({ top: [], me: {} });
+    const [username, setUsername] = useState(userSession.IsAuth ? userSession.profile.userName : "Username");
+    const [src, setSrc] = useState(profile);
+
+    const changeUsername = async (e) => {
+        e.preventDefault()
+        await userSession.changeUsername(username)
+        getTopUsers()
     }
 
-    const [rating, setRating] = useState({ top: [], me: {} });
+    const changeAvatar = async () => {
+        userSession.changeAvatar(src).then( async response => {
+            console.log(response)
+            await userSession.getProfile()
+            setRating(prevState => ({
+                ...prevState,
+                me: {
+                    ...prevState.me,
+                    avatar: userSession.profile.avatar
+                }
+            }))
+        }).then().catch(err => console.log(err))
+    }
 
     const getTopUsers = async () => {
         userSession.getTopUsers().then(result => setRating(prevState => ({
@@ -25,28 +44,25 @@ const Profile = () => {
         })));
     }
 
-    const [username, setUsername] = useState(userSession.IsAuth ? userSession.profile.userName : "Username");
-
-    const changeUsername = async (e) => {
-        e.preventDefault()
-        await userSession.changeUsername(username)
-        getTopUsers()
-    }
-
     useEffect(() => {
         if (userSession.IsAuth) {
             let response = userSession.getProfile();
+            console.log(response)
             getTopUsers();
         } else {
             console.log("user is not auth");
         }
     }, []);
 
+    function classNames(...classes) {
+        return classes.filter(Boolean).join(' ')
+    }
+
     return (<div className='flex flex-col sm:flex-row px-8 py-4 sm:h-full text-indigo-950'>
         <div className='w-full sm:w-[35%]'>
             <div className='flex flex-col px-4 rounded-md'>
                 <h1 className='text-3xl mb-4 text-center p-1 text-blue-800'>Profile</h1>
-                <ProfilePic />
+                <ProfilePic src={src} setSrc={setSrc} updatePic={changeAvatar}/>
                 <UserdataView username={username} setUsername={setUsername} changeUsername={changeUsername} />
             </div>
         </div>

@@ -3,13 +3,13 @@ import {Auth} from './Auth'
 import axios from "axios"
 import {REFRESH_TOKEN_URL} from "../../static/Urls";
 import { ProfileService } from "./Profile";
+import { AvatarService } from "./Avatar";
 
 export default class UserSession {
     user = {}
     profile = {}
     IsAuth = false
     IsAdmin = false
-    profileImg = null
 
     constructor() {
         makeAutoObservable(this)
@@ -71,7 +71,6 @@ export default class UserSession {
             this.setAdmin(false)
             this.setUser({})
             this.setProfile({})
-            this.setProfileImg(null)
         }
     }
 
@@ -101,10 +100,6 @@ export default class UserSession {
         Auth.getInfo().then(response => this.setAdmin(response.data === 'Admin')).catch(err => console.log(err))
     }
 
-    setProfileImg(state) {
-        this.profileImg = state;
-    }
-
     async getProfile() {
         ProfileService.getProfile().then(response => {
             this.setProfile(response.data.value)
@@ -117,6 +112,15 @@ export default class UserSession {
             console.log(response)
             await this.getProfile()
         } catch (e) {
+            console.log(e)
+        }
+    }
+
+    async changeAvatar(picture) {
+        try {
+            let response = await AvatarService.changeAvatar(picture)
+            console.log("success", response.data)
+        } catch(e) {
             console.log(e)
         }
     }
