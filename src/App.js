@@ -5,7 +5,7 @@ import Hub from './pages/chat/Hub.jsx'
 import SignUp from './pages/auth/SignUp.jsx'
 import SignIn from './pages/auth/SignIn.jsx'
 import WaitingRoom from './pages/menu/components/WaitingRoom.jsx';
-import NotFound from './pages/menu/components/NotFound.jsx';
+import NotFound from './pages/NotFound.jsx';
 import Navbar from "./navbar/Navbar";
 import { paths } from "./static/Paths";
 import Profile from "./pages/profile/Profile";
