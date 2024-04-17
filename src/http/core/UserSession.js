@@ -85,6 +85,15 @@ export default class UserSession {
         }
     }
 
+    async getInfo() {
+        try {
+            const response = await Auth.getInfo()
+            console.log(response.data)
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
     setProfileImg(state) {
         this.profileImg = state;
     }

@@ -1,5 +1,5 @@
 import './App.css';
-import {Navigate, Route, Routes} from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import Main from './pages/menu/Main.jsx'
 import Hub from './pages/chat/Hub.jsx'
 import SignUp from './pages/auth/SignUp.jsx'
@@ -17,23 +17,60 @@ import { useUser } from './http/context/UserContext.js';
 
 
 export default function App() {
-    const {userSession} = useUser();
+
+    const ProtectedRoute = ({ children, requireAdmin = false }) => {
+        const { userSession } = useUser();
+
+        if (!userSession.IsAuth || requireAdmin && userSession.getInfo() !== 'Admin') {
+            return <Navigate to={paths.mainPath} replace />;
+        }
+
+        return children;
+    };
 
     return (<>
-        <Navbar/>
+        <Navbar />
         <div className="container">
             <Routes>
-                <Route exec path={paths.mainPath} element={<Main/>}/>
-                <Route exec path={paths.signUpPath} element={<SignUp/>}/>
-                <Route exec path={paths.signInPath} element={<SignIn/>}/>
-                <Route exec path={paths.profilePath} element={userSession.IsAuth ? <Profile/> : <Navigate replace to={paths.mainPath}/>}/>
-                <Route exec path={paths.friendsPath} element={userSession.IsAuth ? <Friends/> : <Navigate replace to={paths.mainPath}/>}/>
-                <Route exec path={paths.reportPath} element={userSession.IsAuth ? <ReportProblem/> : <Navigate replace to={paths.mainPath}/>}/>
-                <Route exec path={paths.moderationPath} element={userSession.IsAuth /* && userSession.IsAdmin */ ? <Moderation/> : <Navigate replace to={paths.mainPath}/>}/>
-                <Route exec path={paths.statsPath} element={userSession.IsAuth /* && userSession.IsAdmin */ ? <SiteStats/> : <Navigate replace to={paths.mainPath}/>}/>
-                <Route exec path={paths.hubPath} element={userSession.IsAuth ? <Hub/> : <Navigate replace to={paths.mainPath}/>}/>
-                <Route exec path={paths.waitingRoomPath} element={userSession.IsAuth ? <WaitingRoom/> : <Navigate replace to={paths.mainPath}/>}/>
-                <Route path={paths.notFoundPath} element={<NotFound/>}/>
+                <Route exec path={paths.mainPath} element={<Main />} />
+                <Route exec path={paths.signUpPath} element={<SignUp />} />
+                <Route exec path={paths.signInPath} element={<SignIn />} />
+
+                <Route exec path={paths.profilePath} element={
+                    <ProtectedRoute>
+                        <Profile />
+                    </ProtectedRoute>} />
+
+                <Route exec path={paths.friendsPath} element={<ProtectedRoute>
+                    <Friends />
+                </ProtectedRoute>} />
+
+                <Route exec path={paths.reportPath} element={
+                    <ProtectedRoute>
+                        <ReportProblem />
+                    </ProtectedRoute>} />
+
+                <Route exec path={paths.moderationPath} element={
+                    <ProtectedRoute requireAdmin={true}>
+                        <Profile />
+                    </ProtectedRoute>} />
+
+                <Route exec path={paths.statsPath} element={
+                    <ProtectedRoute requireAdmin={true}>
+                        <SiteStats />
+                    </ProtectedRoute>} />
+
+                <Route exec path={paths.hubPath} element={
+                    <ProtectedRoute>
+                        <Hub />
+                    </ProtectedRoute>} />
+
+                <Route exec path={paths.waitingRoomPath} element={
+                    <ProtectedRoute>
+                        <WaitingRoom />
+                    </ProtectedRoute>} />
+
+                <Route path={paths.notFoundPath} element={<NotFound />} />
             </Routes>
         </div>
     </>);

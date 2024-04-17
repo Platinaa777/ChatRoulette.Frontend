@@ -12,8 +12,6 @@ const RatingView = () => {
     
     useEffect(() => {
         getTopUsers();
-        console.log(rating);
-        console.log(userSession.IsAuth);
     }, []);
 
     return (

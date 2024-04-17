@@ -17,4 +17,8 @@ export class Auth {
     static async test() {
         return api.get('/auth/test')
     }
+
+    static async getInfo() {
+        return api.get('/auth/info')
+    }
 }

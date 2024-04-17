@@ -11,7 +11,6 @@ const Main = () => {
         if (!localStorage.getItem('access-token')) {
             userSession.checkAuth().then()
         } else {
-            console.log(localStorage.getItem('email'))
             userSession.setAuth(true)
             userSession.setUser({ email: localStorage.getItem('email') })
             // here request and set username and profile pic, or mb in navbar
