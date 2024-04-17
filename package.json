@@ -31,6 +31,7 @@
     "react-scripts": "5.0.1",
     "tailwindcss": "^3.4.3",
     "twilio-client": "^1.15.1",
+    "uuid": "^9.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

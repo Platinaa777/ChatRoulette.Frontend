@@ -20,11 +20,12 @@ const ProfilePic = ({src, setSrc, updatePic}) => {
 
     function onSubmitPicture() {
         if (croppedImg !== "") {
+            // console.log(croppedImg)
             setSrc(croppedImg);
         }
         onClose();
-        console.log(src)
-        updatePic();
+        // console.log(src)
+        updatePic(croppedImg);
     }
 
     return (<>

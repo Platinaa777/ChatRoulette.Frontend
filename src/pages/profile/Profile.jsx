@@ -20,9 +20,9 @@ const Profile = () => {
         getTopUsers()
     }
 
-    const changeAvatar = async () => {
-        userSession.changeAvatar(src).then( async response => {
-            console.log(response)
+    const changeAvatar = async (img) => {
+        userSession.changeAvatar(img).then( async response => {
+            // console.log(response)
             await userSession.getProfile()
             setRating(prevState => ({
                 ...prevState,

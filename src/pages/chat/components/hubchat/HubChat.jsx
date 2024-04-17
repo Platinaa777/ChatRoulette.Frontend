@@ -17,6 +17,13 @@ const constraints = {
     video: true, // And we want a video track
 }
 
+var configuration = {
+    'iceServers': [
+      {
+        'url': 'stun:stun.myserver.com:19302'
+      } ] }
+  
+
 const HubChat = () => {
     const navigate = useNavigate()
 
@@ -39,7 +46,7 @@ const HubChat = () => {
     const messageChatRef = useRef(null);
 
     useEffect(() => {
-        console.log(connection.current)
+
         connection.current = new signalR.HubConnectionBuilder()
             .withUrl(CONNECTION_URL)
             .withAutomaticReconnect()
@@ -56,8 +63,10 @@ const HubChat = () => {
             await connection.current.invoke('GetId')
         }
 
-        f().then()
-        setEmail(localStorage.getItem('email'))
+        f()
+        let a =Math.random()
+        console.log(String(a))
+        setEmail(String(a))
     }, []);
 
     // type can be ['offer', 'answer', 'candidate', 'relay-ice', '']
@@ -108,6 +117,35 @@ const HubChat = () => {
 
         localVideo.current.muted = true;
     }
+
+    const createRTC = async (roomId, peerConnection, localMediaStream, localVideo, remoteVideo, myIceCandidates, constraints) => {
+        console.log("before")
+        peerConnection.current = new RTCPeerConnection(configuration)
+        console.log("after")
+        console.log(peerConnection.current)
+        localMediaStream.current = await navigator.mediaDevices.getUserMedia(constraints)
+    
+        localVideo.current.srcObject = localMediaStream.current
+    
+        peerConnection.current.ontrack = (event) => {
+            console.log('Remote stream was accepted', event.streams)
+            if (event.streams && event.streams[0] && !remoteVideo.current.srcObject) {
+                remoteVideo.current.srcObject = event.streams[0];
+                console.log('Remote stream was established')
+            }
+        }
+    
+        peerConnection.current.onicecandidate = async (event) => {
+            if (event.candidate) {
+                myIceCandidates.current.push(event.candidate)
+            }
+        }
+    
+        localMediaStream.current.getTracks().forEach(track => {
+            console.log('Push my track to another peer:', track)
+            peerConnection.current.addTrack(track, localMediaStream.current);
+        })
+    };
 
     const stopMyAudioAndVideoTracks = async () => {
         if (localVideo.current.srcObject) {
