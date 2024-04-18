@@ -48,8 +48,11 @@ const SignUp = observer(() => {
                         return;
                     case "UserName":
                         setError("Username must not be empty");
+                        return;
+                    default:
+                        setError("Unforseen problem")
+                        return;
                 }
-                break;
             case "Invalid email":
                 setError("Invalid email address");
                 return;
@@ -61,6 +64,9 @@ const SignUp = observer(() => {
                 return;
             case "User is not older than 16 years old":
                 setError("User must be older than 16");
+                return;
+            default:
+                setError("Unforseen problem")
                 return;
         }
     };

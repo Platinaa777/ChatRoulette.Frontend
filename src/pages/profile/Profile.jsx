@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProfilePic from "./components/ProfilePic";
 import UserdataView from "./components/UserdataView";
 import RatingView from "./components/RatingView";
 import AchievementsView from "./components/AchievementsView";
 import { Tab } from '@headlessui/react';
 import { useSession } from '../../http/context/UserContext';
+import { observer } from 'mobx-react-lite';
 
-const Profile = () => {
+const Profile = observer(() => {
     const userSession = useSession();
 
     useEffect(() => {
@@ -60,6 +61,6 @@ const Profile = () => {
             </Tab.Group>
         </div>
     </div>);
-};
+});
 
 export default Profile;

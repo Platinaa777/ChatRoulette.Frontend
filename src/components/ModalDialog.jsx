@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import {Dialog, Transition} from '@headlessui/react'
 
-const ModalDialog = ({children, title, open, setOpen, onSubmit, onClose}) => {
+const ModalDialog = ({children, title, open, setOpen}) => {
   return (
     <Transition appear show={open} as={Fragment}>
             <Dialog as="div" className='relative z-10' onClose={() => setOpen(false)}>
@@ -36,24 +36,7 @@ const ModalDialog = ({children, title, open, setOpen, onSubmit, onClose}) => {
                                 >
                                     {title}
                                 </Dialog.Title>
-                                <div className="mt-2 overflow-hidden flex justify-center">
-                                    {children}
-                                </div>
-
-                                <div className="mt-4 flex justify-between">
-                                    <button
-                                        type="button"
-                                        className="mx-1 min-w-[calc(50%-0.5rem)] inline-flex justify-center rounded-md border border-transparent bg-indigo-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-indigo-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                                        onClick={onSubmit}>
-                                        Submit
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="mx-1 min-w-[calc(50%-0.5rem)] inline-flex justify-center rounded-md border border-transparent bg-indigo-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-indigo-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                                        onClick={onClose}>
-                                        Cancel
-                                    </button>
-                                </div>
+                                {children}
                             </Dialog.Panel>
                         </Transition.Child>
                     </div>

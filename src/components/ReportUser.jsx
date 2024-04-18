@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import ModalDialog from './ModalDialog'
 
 const ReportUser = ({open, setOpen, userName}) => {

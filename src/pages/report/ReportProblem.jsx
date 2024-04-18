@@ -1,23 +1,24 @@
 import React, { useState } from 'react'
 import { IoSend } from 'react-icons/io5';
 import { useSession } from '../../http/context/UserContext';
-import { AdminService } from '../../http/core/Admin';
+import ModalDialog from '../../components/ModalDialog';
 
 const ReportProblem = () => {
 
-  const { userSession } = useSession();
+  const userSession = useSession();
 
+  const [text, setText] = useState('');
   const [error, setError] = useState('');
+  const [open, setOpen] = useState(false);
 
   const sendReport = async (e) => {
     e.preventDefault();
-    const content = Object.fromEntries(new FormData(e.target).entries()).content;
-    try {
-      const response = await AdminService.addFeedback(userSession.user.email, content);
-      console.log(response)
-    } catch (err) {
-      console.log(err)
+    const result = await userSession.sendFeedback(text)
+    if (!result.data.isSuccess) {
       setError("Message is too short")
+    } else {
+      setOpen(true)
+      setText('')
     }
   }
 
@@ -30,15 +31,29 @@ const ReportProblem = () => {
         <h1 className='text-xl p-3 w-full border-b-2 border-indigo-600 bg-gradient-to-t from-violet-400 to-indigo-400 text-white'>From: {userSession.profile.userName} ({userSession.user.email})</h1>
         <textarea
           name='content'
+          value={text}
           className='focus:outline-none w-full h-[calc(100%-54px)] resize-none p-3 bg-indigo-100'
-          onChange={() => setError('')} />
-          {(error !== '') && <p className='absolute bottom-0 left-0 p-4 mx-2 text-red-500'>{error}</p>}
+          onChange={(v) => {
+            setText(v.target.value)
+            setError('')
+          }} />
+        {(error !== '') && <p className='absolute bottom-0 left-0 p-4 mx-2 text-red-500'>{error}</p>}
         <button className='flex items-center absolute right-0 bottom-0 mx-4 my-2 px-6 py-2 bg-violet-600 rounded-3xl text-white'
           type='submit'>
           Send
           <IoSend className='ml-2' />
         </button>
       </form>
+      <ModalDialog open={open} setOpen={setOpen} title="Yor report was sent successfully!">
+        <div className='mt-4 flex justify-center items-center'>
+          <button
+            type="button"
+            className="mx-1 min-w-[calc(30%-0.5rem)] inline-flex justify-center rounded-md border border-transparent bg-indigo-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-indigo-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            onClick={() => setOpen(false)}>
+            Ok
+          </button>
+        </div>
+      </ModalDialog>
     </div>
   )
 }

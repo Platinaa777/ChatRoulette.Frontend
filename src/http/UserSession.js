@@ -1,10 +1,11 @@
 import { makeAutoObservable } from "mobx"
-import { Auth } from './core/Auth'
+import { Auth } from './core/AuthService'
 import axios from "axios"
 import { REFRESH_TOKEN_URL } from "../static/Urls";
-import { ProfileService } from "./core/Profile";
-import { AvatarService } from "./core/Avatar";
-import { FriendService } from "./core/Friend";
+import { ProfileService } from "./core/ProfileService";
+import { AvatarService } from "./core/AvatarService";
+import { FriendService } from "./core/FriendService";
+import { AdminService } from "./core/AdminService";
 
 export class UserSession {
     user = {}
@@ -99,6 +100,7 @@ export class UserSession {
         }).catch(err => {
             console.log('getProfile fail', err)
             this.setProfile({})
+            this.setAuth(false)
         })
         await this.getAuthInfo()
     }
@@ -112,8 +114,8 @@ export class UserSession {
 
     changeUsername = async (newUsername) => {
         await ProfileService.changeUsername(newUsername).then(response => {
-            this.setProfile({ ...this.profile, userName: newUsername })
             console.log('changeUsername success', response.data)
+            this.getProfile()
         }).catch(err => console.log('changeUsername fail', err.data))
     }
 
@@ -139,19 +141,53 @@ export class UserSession {
         await ProfileService.getRecentPeers().then(response => {
             result = [...response.data.value]
             console.log('getRecentUsers success', result)
-        }).catch(err => console.log('getRecentUsers fail', err.response))
+        }).catch(err => {
+            console.log('getRecentUsers fail', err.response)
+            result = err.response
+        })
+        return result
+    }
+
+    getFriendRequests = async () => {
+        let result = []
+        await FriendService.getInvitations().then(response => {
+            result = [...response.data.value]
+            console.log('getFriendRequests success', result)
+        }).catch(err => {
+            result = err.response
+            console.log('getFriendRequests fail', err.response)
+        })
+        return result
+    }
+
+    addFriendRequest = async (receiverEmail) => {
+        await FriendService.addFriendRequest(receiverEmail).then(
+            response => console.log('addFriend success', response.data)
+        ).catch(err => console.log('addFriend fail', err.response))
+    }
+
+    acceptFriendRequest = async (email) => {
+        await FriendService.acceptInvitationToFriends(email).then(
+            response => console.log('acceptFriendRequest success', response.data)
+        ).catch(err => console.log('acceptFriendRequest fail', err.response))
+    }
+
+    rejectFriendRequest = async (email) => {
+        await FriendService.rejectInvitationToFriends(email).then(
+            response => console.log('rejectFriendRequest success', response.data)
+        ).catch(err => console.log('acceptFriendRequest fail', err.response))
+    }
+
+    sendFeedback = async (content) => {
+        let result = {}
+        await AdminService.addFeedback(this.user.email, content).then(response => {
+            console.log('sendFeedback success', response)
+            result = response
+        }).catch(err => {
+            console.log('sendFeedback fail', err.response)
+            result = err.response
+        })
         return result
     }
 
 }
-
-/*
-async getRecentUsers() {
-    try {
-        let response = await ProfileService.getRecentPeers(5);
-        console.log(response.data.value);
-        return response.data.value;
-    } catch (err) {
-        console.log(err)
-    }
-}*/

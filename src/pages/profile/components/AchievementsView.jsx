@@ -2,7 +2,7 @@ import React from "react";
 import { useSession } from "../../../http/context/UserContext";
 
 const AchievementsView = () => {
-    const { userSession } = useSession();
+    const userSession = useSession();
 
     return (
         <div className="w-full text-indigo-950">

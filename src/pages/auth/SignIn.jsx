@@ -39,8 +39,10 @@ export const SignIn = observer(() => {
                     case "Password":
                         setError("Password must not be empty");
                         return;
+                    default:
+                        setError("Unforseen problem")
+                        return;
                 }
-                break;
             case "Invalid email":
                 setError("Invalid email address")
                 return
@@ -49,6 +51,9 @@ export const SignIn = observer(() => {
                 return
             case "Wrong password":
                 setError("Wrong password")
+                return
+            default:
+                setError("Unforseen problem")
                 return
         }
     };

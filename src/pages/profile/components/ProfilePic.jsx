@@ -40,16 +40,33 @@ const ProfilePic = observer(() => {
 
     return (<>
         <div className='w-full px-4 mb-4'>
-            <img className="w-full aspect-square rounded-[50%] border-4 border-indigo-800" src={src} alt="Profile" onClick={() => setCrop(true)} />
+            <img className="w-full aspect-square rounded-[50%]" src={src} alt="Profile" onClick={() => setCrop(true)} />
         </div>
-        <ModalDialog open={crop} setOpen={setCrop} onSubmit={onSubmitPicture} onClose={onClose} title="Select profile picture">
-            <Avatar
-                width={400}
-                height={300}
-                onCrop={onAvatarCrop}
-                onClose={onAvatarClose}
-                src={preview}
-            />
+        <ModalDialog open={crop} setOpen={setCrop} title="Select profile picture">
+            <div className="mt-2 overflow-hidden flex justify-center">
+                <Avatar
+                    width={400}
+                    height={300}
+                    onCrop={onAvatarCrop}
+                    onClose={onAvatarClose}
+                    src={preview}
+                />
+            </div>
+
+            <div className="mt-4 flex justify-between">
+                <button
+                    type="button"
+                    className="mx-1 min-w-[calc(50%-0.5rem)] inline-flex justify-center rounded-md border border-transparent bg-indigo-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-indigo-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                    onClick={onSubmitPicture}>
+                    Submit
+                </button>
+                <button
+                    type="button"
+                    className="mx-1 min-w-[calc(50%-0.5rem)] inline-flex justify-center rounded-md border border-transparent bg-indigo-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-indigo-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                    onClick={onClose}>
+                    Cancel
+                </button>
+            </div>
         </ModalDialog>
     </>);
 });

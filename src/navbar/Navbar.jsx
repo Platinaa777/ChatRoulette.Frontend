@@ -51,16 +51,16 @@ const Navbar = observer(() => {
             </div>
             <button ref={authMenuRef} className="flex justify-start items-center min-w-40 px-4 text-xl text-white" onClick={() => setAuthMenu(!authMenu)}>
                 <BsPerson />
-                <p className='mx-4'>{userSession.profile.userName ? userSession.profile.userName : 'Guest'}</p>
+                <p className='mx-4'>{userSession.IsAuth ? userSession.profile.userName : 'Guest'}</p>
             </button>
         </div>
         <Sidebar active={sidebar} hide={hideSidebar} />
         <div className={`absolute z-20 ${authMenu ? "flex" : "hidden"} flex-col right-2 top-[4.25rem] bg-indigo-50 text-indigo-950`}>
-            {userSession.profile.userName &&
+            {userSession.IsAuth &&
                 <Link className='py-3 px-4 min-w-40 hover:bg-indigo-100' to={paths.mainPath} onClick={async () => await userSession.logout()}>Sign out</Link>}
-            {!userSession.profile.userName &&
+            {!userSession.IsAuth&&
                 <Link className='py-3 px-4 min-w-40 hover:bg-indigo-100' to={paths.signInPath}>Sign in</Link>}
-            {!userSession.profile.userName &&
+            {!userSession.IsAuth &&
             <Link className='py-3 px-4 min-w-40 hover:bg-indigo-100' to={paths.signUpPath}>Sign up</Link>}
         </div>
     </IconContext.Provider >);

@@ -21,9 +21,14 @@ const Friends = () => {
             setRecents(result.data === "No peer history" ? [] : [...result])
         }
 
+        const getFriendRequests = async () => {
+            const result = await userSession.getFriendRequests();
+            setRequests(result.data === "" ? [] : [...result])
+        }
+
         //setFriends([...userSession.profile.friends])
         getRecentUsers()
-        setRequests([])
+        getFriendRequests()
     }, [])
 
     const [report, setReport] = useState({ open: false, username: null })
