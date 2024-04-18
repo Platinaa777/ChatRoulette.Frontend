@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Tab } from '@headlessui/react';
 import { useSession } from '../../http/context/UserContext';
 import ReportUser from '../../components/ReportUser';
-import { IoMdPersonAdd, IoMdClose } from "react-icons/io";
+import { IoMdPersonAdd } from "react-icons/io";
+import {IoPerson } from "react-icons/io5";
 import { MdOutlineReport } from "react-icons/md";
 import { FaCheck } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
@@ -24,7 +25,6 @@ const Friends = () => {
         const getRecentUsers = async () => {
             const result = await userSession.getRecentUsers();
             if (result.length > 0) {
-                console.log(result)
                 setRecents([...result])
             } else {
                 setRecents([])
@@ -44,6 +44,14 @@ const Friends = () => {
 
     const sendFriendRequest = async (email) => {
         await userSession.addFriendRequest(email)
+    }
+
+    const acceptRequest = async (id) => {
+        await userSession.acceptFriendRequest(id)
+    }
+
+    const rejectRequest = async (id) => {
+        await userSession.acceptFriendRequest(id)
     }
 
     const [report, setReport] = useState({ open: false, username: null })
@@ -95,9 +103,11 @@ const Friends = () => {
                                             <div className='flex'>
                                                 {
                                                     (idx === 1) && <div className='flex ml-4 text-xl font-medium leading-5'>
-                                                        <button className="p-2" onClick={() => sendFriendRequest(person.email)}>
+                                                        {!friends.some(friend => friend.email === person.email) ? <button className="p-2" onClick={() => sendFriendRequest(person.email)}>
                                                             <IoMdPersonAdd/>
-                                                        </button>
+                                                        </button> : <button className="p-2">
+                                                            <IoPerson/>
+                                                        </button>}
                                                         <button className="p-2" onClick={() => setReport(prevState => ({...prevState, open: true}))}>
                                                             <MdOutlineReport/>
                                                         </button>
@@ -105,10 +115,12 @@ const Friends = () => {
                                                 }
                                                 {
                                                     (idx === 2) && <>
-                                                        <button className="ml-4 text-lg font-medium leading-5">
+                                                        <button className="ml-4 text-lg font-medium leading-5"
+                                                        onClick={() => acceptRequest(person.email)}>
                                                             <FaCheck/>
                                                         </button>
-                                                        <button className="ml-4 text-lg font-medium leading-5">
+                                                        <button className="ml-4 text-lg font-medium leading-5"
+                                                        onClick={() => rejectRequest(person.email)}>
                                                             <FaXmark/>
                                                         </button>
                                                     </>
