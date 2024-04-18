@@ -33,7 +33,7 @@ const Friends = () => {
 
         const getFriendRequests = async () => {
             const result = await userSession.getFriendRequests();
-            setRequests(result.data === "" ? [] : [...result])
+            setRequests(result.data.value === null ? [] : [...result])
         }
 
         setFriends([...userSession.profile.friends])
@@ -54,7 +54,7 @@ const Friends = () => {
         await userSession.acceptFriendRequest(id)
     }
 
-    const [report, setReport] = useState({ open: false, username: null })
+    const [report, setReport] = useState({ open: false, username: null, email: null })
 
 
     return (<div className="mx-4 p-4 w-full flex flex-col items-center">
@@ -87,8 +87,8 @@ const Friends = () => {
                             {(data.length === 0) ? <p className='mt-2 p-4 text-lg text-indigo-800'>Wow... empty...</p> :
                                 <ul>
                                     {data.map(
-                                        (person) => (<li
-                                            key={person.id}
+                                        (person, id) => (<li
+                                            key={idx}
                                             className="w-full flex flex-row items-center justify-between relative bg-indigo-50 cursor-pointer rounded-md p-3 border mb-1 hover:bg-gray-100"
                                         >
                                             <div className='flex flex-row items-center'>
@@ -108,7 +108,7 @@ const Friends = () => {
                                                         </button> : <button className="p-2">
                                                             <IoPerson/>
                                                         </button>}
-                                                        <button className="p-2" onClick={() => setReport(prevState => ({...prevState, open: true}))}>
+                                                        <button className="p-2" onClick={() => setReport(prevState => ({open: true, username: person.userName, email: person.email}))}>
                                                             <MdOutlineReport/>
                                                         </button>
                                                     </div>
@@ -136,7 +136,8 @@ const Friends = () => {
         <ReportUser
             open={report.open}
             setOpen={() => setReport((prevState) => ({ ...prevState, open: false }))}
-            userName={report.username} />
+            userName={report.username}
+            email={report.email} />
     </div >)
 };
 

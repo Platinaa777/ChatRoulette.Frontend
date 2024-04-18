@@ -208,6 +208,18 @@ export class UserSession {
         return result
     }
 
+    sendComplaint = async (targetEmail, complaintType, content) => {
+        let result = {}
+        await AdminService.addComplaint(this.user.email, targetEmail, complaintType, content).then(response => {
+            console.log('sendFeedback success', response)
+            result = response
+        }).catch(err => {
+            console.log('sendFeedback fail', err.response)
+            result = err.response
+        })
+        return result
+    }
+
     acceptComplaint = async (id) => {
         await AdminService.acceptComplaint(id).then(
             response => console.log('accedptComplaint success', response)
