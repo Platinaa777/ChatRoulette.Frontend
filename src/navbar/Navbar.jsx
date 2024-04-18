@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { useSession } from './../http/context/UserContext';
 import { BsPerson } from "react-icons/bs";
 import { paths } from '../static/Paths';
+import profile from '../assets/profile.png'
 
 const Navbar = observer(() => {
     const userSession = useSession();
@@ -50,7 +51,10 @@ const Navbar = observer(() => {
                 <p className='block w-[12rem] text-white text-xl'>LangSkillUp</p>
             </div>
             <button ref={authMenuRef} className="flex justify-start items-center min-w-40 px-4 text-xl text-white" onClick={() => setAuthMenu(!authMenu)}>
-                <BsPerson />
+                {userSession.IsAuth ? <img 
+                alt="Avatar" src={userSession.profile.avatar === '' ? profile : userSession.profile.avatar} 
+                width={25} height={25}
+                className='rounded-[12.5px]'/> : <BsPerson/>}
                 <p className='mx-4'>{userSession.IsAuth ? userSession.profile.userName : 'Guest'}</p>
             </button>
         </div>
