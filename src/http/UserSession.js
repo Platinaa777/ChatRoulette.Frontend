@@ -1,9 +1,10 @@
 import { makeAutoObservable } from "mobx"
-import { Auth } from './Auth'
+import { Auth } from './core/Auth'
 import axios from "axios"
-import { REFRESH_TOKEN_URL } from "../../static/Urls";
-import { ProfileService } from "./Profile";
-import { AvatarService } from "./Avatar";
+import { REFRESH_TOKEN_URL } from "../static/Urls";
+import { ProfileService } from "./core/Profile";
+import { AvatarService } from "./core/Avatar";
+import { FriendService } from "./core/Friend";
 
 export class UserSession {
     user = {}
@@ -95,7 +96,10 @@ export class UserSession {
         await ProfileService.getProfile().then(response => {
             this.setProfile(response.data.value)
             console.log('getProfile success', response.data)
-        }).catch(err => console.log('getProfile fail', err))
+        }).catch(err => {
+            console.log('getProfile fail', err)
+            this.setProfile({})
+        })
         await this.getAuthInfo()
     }
 
@@ -108,14 +112,14 @@ export class UserSession {
 
     changeUsername = async (newUsername) => {
         await ProfileService.changeUsername(newUsername).then(response => {
-            this.setProfile({...this.profile, userName: newUsername})
+            this.setProfile({ ...this.profile, userName: newUsername })
             console.log('changeUsername success', response.data)
         }).catch(err => console.log('changeUsername fail', err.data))
     }
 
     changeAvatar = async (newAvatar) => {
         await AvatarService.changeAvatar(newAvatar).then(response => {
-            this.setProfile({...this.profile, avatar: newAvatar})
+            this.setProfile({ ...this.profile, avatar: newAvatar })
             console.log(this.profile)
             console.log('changeAvatar success', response.data)
         }).catch(err => console.log('changeAvatar fail', err.data))
@@ -130,20 +134,18 @@ export class UserSession {
         return result
     }
 
+    getRecentUsers = async () => {
+        let result = []
+        await ProfileService.getRecentPeers().then(response => {
+            result = [...response.data.value]
+            console.log('getRecentUsers success', result)
+        }).catch(err => console.log('getRecentUsers fail', err.response))
+        return result
+    }
+
 }
 
 /*
-
-async getTopUsers() {
-    try {
-        let response = await ProfileService.getTopUsers(5);
-        console.log(response);
-        return response.data.value;
-    } catch (e) {
-        console.log(e)
-    }
-}
-
 async getRecentUsers() {
     try {
         let response = await ProfileService.getRecentPeers(5);

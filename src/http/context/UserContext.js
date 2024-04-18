@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from "react";
-import { UserSession } from "../core/UserSession";
+import { UserSession } from "../UserSession";
 import { observer, useLocalObservable } from "mobx-react-lite";
 
 const Context = createContext(null);

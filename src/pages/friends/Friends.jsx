@@ -5,7 +5,7 @@ import ReportUser from '../../components/ReportUser';
 
 const Friends = () => {
 
-    const { userSession } = useSession();
+    const userSession = useSession();
 
     function classNames(...classes) {
         return classes.filter(Boolean).join(' ')
@@ -15,13 +15,13 @@ const Friends = () => {
     const [recents, setRecents] = useState([]);
     const [requests, setRequests] = useState([]);
 
-    const getRecentUsers = async () => {
-        const result = await  userSession.getRecentUsers();
-        setRecents([...result]);
-    }
-
     useEffect(() => {
-        setFriends([...userSession.profile.friends])
+        const getRecentUsers = async () => {
+            const result = await userSession.getRecentUsers();
+            setRecents(result.data === "No peer history" ? [] : [...result])
+        }
+
+        //setFriends([...userSession.profile.friends])
         getRecentUsers()
         setRequests([])
     }, [])
