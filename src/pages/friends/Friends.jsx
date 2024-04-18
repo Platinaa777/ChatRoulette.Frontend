@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Tab } from '@headlessui/react';
 import { useSession } from '../../http/context/UserContext';
 import ReportUser from '../../components/ReportUser';
+import { IoMdPersonAdd, IoMdClose } from "react-icons/io";
+import { MdOutlineReport } from "react-icons/md";
+import { FaCheck } from "react-icons/fa";
+import profile from '../../assets/profile.png'
 
 const Friends = () => {
 
@@ -26,7 +30,7 @@ const Friends = () => {
             setRequests(result.data === "" ? [] : [...result])
         }
 
-        //setFriends([...userSession.profile.friends])
+        setFriends([...userSession.profile.friends])
         getRecentUsers()
         getFriendRequests()
     }, [])
@@ -57,38 +61,52 @@ const Friends = () => {
                 </Tab.List>
 
                 <Tab.Panels className="w-full">
-                    {[friends, recents, requests].map((data, idx) => <Tab.Panel
-                        key={idx}
-                        className='rounded-xl bg-white px-2 focus:outline-none'>
-                        {(data.length === 0) && <p className='mt-4 p-4 text-lg text-indigo-800'>Wow... empty...</p>}
-                        <ul>
-                            {data.map((person) => (<li
-                                key={person.id}
-                                className="w-full flex justify-between flex-row relative rounded-md p-3 border mb-1 hover:bg-gray-100"
-                            >
-                                <div className="flex">
-                                    <img alt="" src={person.img} width={20} height={20} className="rounded-xl overflow-hidden" />
-                                    <h3 className="ml-4 text-l font-medium leading-5">
-                                        {person.nickName}
-                                    </h3>
-                                </div>
-                                <div className='flex'>
-                                    {
-                                        idx ? <button className="ml-4 text-l font-medium leading-5">
-                                            Add Friend
-                                        </button> : <button className="ml-4 text-l font-medium leading-5">
-                                            Remove Friend
-                                        </button>
-                                    }
-                                    {
-                                        (idx > 0) && <button className="ml-4 text-l font-medium leading-5">
-                                            Report
-                                        </button>
-                                    }
-                                </div>
-                            </li>))}
-                        </ul>
-                    </Tab.Panel>)}
+                    {[friends, recents, requests].map(
+                        (data, idx) => <Tab.Panel
+                            key={idx}
+                            className='rounded-xl bg-white px-2 focus:outline-none'>
+                            {(data.length === 0) ? <p className='mt-2 p-4 text-lg text-indigo-800'>Wow... empty...</p> :
+                                <ul>
+                                    {data.map(
+                                        (person) => (<li
+                                            key={person.id}
+                                            className="w-full flex flex-row items-center justify-between relative bg-indigo-50 cursor-pointer rounded-md p-3 border mb-1 hover:bg-gray-100"
+                                        >
+                                            <div className='flex flex-row items-center'>
+                                                <img alt="" src={profile} width={50} height={50} className="rounded-xl overflow-hidden" />
+                                                <div className="ml-4 flex flex-col justify-center">
+                                                    <h3 className="text-lg font-medium leading-5 text-black">
+                                                        {person.userName}
+                                                    </h3>
+                                                    <p className='float-right'>Rating: {person.rating}</p>
+                                                </div>
+                                            </div>
+                                            <div className='flex'>
+                                                {
+                                                    (idx === 1) && <div className='flex ml-4 text-xl font-medium leading-5'>
+                                                        <button className="p-2">
+                                                            <IoMdPersonAdd/>
+                                                        </button>
+                                                        <button className="p-2">
+                                                            <MdOutlineReport/>
+                                                        </button>
+                                                    </div>
+                                                }
+                                                {
+                                                    (idx === 2) && <>
+                                                        <button className="ml-4 text-lg font-medium leading-5">
+                                                            <FaCheck/>
+                                                        </button>
+                                                        <button className="ml-4 text-lg font-medium leading-5">
+                                                            <IoMdClose/>
+                                                        </button>
+                                                    </>
+                                                }
+                                            </div>
+                                        </li>))}
+                                </ul>
+                            }
+                        </Tab.Panel>)}
                 </Tab.Panels>
             </Tab.Group>
         </div>
@@ -96,7 +114,7 @@ const Friends = () => {
             open={report.open}
             setOpen={() => setReport((prevState) => ({ ...prevState, open: false }))}
             userName={report.username} />
-    </div>)
+    </div >)
 };
 
 export default Friends;
