@@ -1,16 +1,15 @@
-import React, {useEffect, useRef} from 'react';
-import {useRoom} from "../../context/RoomContext";
+import React, { useEffect, useRef } from 'react';
+import { useRoom } from "../../context/RoomContext";
 import HubVideo from "../hubvideo/HubVideo";
 import HubMessageChat from "../hubmessagechat/HubMessageChat";
-import {useConnection} from "../../context/ConnectionContext";
+import { useConnection } from "../../context/ConnectionContext";
 import * as signalR from "@microsoft/signalr";
-import "./HubChat.css";
-import {useConnectionId} from "../../context/ConnectionIdContext";
-import {useEmail} from "../../context/EmailContext";
-import {useNavigate} from "react-router-dom";
-import {paths} from "../../../../static/Paths";
-import {addAnswer, addIceCandidate, createAnswer, createOffer, createRTC} from "../../static/RTCActions";
-import {CONNECTION_URL} from "../../../../static/Urls";
+import { useConnectionId } from "../../context/ConnectionIdContext";
+import { useEmail } from "../../context/EmailContext";
+import { useNavigate } from "react-router-dom";
+import { paths } from "../../../../static/Paths";
+import { addAnswer, addIceCandidate, createAnswer, createOffer, createRTC } from "../../static/RTCActions";
+import { CONNECTION_URL } from "../../../../static/Urls";
 
 const constraints = {
     audio: true, // We want an audio track
@@ -22,15 +21,15 @@ export const configuration = {
         urls: ['stun:stun.1und1.de:3478', 'stun:stun.gmx.net:3478']
     },], iceCandidatePoolSize: 10
 };
-  
+
 
 const HubChat = () => {
     const navigate = useNavigate()
 
     const connection = useConnection();
-    const {room, setRoom} = useRoom();
+    const { room, setRoom } = useRoom();
     const [connectionId, setConnectionId] = useConnectionId();
-    const {email, setEmail} = useEmail();
+    const { email, setEmail } = useEmail();
 
     const isFirstEstablishment = useRef(false)
     const isLeftPerson = useRef(false)
@@ -124,9 +123,9 @@ const HubChat = () => {
         console.log("after")
         console.log(peerConnection.current)
         localMediaStream.current = await navigator.mediaDevices.getUserMedia(constraints)
-    
+
         localVideo.current.srcObject = localMediaStream.current
-    
+
         peerConnection.current.ontrack = (event) => {
             console.log('Remote stream was accepted', event.streams)
             if (event.streams && event.streams[0] && !remoteVideo.current.srcObject) {
@@ -134,13 +133,13 @@ const HubChat = () => {
                 console.log('Remote stream was established')
             }
         }
-    
+
         peerConnection.current.onicecandidate = async (event) => {
             if (event.candidate) {
                 myIceCandidates.current.push(event.candidate)
             }
         }
-    
+
         localMediaStream.current.getTracks().forEach(track => {
             console.log('Push my track to another peer:', track)
             peerConnection.current.addTrack(track, localMediaStream.current);
@@ -205,27 +204,35 @@ const HubChat = () => {
     }
 
     return (<>
-        <div className="media-container">
-            <div className={room ? "hub-video-container" : "hub-video-container full"}>
-                <HubVideo
-                    localVideo={localVideo}
-                    remoteVideo={remoteVideo}
-                    muteSelf={muteSelf}
-                    unmuteSelf={unmuteSelf}
-                />
-                {!room ? <div className="button-container">
-                    <button onClick={findRoom} className='bg-indigo-600 text-white p-6 rounded-xl'>Find room</button>
-                </div> : <div className="button-container">
-                    <button onClick={nextRoom}>Next</button>
-                    <button onClick={leaveHub}>Finish</button>
+        <div className="w-full h-full flex flex-col">
+            <div className={"h-[90%] relative flex w-full justify-center"}>
+                <div className={'flex flex-col h-full mr-2 ' + (room ? "w-[70%]" : "w-full")}>
+                    <HubVideo
+                        localVideo={localVideo}
+                        remoteVideo={remoteVideo}
+                        muteSelf={muteSelf}
+                        unmuteSelf={unmuteSelf}
+                    />
+                </div>
+                {room && <div className="w-[30%] h-full flex flex-col">
+                    <HubMessageChat ref={messageChatRef} />
                 </div>}
             </div>
-            {room && <div className="chat-container">
-                <HubMessageChat ref={messageChatRef}/>
-                <div className="button-container">
-                    <button>Fight</button>
-                </div>
-            </div>}
+            <div className={`flex h-[10%] ${room ? 'justify-between' : 'justify-center'} w-full items-center`}>
+                {/*<div className='w-[70%]'>*/}
+                {!room ?
+                    <button onClick={findRoom} className='min-w-20 rounded-[20px] bg-indigo-600 text-white p-2 px-4'>Find room</button>
+                    : <>
+                        <button onClick={nextRoom} className='w-[70%] mr-2 rounded-[10px] bg-indigo-600 text-white p-2 px-4'>Next</button>
+                        <button onClick={leaveHub} className='w-[30%] rounded-[10px] bg-indigo-600 text-white p-2 px-4'>Finish</button>
+                    </>}
+                {/*</div>*/}
+                {/*<div className='w-[30%]'>
+                    {room && <div className="button-container">
+                        <button>Fight</button>
+                    </div>}
+    </div>*/}
+            </div>
         </div>
     </>);
 };

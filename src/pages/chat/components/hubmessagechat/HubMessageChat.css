@@ -1,8 +1,8 @@
 .input-container {
     padding: 5px;
     margin-top: auto;
-    border: #2c3e50 3px solid;
-    border-radius: 0 0 5px 5px;
+    border: #312e81 3px solid;
+    border-radius: 0 0 10px 10px;
     width: auto;
     display: flex;
     align-items: center;
@@ -12,14 +12,15 @@
 .input-container input {
     width: 80%;
     height: 20px;
-    border-radius: 1em;
+    border-radius: 1rem;
     padding: 1px 5px;
 }
 
 .input-container button {
-    width: calc(20% - 10px);
+    width: 30px;
     color: honeydew;
-    background-color: #2c3e50;
+    background-color: #4f46e5;
+    padding: 0px 6px;
     border: none;
     height: 24px;
     border-radius: 1em;
@@ -31,9 +32,8 @@
 .message-container {
     padding: 5px;
     height: calc(95% - 3px);
-    border: #2c3e50 3px solid;
-    border-radius: 5px 5px 0 0;
-    word-break: break-all;
+    border: #312e81 3px solid;
+    border-radius: 10px 10px 0 0;
     border-bottom: none;
     display: flex;
     flex-direction: column;
@@ -53,8 +53,18 @@
     padding: 5px 12px;
 }
 
-.message.mine{
-    background: dodgerblue none repeat scroll 0 0;
+.message-sender {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.message-text {
+    word-break: break-all;
+}
+
+.message.mine {
+    background: #312e81 none repeat scroll 0 0;
     border-radius: 10px;
     color: #efefef;
     float: right;
@@ -63,7 +73,7 @@
 .message.other {
     background: whitesmoke none repeat scroll 0 0;
     border-radius: 10px;
-    border: #2c3e50 1px solid;
+    border: #312e81 1px solid;
     float: left;
 }
 

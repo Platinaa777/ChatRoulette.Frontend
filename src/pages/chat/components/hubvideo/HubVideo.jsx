@@ -29,10 +29,10 @@ const HubVideo = ({ localVideo, remoteVideo, muteSelf, unmuteSelf }) => {
         setPeerMuted(false);
     }
 
-    return (<div className="video-container">
-        <video id="remote-video" ref={remoteVideo} autoPlay/>
+    return (<div className="relative text-center h-full w-full min-w-full overflow-hidden flex flex-col justify-center items-center">
+        <video className='bg-black rounded-[10px] object-cover h-full w-full overflow-hidden' ref={remoteVideo} autoPlay/>
         <div id="local-video">
-            <video ref={localVideo} autoPlay/>
+            <video ref={localVideo} className='object-cover' autoPlay/>
         </div>
         <div id="sound-buttons-container">
             {!meMuted ?

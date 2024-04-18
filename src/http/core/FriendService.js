@@ -2,6 +2,7 @@ import api from "../api";
 
 export class FriendService {
     static async addFriendRequest(receiverEmail) {
+        console.log(receiverEmail)
         return api.post("/friend/add-friend", {receiverEmail}, {withCredentials: true})
     }
 

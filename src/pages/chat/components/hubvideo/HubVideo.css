@@ -13,10 +13,6 @@
     justify-content: center;
 }
 
-.video-screen {
-    height: 90%;
-}
-
 #remote-video {
     background-color: black;
     border-radius: 10px;
@@ -36,7 +32,7 @@
     overflow: hidden;
 }
 
-#local-video img {
+#local-video video {
     height: 150px;
     left: -75px;
 }

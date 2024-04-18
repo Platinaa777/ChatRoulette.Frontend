@@ -37,7 +37,7 @@ const HubMessageChat = forwardRef((props, ref) => {
     }
 
     return (<>
-        <div className="message-container">
+        <div className="message-container text-indigo-950">
             {messageList.length === 0 ? "Empty yet..." : messageList.map((val, index) =>
                 <div className="message-box">
                     <div className={`message ${val.email === email ? "mine" : "other"}`} key={index}>
@@ -50,6 +50,7 @@ const HubMessageChat = forwardRef((props, ref) => {
         </div>
         <div className="input-container">
             <input
+            className='focus:outline-none'
                 placeholder="Your message..."
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}

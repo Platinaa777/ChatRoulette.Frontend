@@ -5,6 +5,7 @@ import ReportUser from '../../components/ReportUser';
 import { IoMdPersonAdd, IoMdClose } from "react-icons/io";
 import { MdOutlineReport } from "react-icons/md";
 import { FaCheck } from "react-icons/fa";
+import { FaXmark } from "react-icons/fa6";
 import profile from '../../assets/profile.png'
 
 const Friends = () => {
@@ -22,7 +23,12 @@ const Friends = () => {
     useEffect(() => {
         const getRecentUsers = async () => {
             const result = await userSession.getRecentUsers();
-            setRecents(result.data === "No peer history" ? [] : [...result])
+            if (result.length > 0) {
+                console.log(result)
+                setRecents([...result])
+            } else {
+                setRecents([])
+            }
         }
 
         const getFriendRequests = async () => {
@@ -34,6 +40,11 @@ const Friends = () => {
         getRecentUsers()
         getFriendRequests()
     }, [])
+
+
+    const sendFriendRequest = async (email) => {
+        await userSession.addFriendRequest(email)
+    }
 
     const [report, setReport] = useState({ open: false, username: null })
 
@@ -84,10 +95,10 @@ const Friends = () => {
                                             <div className='flex'>
                                                 {
                                                     (idx === 1) && <div className='flex ml-4 text-xl font-medium leading-5'>
-                                                        <button className="p-2">
+                                                        <button className="p-2" onClick={() => sendFriendRequest(person.email)}>
                                                             <IoMdPersonAdd/>
                                                         </button>
-                                                        <button className="p-2">
+                                                        <button className="p-2" onClick={() => setReport(prevState => ({...prevState, open: true}))}>
                                                             <MdOutlineReport/>
                                                         </button>
                                                     </div>
@@ -98,7 +109,7 @@ const Friends = () => {
                                                             <FaCheck/>
                                                         </button>
                                                         <button className="ml-4 text-lg font-medium leading-5">
-                                                            <IoMdClose/>
+                                                            <FaXmark/>
                                                         </button>
                                                     </>
                                                 }
