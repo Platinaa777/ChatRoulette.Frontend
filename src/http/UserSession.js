@@ -190,4 +190,33 @@ export class UserSession {
         return result
     }
 
+    getFeedback = async () => {
+        let result = []
+        await AdminService.getFeedback(20).then(response => {
+            result = [...response.data.value].reverse()
+            console.log('getFeedback success', response)
+        }).catch(err => console.log('getFeedback fail', err.response))
+        return result
+    }
+
+    getComplaints = async () => {
+        let result = []
+        await AdminService.getComplaints(20).then(response => {
+            result = [...response.data.value].reverse()
+            console.log('getComplaints success', response)
+        }).catch(err => console.log('getComplaints fail', err.response))
+        return result
+    }
+
+    acceptComplaint = async (id) => {
+        await AdminService.acceptComplaint(id).then(
+            response => console.log('accedptComplaint success', response)
+        ).catch(err => console.log('acceptComplaint fail', err.response))
+    }
+
+    rejectComplaint = async (id) => {
+        await AdminService.rejectComplaint(id).then(
+            response => console.log('rejectComplaint success', response)
+        ).catch(err => console.log('rejectComplaint fail', err.response))
+    }
 }

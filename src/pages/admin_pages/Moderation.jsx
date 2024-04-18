@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Tab } from '@headlessui/react';
-import { AdminService } from '../../http/core/AdminService';
 import { IoClose } from "react-icons/io5";
 import ModalDialog from "../../components/ModalDialog"
+import { useSession } from '../../http/context/UserContext';
 
 const Moderation = () => {
+  const userSession = useSession();
 
-  const [feedback, setFeedback] = useState([{}]);
+  const [feedback, setFeedback] = useState([]);
   const [complaints, setComplaints] = useState([]);
 
   const [openView, setOpenView] = useState(false);
@@ -16,19 +17,27 @@ const Moderation = () => {
     return classes.filter(Boolean).join(' ')
   }
 
-  const acceptComplaint = (id) => {
-    AdminService.acceptComplaint(id).then(result => console.log(result)).catch(err => console.log(err))
-    setOpenView(false)
+  const acceptComplaint = async (id) => {
+    await userSession.acceptComplaint(id).then(() => setOpenView(false))
   }
 
-  const rejectComplaint = (id) => {
-    AdminService.rejectComplaint(id).then(result => console.log(result)).catch(err => console.log(err))
-    setOpenView(false)
+  const rejectComplaint = async (id) => {
+    await userSession.rejectComplaint(id).then(() => setOpenView(false))
   }
 
   useEffect(() => {
-    AdminService.getFeedback(20).then(response => setFeedback([...response.data.value].reverse())).catch(err => console.log(err))
-    AdminService.getComplaints(20).then(response => setComplaints([...response.data.value].reverse())).catch(err => console.log(err))
+    const getFeedback = async () => {
+      const response = await userSession.getFeedback()
+      setFeedback([...response])
+    }
+
+    const getComplaints = async () => {
+      const response = await userSession.getComplaints()
+      setComplaints([...response])
+    }
+
+    getFeedback()
+    getComplaints()
   }, [])
 
   return (
