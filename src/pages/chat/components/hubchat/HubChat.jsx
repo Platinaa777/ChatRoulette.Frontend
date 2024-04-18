@@ -17,11 +17,11 @@ const constraints = {
     video: true, // And we want a video track
 }
 
-var configuration = {
-    'iceServers': [
-      {
-        'url': 'stun:stun.myserver.com:19302'
-      } ] }
+export const configuration = {
+    iceServers: [{
+        urls: ['stun:stun.1und1.de:3478', 'stun:stun.gmx.net:3478']
+    },], iceCandidatePoolSize: 10
+};
   
 
 const HubChat = () => {
@@ -52,6 +52,8 @@ const HubChat = () => {
             .withAutomaticReconnect()
             .build();
 
+        console.log(connection.current)
+
         const f = async () => {
             await connection.current.start()
 
@@ -64,9 +66,7 @@ const HubChat = () => {
         }
 
         f()
-        let a =Math.random()
-        console.log(String(a))
-        setEmail(String(a))
+        setEmail(localStorage.getItem('email'))
     }, []);
 
     // type can be ['offer', 'answer', 'candidate', 'relay-ice', '']
@@ -176,6 +176,7 @@ const HubChat = () => {
     }
 
     const findRoom = async () => {
+        console.log('FindRoom was buttoned')
         if (!isFirstEstablishment.current) {
             connection.current.on('PeerConnection', handleInfoFromPeer);
             isFirstEstablishment.current = true;
