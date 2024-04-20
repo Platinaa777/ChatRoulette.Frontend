@@ -39,8 +39,8 @@ const HubMessageChat = forwardRef((props, ref) => {
     return (<>
         <div className="message-container text-indigo-950">
             {messageList.length === 0 ? "Empty yet..." : messageList.map((val, index) =>
-                <div className="message-box">
-                    <div className={`message ${val.email === email ? "mine" : "other"}`} key={index}>
+                <div key={index} className="message-box">
+                    <div className={`message ${val.email === email ? "mine" : "other"}`}>
                         <p className="message-sender">{val.email}</p>
                         <p className="message-text">{val.text}</p>
                     </div>
