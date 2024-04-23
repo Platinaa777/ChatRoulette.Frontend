@@ -1,32 +1,3 @@
-import {servers} from "./Servers";
-
-export const createRTC = async (roomId, peerConnection, localMediaStream, localVideo, remoteVideo, myIceCandidates, constraints) => {
-    peerConnection.current = new RTCPeerConnection()
-    console.log(peerConnection.current)
-    localMediaStream.current = await navigator.mediaDevices.getUserMedia(constraints)
-
-    localVideo.current.srcObject = localMediaStream.current
-
-    peerConnection.current.ontrack = (event) => {
-        console.log('Remote stream was accepted', event.streams)
-        if (event.streams && event.streams[0] && !remoteVideo.current.srcObject) {
-            remoteVideo.current.srcObject = event.streams[0];
-            console.log('Remote stream was established')
-        }
-    }
-
-    peerConnection.current.onicecandidate = async (event) => {
-        if (event.candidate) {
-            myIceCandidates.current.push(event.candidate)
-        }
-    }
-
-    localMediaStream.current.getTracks().forEach(track => {
-        console.log('Push my track to another peer:', track)
-        peerConnection.current.addTrack(track, localMediaStream.current);
-    })
-};
-
 export const createOffer = async (roomId, peerConnection, connection) => {
     console.log('started Offer: ')
     

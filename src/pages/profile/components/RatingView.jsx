@@ -12,11 +12,12 @@ const RatingView = observer(() => {
         const getTopUsers = async () => {
             const result = await userSession.getTopUsers()
             setRating({top: [...(await result)], me: userSession.profile})
+            console.log('RESULT RATING', result)
         }
 
         getTopUsers()
     }, [userSession.profile])
-
+    
     return (
         <div className='w-full text-indigo-950'>
             {

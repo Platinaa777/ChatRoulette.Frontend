@@ -16,11 +16,42 @@ const constraints = {
     video: true, // And we want a video track
 }
 
+// export const configuration = {
+//     iceServers: [{
+//         urls: ['stun:stun.1und1.de:3478', 'stun:stun.gmx.net:3478']
+//     },], iceCandidatePoolSize: 10
+// };
 export const configuration = {
-    iceServers: [{
-        urls: ['stun:stun.1und1.de:3478', 'stun:stun.gmx.net:3478']
-    },], iceCandidatePoolSize: 10
+    iceServers: [
+        // {
+        //     urls: 'turn:numb.viagenie.ca',
+        //     credential: 'muazkh',
+        //     username: 'webrtc@live.com'
+        // },
+        // {
+        //     urls: 'turn:192.158.29.39:3478?transport=udp',
+        //     credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+        //     username: '28224511:1379330808'
+        // },
+        {
+            urls: 'turn:192.158.29.39:3478?transport=tcp',
+            credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+            username: '28224511:1379330808'
+        },
+        // {
+        //     urls: 'turn:turn.bistri.com:80',
+        //     credential: 'homeo',
+        //     username: 'homeo'
+        // },
+        {
+            urls: 'turn:turn.anyfirewall.com:443?transport=tcp',
+            credential: 'webrtc',
+            username: 'webrtc'
+        }
+    ],
+    iceCandidatePoolSize: 10
 };
+
 
 
 const HubChat = () => {
@@ -122,8 +153,13 @@ const HubChat = () => {
         peerConnection.current = new RTCPeerConnection(configuration)
         console.log("after")
         console.log(peerConnection.current)
-        localMediaStream.current = await navigator.mediaDevices.getUserMedia(constraints)
-
+        try {
+            localMediaStream.current = await navigator.mediaDevices.getUserMedia(constraints)
+        } catch (e) {
+            console.log(e)
+        }
+        
+        console.log('LocalMediaStream', localMediaStream)
         localVideo.current.srcObject = localMediaStream.current
 
         peerConnection.current.ontrack = (event) => {
@@ -133,17 +169,20 @@ const HubChat = () => {
                 console.log('Remote stream was established')
             }
         }
+        console.log('on track', localMediaStream)
 
         peerConnection.current.onicecandidate = async (event) => {
             if (event.candidate) {
                 myIceCandidates.current.push(event.candidate)
             }
         }
+        console.log('on ice')
 
         localMediaStream.current.getTracks().forEach(track => {
             console.log('Push my track to another peer:', track)
             peerConnection.current.addTrack(track, localMediaStream.current);
         })
+        console.log('End of create RTC ')
     };
 
     const stopMyAudioAndVideoTracks = async () => {

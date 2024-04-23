@@ -29,6 +29,7 @@ const ProfilePic = observer(() => {
     }
 
     function onSubmitPicture() {
+        console.log(croppedImg)
         if (croppedImg !== "") {
             // console.log(croppedImg)
             setSrc(croppedImg);
