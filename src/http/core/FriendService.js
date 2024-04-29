@@ -2,7 +2,7 @@ import api from "../api";
 
 export class FriendService {
     static async addFriendRequest(receiverEmail) {
-        return api.post("/friend/add-friend", {InvitationReceiverEmail: receiverEmail}, {withCredentials: true})
+        return api.post("/friend/add-friend", {NewFriendEmail: receiverEmail}, {withCredentials: true})
     }
 
     static async acceptInvitationToFriends(receiverEmail) {
@@ -10,7 +10,7 @@ export class FriendService {
     }
 
     static async rejectInvitationToFriends(receiverEmail) {
-        return api.put("friend/reject-invitation-to-friends", {InvitationReceiverEmail: receiverEmail}, {withCredentials: true})
+        return api.put("friend/reject-invitation-to-friends", {RejectPersonEmail: receiverEmail}, {withCredentials: true})
     }
 
     static async getInvitations() {

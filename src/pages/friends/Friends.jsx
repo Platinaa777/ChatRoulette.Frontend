@@ -141,7 +141,7 @@ const Friends = () => {
         </div>
         <ReportUser
             open={report.open}
-            setOpen={() => setReport((prevState) => ({...prevState, open: false}))}
+            setOpen={() => setReport(prevState => ({...prevState, open: false}))}
             userName={report.username}
             email={report.email}/>
     </div>)
