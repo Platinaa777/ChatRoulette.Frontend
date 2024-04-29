@@ -2,7 +2,7 @@ import { AiFillHome, AiFillProfile } from "react-icons/ai";
 import { paths } from "./Paths";
 import { GiHand } from "react-icons/gi";
 import { MdReport } from "react-icons/md";
-import { BiShield, BiStats } from "react-icons/bi";
+import { BiShield } from "react-icons/bi";
 
 export const SidebarPages = [
     {
@@ -32,13 +32,6 @@ export const SidebarPages = [
         icon: <MdReport className="rounded-md text-2xl bg-none mx-3" />, 
         requireAuth: true,
         requireAdmin: false
-    },
-    { 
-        title: 'Site Stats', 
-        path: paths.statsPath, 
-        icon: <BiStats className="rounded-md text-2xl bg-none mx-3" />, 
-        requireAuth: true,
-        requireAdmin: true
     },
     { 
         title: 'Moderation', 

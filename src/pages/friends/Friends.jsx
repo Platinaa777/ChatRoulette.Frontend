@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Tab } from '@headlessui/react';
-import { useSession } from '../../http/context/UserContext';
+import React, {useEffect, useState} from 'react';
+import {Tab} from '@headlessui/react';
+import {useSession} from '../../http/context/UserContext';
 import ReportUser from '../../components/ReportUser';
-import { IoMdPersonAdd } from "react-icons/io";
-import {IoPerson } from "react-icons/io5";
-import { MdOutlineReport } from "react-icons/md";
-import { FaCheck } from "react-icons/fa";
-import { FaXmark } from "react-icons/fa6";
+import {MdOutlineReport} from "react-icons/md";
+import {FaUser, FaUserCheck, FaUserPlus, FaUserTimes} from "react-icons/fa";
 import profile from '../../assets/profile.png'
+import {FaTriangleExclamation} from "react-icons/fa6";
 
 const Friends = () => {
 
@@ -33,12 +31,12 @@ const Friends = () => {
 
         const getFriendRequests = async () => {
             const result = await userSession.getFriendRequests();
-            setRequests(result.data.value === null ? [] : [...result])
+            setRequests(result === null ? [] : [...result])
         }
 
         setFriends([...userSession.profile.friends])
-        getRecentUsers()
-        getFriendRequests()
+        getRecentUsers().then()
+        getFriendRequests().then()
     }, [])
 
 
@@ -54,7 +52,7 @@ const Friends = () => {
         await userSession.acceptFriendRequest(id)
     }
 
-    const [report, setReport] = useState({ open: false, username: null, email: null })
+    const [report, setReport] = useState({open: false, username: null, email: null})
 
 
     return (<div className="mx-4 p-4 w-full flex flex-col items-center">
@@ -64,17 +62,17 @@ const Friends = () => {
                 <Tab.List className="flex bg-indigo-200 mb-2 rounded-xl w-full">
                     <Tab
                         key="Friends"
-                        className={({ selected }) => classNames('w-full rounded-lg py-2.5 text-sm font-medium leading-5 ring-blue-800 focus:outline-none text-blue-700', selected ? 'ring-2 bg-white shadow' : 'hover:bg-white/[0.12] hover:text-white')}>
+                        className={({selected}) => classNames('w-full rounded-lg py-2.5 text-sm font-medium leading-5 ring-blue-800 focus:outline-none text-blue-700', selected ? 'ring-2 bg-white shadow' : 'hover:bg-white/[0.12] hover:text-white')}>
                         Friends
                     </Tab>
                     <Tab
                         key="Recents"
-                        className={({ selected }) => classNames('w-full rounded-lg py-2.5 text-sm font-medium leading-5 ring-blue-800 focus:outline-none text-blue-700', selected ? 'ring-2 bg-white shadow' : 'hover:bg-white/[0.12] hover:text-white')}>
+                        className={({selected}) => classNames('w-full rounded-lg py-2.5 text-sm font-medium leading-5 ring-blue-800 focus:outline-none text-blue-700', selected ? 'ring-2 bg-white shadow' : 'hover:bg-white/[0.12] hover:text-white')}>
                         Recents
                     </Tab>
                     <Tab
                         key="Requests"
-                        className={({ selected }) => classNames('w-full rounded-lg py-2.5 text-sm font-medium leading-5 ring-blue-800 focus:outline-none text-blue-700', selected ? 'ring-2 bg-white shadow' : 'hover:bg-white/[0.12] hover:text-white')}>
+                        className={({selected}) => classNames('w-full rounded-lg py-2.5 text-sm font-medium leading-5 ring-blue-800 focus:outline-none text-blue-700', selected ? 'ring-2 bg-white shadow' : 'hover:bg-white/[0.12] hover:text-white')}>
                         Requests
                     </Tab>
                 </Tab.List>
@@ -92,7 +90,8 @@ const Friends = () => {
                                             className="w-full flex flex-row items-center justify-between relative bg-indigo-50 cursor-pointer rounded-md p-3 border mb-1 hover:bg-gray-100"
                                         >
                                             <div className='flex flex-row items-center'>
-                                                <img alt="" src={profile} width={50} height={50} className="rounded-xl overflow-hidden" />
+                                                <img alt="" src={profile} width={50} height={50}
+                                                     className="rounded-xl overflow-hidden"/>
                                                 <div className="ml-4 flex flex-col justify-center">
                                                     <h3 className="text-lg font-medium leading-5 text-black">
                                                         {person.userName}
@@ -102,26 +101,33 @@ const Friends = () => {
                                             </div>
                                             <div className='flex'>
                                                 {
-                                                    (idx === 1) && <div className='flex ml-4 text-xl font-medium leading-5'>
-                                                        {!friends.some(friend => friend.email === person.email) ? <button className="p-2" onClick={() => sendFriendRequest(person.email)}>
-                                                            <IoMdPersonAdd/>
-                                                        </button> : <button className="p-2">
-                                                            <IoPerson/>
-                                                        </button>}
-                                                        <button className="p-2" onClick={() => setReport(prevState => ({open: true, username: person.userName, email: person.email}))}>
-                                                            <MdOutlineReport/>
+                                                    (idx === 1) &&
+                                                    <>
+                                                        {!friends.some(friend => friend.email === person.email) && !requests.some(request => request.email === person.email) ?
+                                                            <button className="ml-4 text-lg font-medium leading-5"
+                                                                    onClick={() => sendFriendRequest(person.email)}>
+                                                                <FaUserPlus/>
+                                                            </button> : <button className="ml-4 text-md font-medium leading-5">
+                                                                <FaUser/>
+                                                            </button>}
+                                                        <button className="ml-4 text-md font-medium leading-5 mr-1" onClick={() => setReport(prevState => ({
+                                                            open: true,
+                                                            username: person.userName,
+                                                            email: person.email
+                                                        }))}>
+                                                            <FaTriangleExclamation/>
                                                         </button>
-                                                    </div>
+                                                    </>
                                                 }
                                                 {
                                                     (idx === 2) && <>
                                                         <button className="ml-4 text-lg font-medium leading-5"
-                                                        onClick={() => acceptRequest(person.email)}>
-                                                            <FaCheck/>
+                                                                onClick={() => acceptRequest(person.email)}>
+                                                            <FaUserCheck/>
                                                         </button>
                                                         <button className="ml-4 text-lg font-medium leading-5"
-                                                        onClick={() => rejectRequest(person.email)}>
-                                                            <FaXmark/>
+                                                                onClick={() => rejectRequest(person.email)}>
+                                                            <FaUserTimes/>
                                                         </button>
                                                     </>
                                                 }
@@ -135,10 +141,10 @@ const Friends = () => {
         </div>
         <ReportUser
             open={report.open}
-            setOpen={() => setReport((prevState) => ({ ...prevState, open: false }))}
+            setOpen={() => setReport((prevState) => ({...prevState, open: false}))}
             userName={report.username}
-            email={report.email} />
-    </div >)
+            email={report.email}/>
+    </div>)
 };
 
 export default Friends;

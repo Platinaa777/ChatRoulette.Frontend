@@ -57,11 +57,6 @@ export const App = observer(() => {
                         <Moderation />
                     </ProtectedRoute>} />
 
-                <Route exec path={paths.statsPath} element={
-                    <ProtectedRoute requireAdmin={true}>
-                        <SiteStats />
-                    </ProtectedRoute>} />
-
                 <Route exec path={paths.hubPath} element={
                     <ProtectedRoute>
                         <Hub />

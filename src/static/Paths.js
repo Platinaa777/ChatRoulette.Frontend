@@ -5,7 +5,6 @@ export const paths = {
     profilePath: "/profile",
     friendsPath: "/friends",
     reportPath: "/report",
-    statsPath: "/stats",
     moderationPath: "/mod",
     hubPath: "/hub",
     waitingRoomPath: "/waiting-room",
