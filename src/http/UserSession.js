@@ -124,7 +124,9 @@ export class UserSession {
             this.setProfile({ ...this.profile, avatar: newAvatar })
             console.log(this.profile)
             console.log('changeAvatar success', response.data)
-        }).catch(err => console.log('changeAvatar fail', err.data))
+        }).catch(err => {
+            console.log('changeAvatar fail', err.data)
+        })
     }
 
     getTopUsers = async () => {

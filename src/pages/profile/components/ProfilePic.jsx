@@ -10,7 +10,7 @@ import { useSession } from '../../../http/context/UserContext';
 const ProfilePic = observer(() => {
     const userSession = useSession();
 
-    const [src, setSrc] = useState(profile)
+    const [src, setSrc] = useState(userSession.profile.avatar)
     const [preview, setPreview] = useState("");
     const [croppedImg, setCroppedImg] = useState("");
     const [crop, setCrop] = useState(false);
@@ -25,18 +25,17 @@ const ProfilePic = observer(() => {
     }
 
     const updatePic = async (img) => {
-        await userSession.changeAvatar(img)
+        const result = await userSession.changeAvatar(img)
+        console.log(result)
+        return result
     }
 
     function onSubmitPicture() {
         console.log(croppedImg)
         if (croppedImg !== "") {
-            // console.log(croppedImg)
-            setSrc(croppedImg);
+            updatePic(croppedImg).then(() => setSrc(userSession.profile.avatar));
         }
         onClose();
-        // console.log(src)
-        updatePic(croppedImg);
     }
 
     return (<>
