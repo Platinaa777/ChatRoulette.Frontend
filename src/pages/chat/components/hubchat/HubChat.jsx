@@ -82,7 +82,7 @@ const HubChat = () => {
             .withAutomaticReconnect()
             .build();
 
-        console.log(connection.current)
+        // console.log(connection.current)
 
         const f = async () => {
             await connection.current.start()
@@ -149,40 +149,40 @@ const HubChat = () => {
     }
 
     const createRTC = async (roomId, peerConnection, localMediaStream, localVideo, remoteVideo, myIceCandidates, constraints) => {
-        console.log("before")
+        // console.log("before")
         peerConnection.current = new RTCPeerConnection(configuration)
-        console.log("after")
-        console.log(peerConnection.current)
+        // console.log("after")
+        // console.log(peerConnection.current)
         try {
             localMediaStream.current = await navigator.mediaDevices.getUserMedia(constraints)
         } catch (e) {
             console.log(e)
         }
         
-        console.log('LocalMediaStream', localMediaStream)
+        // console.log('LocalMediaStream', localMediaStream)
         localVideo.current.srcObject = localMediaStream.current
 
         peerConnection.current.ontrack = (event) => {
-            console.log('Remote stream was accepted', event.streams)
+            // console.log('Remote stream was accepted', event.streams)
             if (event.streams && event.streams[0] && !remoteVideo.current.srcObject) {
                 remoteVideo.current.srcObject = event.streams[0];
-                console.log('Remote stream was established')
+                // console.log('Remote stream was established')
             }
         }
-        console.log('on track', localMediaStream)
+        // console.log('on track', localMediaStream)
 
         peerConnection.current.onicecandidate = async (event) => {
             if (event.candidate) {
                 myIceCandidates.current.push(event.candidate)
             }
         }
-        console.log('on ice')
+        // console.log('on ice')
 
         localMediaStream.current.getTracks().forEach(track => {
             console.log('Push my track to another peer:', track)
             peerConnection.current.addTrack(track, localMediaStream.current);
         })
-        console.log('End of create RTC ')
+        // console.log('End of create RTC ')
     };
 
     const stopMyAudioAndVideoTracks = async () => {
@@ -265,12 +265,11 @@ const HubChat = () => {
                         <button onClick={nextRoom} className='w-[70%] mr-2 rounded-[10px] bg-indigo-600 text-white p-2 px-4'>Next</button>
                         <button onClick={leaveHub} className='w-[30%] rounded-[10px] bg-indigo-600 text-white p-2 px-4'>Finish</button>
                     </>}
-                {/*</div>*/}
                 {/*<div className='w-[30%]'>
                     {room && <div className="button-container">
                         <button>Fight</button>
                     </div>}
-    </div>*/}
+                </div>*/}
             </div>
         </div>
     </>);

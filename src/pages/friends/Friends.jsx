@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {Tab} from '@headlessui/react';
 import {useSession} from '../../http/context/UserContext';
 import ReportUser from '../../components/ReportUser';
-import {MdOutlineReport} from "react-icons/md";
 import {FaUser, FaUserCheck, FaUserPlus, FaUserTimes} from "react-icons/fa";
 import profile from '../../assets/profile.png'
 import {FaTriangleExclamation} from "react-icons/fa6";
@@ -22,6 +21,7 @@ const Friends = () => {
     useEffect(() => {
         const getRecentUsers = async () => {
             const result = await userSession.getRecentUsers();
+            console.log(result)
             if (result.length > 0) {
                 setRecents([...result])
             } else {
@@ -30,13 +30,21 @@ const Friends = () => {
         }
 
         const getFriendRequests = async () => {
-            const result = await userSession.getFriendRequests();
-            setRequests(result === null ? [] : [...result])
+            const result = await userSession.getInvitationFriendRequests();
+
+            if (result.length > 0) {
+                setRequests([...result])
+            } else {
+                setRequests([])
+            }
         }
 
-        setFriends([...userSession.profile.friends])
-        getRecentUsers().then()
-        getFriendRequests().then()
+        console.log('AAA', userSession.profile)
+        if (userSession.profile.friends !== null) {
+            setFriends([...userSession.profile.friends])
+        }
+        getRecentUsers()
+        getFriendRequests()
     }, [])
 
 
@@ -53,6 +61,10 @@ const Friends = () => {
     }
 
     const [report, setReport] = useState({open: false, username: null, email: null})
+
+    console.log('Recents',recents)
+    console.log('Friends',friends)
+    console.log('Requests',requests)
 
 
     return (<div className="mx-4 p-4 w-full flex flex-col items-center">
@@ -80,17 +92,15 @@ const Friends = () => {
                 <Tab.Panels className="w-full">
                     {[friends, recents, requests].map(
                         (data, idx) => <Tab.Panel
-                            key={idx}
                             className='rounded-xl bg-white px-2 focus:outline-none'>
                             {(data.length === 0) ? <p className='mt-2 p-4 text-lg text-indigo-800'>Wow... empty...</p> :
                                 <ul>
                                     {data.map(
                                         (person, id) => (<li
-                                            key={idx}
-                                            className="w-full flex flex-row items-center justify-between relative bg-indigo-50 cursor-pointer rounded-md p-3 border mb-1 hover:bg-gray-100"
-                                        >
+                                            key={id}
+                                            className="w-full flex flex-row items-center justify-between relative bg-indigo-50 cursor-pointer rounded-md p-3 border mb-1 hover:bg-gray-100">
                                             <div className='flex flex-row items-center'>
-                                                <img alt="" src={profile} width={50} height={50}
+                                                <img alt="" src={person.avatar === '' ? profile : person.avatar} width={50} height={50}
                                                      className="rounded-xl overflow-hidden"/>
                                                 <div className="ml-4 flex flex-col justify-center">
                                                     <h3 className="text-lg font-medium leading-5 text-black">
@@ -99,6 +109,9 @@ const Friends = () => {
                                                     <p className='float-right'>Rating: {person.rating}</p>
                                                 </div>
                                             </div>
+                                            <h3 className="text-lg font-medium leading-6 text-black">
+                                                Email: {person.email}
+                                            </h3>
                                             <div className='flex'>
                                                 {
                                                     (idx === 1) &&
@@ -107,10 +120,8 @@ const Friends = () => {
                                                             <button className="ml-4 text-lg font-medium leading-5"
                                                                     onClick={() => sendFriendRequest(person.email)}>
                                                                 <FaUserPlus/>
-                                                            </button> : <button className="ml-4 text-md font-medium leading-5">
-                                                                <FaUser/>
-                                                            </button>}
-                                                        <button className="ml-4 text-md font-medium leading-5 mr-1" onClick={() => setReport(prevState => ({
+                                                            </button> : ""}
+                                                        <button className="ml-4 text-md font-medium leading-5 mr-1" onClick={() => setReport(_ => ({
                                                             open: true,
                                                             username: person.userName,
                                                             email: person.email

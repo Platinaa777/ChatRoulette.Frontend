@@ -38,6 +38,7 @@ export class UserSession {
         await Auth.login(email, password).then(async (response) => {
             localStorage.setItem('access-token', response.data.value.accessToken)
             localStorage.setItem('email', response.data.value.email)
+            this.setCookie('refresh-token', response.data.value.refreshToken, 180)
             this.setAuth(true)
             this.setUser(response.data.value)
             console.log('Login success', response.data)
@@ -68,7 +69,7 @@ export class UserSession {
         await Auth.logout().then(response =>
             console.log('Logout success', response.data)
         ).catch(err =>
-            console.log('Logout fail', err.data)
+            console.log('Logout fail', err)
         ).finally(() => {
             localStorage.removeItem('access-token');
             localStorage.removeItem('email');
@@ -150,14 +151,15 @@ export class UserSession {
         return result
     }
 
-    getFriendRequests = async () => {
+    getInvitationFriendRequests = async () => {
         let result = []
         await FriendService.getInvitations().then(response => {
+            console.log(response.data.value)
             result = [...response.data.value]
-            console.log('getFriendRequests success', result)
+            // console.log('getInvitationFriendRequests success', result)
         }).catch(err => {
             result = err.response
-            console.log('getFriendRequests fail', err.response)
+            // console.log('getInvitationFriendRequests fail', err.response)
         })
         return result
     }
@@ -194,16 +196,31 @@ export class UserSession {
 
     getFeedback = async () => {
         let result = []
-        await AdminService.getFeedback(20).then(response => {
+        await AdminService.getFeedback(5).then(response => {
             result = [...response.data.value].reverse()
             console.log('getFeedback success', response)
         }).catch(err => console.log('getFeedback fail', err.response))
         return result
     }
 
+    handleFeedback = async (id) => {
+        try {
+            var response = await AdminService.markFeedbackAsHandled(id)
+
+            if (response.status === 200) {
+                console.log('acceptComplaint successfully handled')
+                return true;
+            }
+        } catch (e) {
+            console.log('acceptComplaint fail', response)
+        }
+        
+        return false;
+    }
+
     getComplaints = async () => {
         let result = []
-        await AdminService.getComplaints(20).then(response => {
+        await AdminService.getComplaints(5).then(response => {
             result = [...response.data.value].reverse()
             console.log('getComplaints success', response)
         }).catch(err => console.log('getComplaints fail', err.response))
@@ -223,14 +240,39 @@ export class UserSession {
     }
 
     acceptComplaint = async (id) => {
-        await AdminService.acceptComplaint(id).then(
-            response => console.log('accedptComplaint success', response)
-        ).catch(err => console.log('acceptComplaint fail', err.response))
+        try {
+            var response = await AdminService.acceptComplaint(id)
+
+            if (response.status === 200) {
+                console.log('acceptComplaint successfully handled')
+                return true;
+            }
+        } catch (e) {
+            console.log('acceptComplaint fail', response)
+        }
+        
+        return false;
     }
 
     rejectComplaint = async (id) => {
-        await AdminService.rejectComplaint(id).then(
-            response => console.log('rejectComplaint success', response)
-        ).catch(err => console.log('rejectComplaint fail', err.response))
+        try {
+            var response = await AdminService.rejectComplaint(id)
+
+            if (response.status === 200) {
+                console.log('rejectComplaint successfully handled')
+                return true;
+            }
+        } catch (e) {
+            console.log('rejectComplaint fail', response)
+        }
+        
+        return false;
+    }
+
+    setCookie = async (name, value, hoursToExpire) => {
+        var expirationDate = new Date();
+        expirationDate.setTime(expirationDate.getTime() + (hoursToExpire * 60 * 60 * 1000));
+        var expires = "expires=" + expirationDate.toUTCString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/";
     }
 }

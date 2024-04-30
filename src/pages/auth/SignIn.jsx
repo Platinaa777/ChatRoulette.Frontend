@@ -26,10 +26,12 @@ export const SignIn = observer(() => {
     const loginRequest = async (e) => {
         e.preventDefault();
         let result = await userSession.login(formData.email, formData.password);
-        if (result.isSuccess) {
+        console.log('Login result',result)
+        if (result && result.isSuccess) {
             navigate(paths.mainPath);
             return;
         }
+
         switch (result.data.error.message) {
             case "Validation error was thrown":
                 switch (result.data.errors.reverse()[0].code) {
@@ -51,6 +53,9 @@ export const SignIn = observer(() => {
                 return
             case "Wrong password":
                 setError("Wrong password")
+                return
+            case "User was banned":
+                setError("This user was banned for some time for bad behavior in chat roulette, login later, please")
                 return
             default:
                 setError("Unforseen problem")

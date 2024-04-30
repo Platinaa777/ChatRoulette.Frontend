@@ -44,7 +44,7 @@ const ReportProblem = () => {
           <IoSend className='ml-2' />
         </button>
       </form>
-      <ModalDialog open={open} setOpen={setOpen} title="Yor report was sent successfully!">
+      <ModalDialog open={open} setOpen={setOpen} title="Yor feedback was sent successfully!">
         <div className='mt-4 flex justify-center items-center'>
           <button
             type="button"

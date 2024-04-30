@@ -20,14 +20,14 @@ export const SidebarPages = [
         requireAdmin: false
     },
     { 
-        title: 'Friends', 
+        title: 'Communication', 
         path: paths.friendsPath, 
         icon: <GiHand className="rounded-md text-2xl bg-none mx-3" />, 
         requireAuth: true,
         requireAdmin: false
     },
     { 
-        title: 'Report Problem', 
+        title: 'Give Feedback', 
         path: paths.reportPath, 
         icon: <MdReport className="rounded-md text-2xl bg-none mx-3" />, 
         requireAuth: true,

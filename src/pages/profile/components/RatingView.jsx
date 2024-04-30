@@ -12,7 +12,6 @@ const RatingView = observer(() => {
         const getTopUsers = async () => {
             const result = await userSession.getTopUsers()
             setRating({top: [...(await result)], me: userSession.profile})
-            console.log('RESULT RATING', result)
         }
 
         getTopUsers()

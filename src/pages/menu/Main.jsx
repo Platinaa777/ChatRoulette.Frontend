@@ -30,7 +30,6 @@ const Main = () => {
                     <ul className="sm:flex-[4_4_0%] border-solid border-2 border-indigo-600 p-3 rounded-md list-disc bg-indigo-100">
                         <h1 className="text-xl text-center tracking-wide">Facts</h1>
                         <li className="ml-2">It's a course project 2nd grade of Software Engineering course in HSE, Moscow, 2024</li>
-                        <li className="ml-2">We made it from scratch in less than three months!</li>
                     </ul>
                     <div className="sm:flex-[3_3_0%] border-solid border-2 border-indigo-600 p-3 rounded-md bg-indigo-100">
                         <h1 className="text-xl text-center tracking-wide">Note</h1><p>We highly advice to have good-quality camera and mic, and to follow the rules stated in user's agreement</p>
