@@ -122,9 +122,9 @@ const Moderation = () => {
                     <h3 className='text-indigo-950 text-xl'>Type: {entry.complaintType} </h3>
                   }
                   {
-                   (idx === 1) && 
-                   <h3 className='text-indigo-950 text-xl'>From: {entry.senderEmail}
-                   </h3>
+                    (idx === 1) && 
+                    <h3 className='text-indigo-950 text-xl'>From: {entry.senderEmail}
+                    </h3>
                   }
                   <p>{entry.content}</p>
                 </li>))}

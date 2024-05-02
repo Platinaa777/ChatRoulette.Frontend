@@ -25,14 +25,16 @@ const Main = () => {
                 <div className="flex flex-col sm:flex-row gap-4 mb-4 text-justify text-indigo-950">
                     <div className="sm:flex-[3_3_0%] border-solid border-2 border-indigo-600 p-3 rounded-md bg-indigo-100">
                         <h1 className="text-xl text-center tracking-wide">About the app</h1>
-                        <p>This is a chat-roulette: that means you join a room and talk with a random person</p>
+                        <p>This is a chat-roulette: that means you join a room and talk with a random person. You have cooldown of 3 people to talk again with previous person</p>
                     </div>
                     <ul className="sm:flex-[4_4_0%] border-solid border-2 border-indigo-600 p-3 rounded-md list-disc bg-indigo-100">
                         <h1 className="text-xl text-center tracking-wide">Facts</h1>
                         <li className="ml-2">It's a course project 2nd grade of Software Engineering course in HSE, Moscow, 2024</li>
+                        <li className="ml-2">Backend and Devops part: Denis Miroshnichenko</li>
+                        <li className="ml-2">Frontend part: Lev Svetlichnyi</li>
                     </ul>
                     <div className="sm:flex-[3_3_0%] border-solid border-2 border-indigo-600 p-3 rounded-md bg-indigo-100">
-                        <h1 className="text-xl text-center tracking-wide">Note</h1><p>We highly advice to have good-quality camera and mic, and to follow the rules stated in user's agreement</p>
+                        <h1 className="text-xl text-center tracking-wide">Note</h1><p>If you liked our application, please, smash the star on App repo and subscribe to know more about new IT-products</p>
                     </div>
                 </div>
                 <Link to='/hub' className='text-center text-white px-[20px] py-[10px] mx-4 border-none rounded-md bg-violet-700 hover:bg-violet-600'>

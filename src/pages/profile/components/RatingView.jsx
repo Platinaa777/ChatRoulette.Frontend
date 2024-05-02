@@ -26,8 +26,12 @@ const RatingView = observer(() => {
                             rating.top.map((person, idx) => (
                                 <li
                                     key={idx}
-                                    className={`cursor-pointer w-full flex justify-between items-center flex-row relative rounded-md p-3 ${person.userName === rating.me.userName ? "border-2 border-blue-500" : "border-blue-800 border"
-                                        } mb-1 bg-indigo-50`}>
+                                    className={`cursor-pointer w-full flex justify-between items-center flex-row relative rounded-md p-3 ${
+                                        person.userName === rating.me.userName 
+                                        ? "border-2 border-blue-500" 
+                                        : "border-blue-800 border"
+                                        } mb-1 bg-indigo-50`
+                                        }>
                                     <div className="flex items-center">
                                         <img alt="" src={person.avatar === '' ? profile : person.avatar} width={40} height={40} className="rounded overflow-hidden" />
                                         <h3 className="ml-4 text-l font-medium leading-5">
