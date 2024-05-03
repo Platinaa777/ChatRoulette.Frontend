@@ -198,7 +198,7 @@ export class UserSession {
         let result = []
         await AdminService.getFeedback(5).then(response => {
             result = [...response.data.value].reverse()
-            console.log('getFeedback success', response)
+            // console.log('getFeedback success', response)
         }).catch(err => console.log('getFeedback fail', err.response))
         return result
     }

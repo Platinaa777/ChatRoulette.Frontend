@@ -21,7 +21,7 @@ const Friends = () => {
     useEffect(() => {
         const getRecentUsers = async () => {
             const result = await userSession.getRecentUsers();
-            console.log(result)
+            // console.log(result)
             if (result.length > 0) {
                 setRecents([...result])
             } else {
@@ -39,7 +39,6 @@ const Friends = () => {
             }
         }
 
-        console.log('AAA', userSession.profile)
         if (userSession.profile.friends !== null) {
             setFriends([...userSession.profile.friends])
         }
@@ -61,11 +60,6 @@ const Friends = () => {
     }
 
     const [report, setReport] = useState({open: false, username: null, email: null})
-
-    console.log('Recents',recents)
-    console.log('Friends',friends)
-    console.log('Requests',requests)
-
 
     return (<div className="mx-4 p-4 w-full flex flex-col items-center">
         <div className='w-[80%]'>

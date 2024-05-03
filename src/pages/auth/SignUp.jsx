@@ -20,7 +20,7 @@ const SignUp = observer(() => {
         nickName: false,
         birthday: false
     });
-    const [error, setError] = useState(null);
+    const [errors, setError] = useState(null);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -37,37 +37,17 @@ const SignUp = observer(() => {
             navigate(paths.mainPath);
             return;
         }
-        switch (result.data.error.message) {
-            case "Validation error was thrown":
-                switch (result.data.errors[0].code) {
-                    case "Email":
-                        setError(formData.email === "" ? "Email must not be empty" : "Invalid email address");
-                        return;
-                    case "Password":
-                        setError("Password must not be empty");
-                        return;
-                    case "UserName":
-                        setError("Username must not be empty");
-                        return;
-                    default:
-                        setError("Unforseen problem")
-                        return;
-                }
-            case "Invalid email":
-                setError("Invalid email address");
-                return;
-            case "User already exist":
-                setError("User already exists");
-                return;
-            case "User is older than 100 years old":
-                setError("User must not be older than 100")
-                return;
-            case "User is not older than 16 years old":
-                setError("User must be older than 16");
-                return;
-            default:
-                setError("Unforseen problem")
-                return;
+
+        try {
+            switch (result.data.error.code === 'ValidationError') {
+                case result.data.errors.length > 0:
+                    setError(result.data.errors.map(x => x.message))
+                    return;
+                default:
+                    return;
+            }
+        } catch (e) {
+            setError("Ooops! Some error was occured in the system, please, try to join later")            
         }
     };
 
@@ -107,7 +87,15 @@ const SignUp = observer(() => {
                         }))} />
                 </div>
 
-                <p className='text-sm text-red-500'>{error}</p>
+                <p className='text-sm text-red-500'>
+                {
+                    errors 
+                    ? 
+                    errors.map((err, idx) => { return ( <p key={idx}> { err } </p>) })
+                    : 
+                    ""
+                }
+                </p>
                 <button className="mt-4 text-center text-white px-6 py-2 border-none rounded-md bg-violet-600 hover:bg-violet-500" type="submit" onClick={registerRequest}>Submit</button>
             </form>
         </div>

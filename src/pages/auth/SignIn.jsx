@@ -13,7 +13,7 @@ export const SignIn = observer(() => {
         email: '', password: '',
     });
     const [wasFocused, setWasFocused] = useState({ email: false, password: false });
-    const [error, setError] = useState(null);
+    const [errors, setError] = useState(null);
 
     const handleChange = (e) => {
         setError(null);
@@ -32,34 +32,16 @@ export const SignIn = observer(() => {
             return;
         }
 
-        switch (result.data.error.message) {
-            case "Validation error was thrown":
-                switch (result.data.errors.reverse()[0].code) {
-                    case "Email":
-                        setError(formData.email === "" ? "Email must not be empty" : "Invalid email address");
-                        return;
-                    case "Password":
-                        setError("Password must not be empty");
-                        return;
-                    default:
-                        setError("Unforseen problem")
-                        return;
-                }
-            case "Invalid email":
-                setError("Invalid email address")
-                return
-            case "Unactivated user":
-                setError("No such confirmed user")
-                return
-            case "Wrong password":
-                setError("Wrong password")
-                return
-            case "User was banned":
-                setError("This user was banned for some time for bad behavior in chat roulette, login later, please")
-                return
-            default:
-                setError("Unforseen problem")
-                return
+        try {
+            switch (result.data.error.code === 'ValidationError') {
+                case result.data.errors.length > 0:
+                    setError(result.data.errors.map(x => x.message))
+                    return;
+                default:
+                    return;
+            }
+        } catch (e) {
+            setError("Ooops! Some error was occured in the system, please, try to join later")            
         }
     };
 
@@ -80,7 +62,15 @@ export const SignIn = observer(() => {
                     ...prevState, password: true
                 }))}
                 value={formData.password} onChange={handleChange} required />
-            <p className='text-sm text-red-500'>{error}</p>
+            <p className='text-sm text-red-500'>
+            {
+                errors 
+                ? 
+                errors.map((err, idx) => { return ( <p key={idx}> { err } </p>) })
+                : 
+                ""
+            }
+            </p>
             <button className="mt-4 text-center text-white px-6 py-2 rounded-md bg-violet-600 hover:bg-violet-500" type="submit" onClick={loginRequest}>Submit</button>
         </form>
     </div>

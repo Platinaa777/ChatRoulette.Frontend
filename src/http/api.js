@@ -14,24 +14,25 @@ api.interceptors.request.use(cfg => {
 })
 
 api.interceptors.response.use((config) => {
-    console.log('default request...')
     return config;
 }, async (error) => {
-    console.log('retry...')
     const originalRequest = error.config;
     if (error.response.status === 401 && error.config && !error.config._isRetry) {
         originalRequest._isRetry = true;
         try {
-            const headerData = {
-                headers: { 'refresh-token' : getRefreshTokenFromCookie('refresh-token') }
-            }
 
-            const response = await axios.post(REFRESH_TOKEN_URL, headerData)
-            console.log('refresh-token-response', response)
+            const response = await axios.post(REFRESH_TOKEN_URL, {}, {
+                headers: {
+                    'refresh-token' : getRefreshTokenFromCookie('refresh-token'),
+                }
+            })
+
+            console.log('refresh-token-response SUCCESS', response)
+            setCookie('refresh-token', response.data.value.refreshToken, 180)
             localStorage.setItem('access-token', response.data.accessToken);
             return api.request(originalRequest);
         } catch (e) {
-            console.log('not authorised', e)
+            console.log('NOT AUTHORIZED', e)
         }
     }
     throw error;
@@ -51,6 +52,13 @@ const getRefreshTokenFromCookie = (cname) => {
         }
     }
     return "";
+}
+
+const setCookie = async (name, value, hoursToExpire) => {
+    var expirationDate = new Date();
+    expirationDate.setTime(expirationDate.getTime() + (hoursToExpire * 60 * 60 * 1000));
+    var expires = "expires=" + expirationDate.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/";
 }
 
 export default api;
