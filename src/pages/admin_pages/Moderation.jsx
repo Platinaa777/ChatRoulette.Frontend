@@ -107,7 +107,7 @@ const Moderation = () => {
                 {data.map((entry) => (
                 <li
                   key={entry.id}
-                  className="cursor-pointer w-full max-h-40 justify-between flex-row relative rounded-md p-3 border-2 mb-1 bg-violet-50 hover:bg-gray-100"
+                  className="cursor-pointer w-full justify-between flex-row relative rounded-md p-3 border-2 mb-1 bg-violet-50 hover:bg-gray-100"
                   onClick={() => {
                     setCurrentReport({ type: (idx === 0 ? 'Feedback' : 'Complaint'), report: entry })
                     setOpenView(true)
@@ -126,7 +126,7 @@ const Moderation = () => {
                     <h3 className='text-indigo-950 text-xl'>From: {entry.senderEmail}
                     </h3>
                   }
-                  <p>{entry.content}</p>
+                  <p className='break-all'>{entry.content}</p>
                 </li>))}
               </ul>
             </Tab.Panel>)}
