@@ -39,15 +39,16 @@ const SignUp = observer(() => {
         }
 
         try {
-            switch (result.data.error.code === 'ValidationError') {
-                case result.data.errors.length > 0:
+            switch (result.data.error.code) {
+                case 'ValidationError':
                     setError(result.data.errors.map(x => x.message))
                     return;
                 default:
+                    setError([result.data.error.message])
                     return;
             }
         } catch (e) {
-            setError("Ooops! Some error was occured in the system, please, try to join later")            
+            setError(["Ooops! Some error was occured in the system, please, try to join later"])            
         }
     };
 
