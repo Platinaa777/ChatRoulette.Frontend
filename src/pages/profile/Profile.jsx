@@ -10,6 +10,16 @@ import { observer } from 'mobx-react-lite';
 const Profile = observer(() => {
     const userSession = useSession();
 
+    const [rating, setRating] = useState({top: [], me: {}});
+    useEffect(() => {
+        const getTopUsers = async () => {
+            const result = await userSession.getTopUsers()
+            setRating({top: [...(await result)], me: userSession.profile})
+        }
+
+        getTopUsers()
+    }, [userSession.profile])
+
     useEffect(() => {
         async function loadProfile() {
             await userSession.getProfile()
@@ -49,7 +59,7 @@ const Profile = observer(() => {
                         key={"Leaderboard"}
                         className='rounded-xl bg-white px-2 focus:outline-none'
                     >
-                        <RatingView/>
+                        <RatingView rating={ rating } />
                     </Tab.Panel>
                     <Tab.Panel
                         key={"Achievements"}

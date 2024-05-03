@@ -3,20 +3,7 @@ import profile from '../../../assets/profile.png'
 import { observer } from 'mobx-react-lite';
 import { useSession } from '../../../http/context/UserContext';
 
-const RatingView = observer(() => {
-    const userSession = useSession();
-
-    const [rating, setRating] = useState({top: [], me: {}});
-
-    useEffect(() => {
-        const getTopUsers = async () => {
-            const result = await userSession.getTopUsers()
-            setRating({top: [...(await result)], me: userSession.profile})
-        }
-
-        getTopUsers()
-    }, [userSession.profile])
-    
+const RatingView = observer(({ rating }) => {    
     return (
         <div className='w-full text-indigo-950'>
             {
