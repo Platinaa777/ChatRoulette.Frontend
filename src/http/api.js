@@ -7,9 +7,6 @@ const api = axios.create({
 
 api.interceptors.request.use(cfg => {
     cfg.headers.Authorization = `Bearer ${localStorage.getItem('access-token')}`
-    const refreshToken = getRefreshTokenFromCookie('refresh-token');
-    console.log(refreshToken)
-    cfg.headers['refresh-token'] = refreshToken;
     return cfg
 })
 
@@ -27,15 +24,16 @@ api.interceptors.response.use((config) => {
                 }
             })
 
+            
             console.log('refresh-token-response SUCCESS', response)
             setCookie('refresh-token', response.data.value.refreshToken, 180)
-            localStorage.setItem('access-token', response.data.accessToken);
+            localStorage.setItem('access-token', response.data.value.accessToken);
             return api.request(originalRequest);
         } catch (e) {
             console.log('NOT AUTHORIZED', e)
         }
     }
-    throw error;
+    // throw error;
 })
 
 
