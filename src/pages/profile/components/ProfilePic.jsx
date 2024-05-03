@@ -38,9 +38,11 @@ const ProfilePic = observer(() => {
         onClose();
     }
 
+    const avatarSrc = !src ? "/static/media/profile.38e83edb3f840224915b.png" : src;
+
     return (<>
         <div className='w-full px-4 mb-4'>
-            <img className="w-full aspect-square rounded-[50%]" src={src} alt="Profile" onClick={() => setCrop(true)} />
+            <img className="w-full aspect-square rounded-[50%]" src={avatarSrc} alt="Profile" onClick={() => setCrop(true)} />
         </div>
         <ModalDialog open={crop} setOpen={setCrop} title="Select profile picture">
             <div className="mt-2 overflow-hidden flex justify-center">
