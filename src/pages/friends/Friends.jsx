@@ -22,7 +22,7 @@ const Friends = () => {
         const getRecentUsers = async () => {
             const result = await userSession.getRecentUsers();
             // console.log(result)
-            if (result.length > 0) {
+            if (result && result.length > 0) {
                 setRecents([...result])
             } else {
                 setRecents([])
