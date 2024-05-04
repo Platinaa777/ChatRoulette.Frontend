@@ -184,13 +184,14 @@ export class UserSession {
 
     sendFeedback = async (content) => {
         let result = {}
-        await AdminService.addFeedback(this.user.email, content).then(response => {
+        try {
+            const response = await AdminService.addFeedback(this.user.email, content)
             console.log('sendFeedback success', response)
             result = response
-        }).catch(err => {
+        } catch (err) {
             console.log('sendFeedback fail', err.response)
             result = err.response
-        })
+        }
         return result
     }
 
