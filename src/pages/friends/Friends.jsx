@@ -85,7 +85,7 @@ const Friends = () => {
 
                 <Tab.Panels className="w-full">
                     {[friends, recents, requests].map(
-                        (data, idx) => <Tab.Panel
+                        (data, idx) => <Tab.Panel key={idx}
                             className='rounded-xl bg-white px-2 focus:outline-none'>
                             {(data.length === 0) ? <p className='mt-2 p-4 text-lg text-indigo-800'>Wow... empty...</p> :
                                 <ul>
