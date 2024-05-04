@@ -14,7 +14,7 @@ const ReportProblem = () => {
   const sendReport = async (e) => {
     e.preventDefault();
     const result = await userSession.sendFeedback(text)
-    if (!result.data.isSuccess) {
+    if (!result || !result.data.isSuccess) {
       setError("Message is too short")
     } else {
       setOpen(true)
