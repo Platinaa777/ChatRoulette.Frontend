@@ -13,7 +13,7 @@ export class FriendService {
         return api.put("friend/reject-invitation-to-friends", {RejectPersonEmail: receiverEmail}, {withCredentials: true})
     }
 
-    static async getInvitations() {
+    static getInvitations() {
         return api.get("friend/get-invitations", {withCredentials: true})
     }
 }

@@ -32,7 +32,7 @@ const Friends = () => {
         const getFriendRequests = async () => {
             const result = await userSession.getInvitationFriendRequests();
 
-            if (result.length > 0) {
+            if (result !== undefined && result.length > 0) {
                 setRequests([...result])
             } else {
                 setRequests([])
